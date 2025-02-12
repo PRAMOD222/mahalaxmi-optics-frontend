@@ -1,6 +1,8 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import ReduxProvider from '../store/reduxProvider';
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -14,8 +16,8 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: 'Your Website Title',
-  description: 'Description of your website',
+  title: 'Mahalaxmi Opticals',
+  description: 'Mahalaxmi Optical Traders',
 };
 
 export default function RootLayout({ children }) {
@@ -23,7 +25,9 @@ export default function RootLayout({ children }) {
     <ReduxProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Navbar />
           {children}
+          <Footer />
         </body>
       </html>
     </ReduxProvider>

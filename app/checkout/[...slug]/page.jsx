@@ -1,0 +1,98 @@
+import Link from "next/link";
+import products from "@/app/products";
+import Image from "next/image";
+const CheckoutPage = async ({ params }) => {
+  const productId = parseInt(params.slug); 
+  let selectedProduct = null;
+
+  for (const category in products) {
+    selectedProduct = products[category].find((product) => product.id === productId);
+    if (selectedProduct) break;
+  }
+
+
+  if (!selectedProduct) {
+    return (
+      <div className="mx-4 md:mx-32">
+        <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
+        <p className="text-gray-500">The product you are looking for does not exist.</p>
+        <Link
+          href="/"
+          className="mt-4 bg-gray-200 text-black px-4 py-2 hover:bg-gray-300"
+        >
+          Continue Shopping
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-4 md:mx-32">
+      <h1 className="text-2xl font-bold mb-4">Checkout</h1>
+      <div className="flex flex-col">
+        <table className="min-w-full table-auto border-collapse">
+          <thead className="border-b border-gray-300">
+            <tr>
+              <th className="py-2 px-4 text-left">Item</th>
+              <th className="py-2 px-4 text-left">Price</th>
+              <th className="py-2 px-4 text-left">Quantity</th>
+              <th className="py-2 px-4 text-right">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b">
+              <td className="px-4 py-4 flex items-center">
+                {selectedProduct.image && (
+                  <Image height={1000} width={1000}
+                    src={selectedProduct.image}
+                    alt={selectedProduct.name}
+                    className="w-16 h-16 object-cover mr-4"
+                  />
+                )}
+                <span className="font-medium text-lg">{selectedProduct.name}</span>
+              </td>
+              <td className="py-2 px-4">₹{selectedProduct.price}</td>
+              <td className="py-2 px-4">1</td>
+              <td className="py-2 px-4 text-right">₹{selectedProduct.price.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="mt-6 w-full flex flex-col md:w-[40%] ml-auto">
+          <h2 className="flex justify-between text-xl font-semibold">
+            Grand Total:{" "}
+            <span className="text-green-600">₹{selectedProduct.price.toFixed(2)}</span>
+          </h2>
+          <form
+            method="POST"
+            className="flex flex-col gap-4"
+          >
+            <input
+              type="hidden"
+              name="productId"
+              value={selectedProduct.id}
+            />
+            <input
+              type="hidden"
+              name="quantity"
+              value="1"
+            />
+            <button
+              type="submit"
+              className="flex items-center justify-center bg-black text-white px-4 py-2 hover:bg-gray-800"
+            >
+              Place Order
+            </button>
+          </form>
+          <Link
+            href="/"
+            className="flex items-center justify-center mt-4 bg-gray-200 text-black px-4 py-2 hover:bg-gray-300"
+          >
+            Continue Shopping
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CheckoutPage;

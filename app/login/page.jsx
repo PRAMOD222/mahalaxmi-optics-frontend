@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({
@@ -21,7 +20,7 @@ export default function LoginPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch('/api/users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -31,7 +30,7 @@ export default function LoginPage() {
             const data = await response.json();
             if (response.ok) {
                 alert('Login successful!');
-                router.push('/dashboard'); // Redirect to a dashboard or homepage
+                router.push('/cart'); // Redirect to a dashboard or homepage
             } else {
                 alert(`Error: ${data.message}`);
             }
@@ -42,7 +41,7 @@ export default function LoginPage() {
 
     return (
         <>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="min-h-screen flex items-center justify-center bg-gray-100">
                 <form
                     onSubmit={handleSubmit}
@@ -75,7 +74,7 @@ export default function LoginPage() {
                     </button>
                 </form>
             </div>
-            <Footer />
+          
         </>
     );
 }

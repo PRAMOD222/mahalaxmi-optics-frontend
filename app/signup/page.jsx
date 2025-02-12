@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+
 
 export default function SignupPage() {
     const [formData, setFormData] = useState({
@@ -39,7 +38,7 @@ export default function SignupPage() {
 
     return (
         <>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="min-h-screen flex items-center justify-center bg-gray-100">
                 <form
                     onSubmit={handleSubmit}
@@ -81,7 +80,7 @@ export default function SignupPage() {
                     </button>
                 </form>
             </div>
-            <Footer />
+            
         </>
     );
 }
