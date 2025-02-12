@@ -10,7 +10,7 @@ const TermsAndConditions = () => {
           <div className="space-y-2">
             <p>Welcome to Mahalaxmi Optics, your trusted partner in crystal-clear vision and timeless style. Established with a passion for enhancing the way you see the world, we have been dedicated to providing premium eyewear solutions that combine functionality with fashion.</p>
             <p>
-            At Mahalaxmi Optics, we understand that your vision is precious. That&apos;s why we offer a curated selection of high-quality frames, lenses, and sunglasses from leading brands. Whether you&apos;re looking for classic styles, trendy designs, or cutting-edge technology, we have something to suit every personality and lifestyle.
+            At Mahalaxmi Optics, we understand that your vision is precious. That&apos;s why we offer a curated selection of high-quality frames, lenses, and sunglasses from leading brands. Whether you&apos;re looking for classic styles, trendy designs, or cutting-edge technology, we have something to suit every personality and lifestyle. 
             </p>
             <p>
             Our journey began with a commitment to exceptional customer care. From precise eye tests to expert frame selection, we ensure that every experience with us is seamless and personalized. Our skilled team of opticians and staff are here to help you make the right choice for your vision and style needs.
