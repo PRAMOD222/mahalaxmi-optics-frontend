@@ -24,9 +24,9 @@ export default function Footer() {
         <div className='my-10'>
           <h2 className='font-semibold text-gray-700'>Quick Links</h2>
           <ul>
-            <li><Link href="/" className="text-gray-500 hover:text-[#763F98]">About Us</Link></li>
-            <li><Link href="/" className="text-gray-500 hover:text-[#763F98]">Contact Us</Link></li>
-            <li><Link href="/" className="text-gray-500 hover:text-[#763F98]">FAQs</Link></li>
+            <li><Link href="/about" className="text-gray-500 hover:text-[#763F98]">About Us</Link></li>
+            <li><Link href="/contact" className="text-gray-500 hover:text-[#763F98]">Contact Us</Link></li>
+            {/* <li><Link href="/" className="text-gray-500 hover:text-[#763F98]">FAQs</Link></li> */}
           </ul>
         </div>
 

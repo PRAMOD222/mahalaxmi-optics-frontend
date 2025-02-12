@@ -6,7 +6,7 @@ import Image from "next/image";
 import { FiShoppingCart } from "react-icons/fi";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import AddCartButton from "@/components/AddCartButton";
-import products from "./products";
+import products from "../products";
 
 
 const banners = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg"]
@@ -30,54 +30,7 @@ export default function Home() {
 
   return (
 
-    <>
-
-
-      <section>
-        <Carousel className="relative">
-          <CarouselContent>
-            {banners.map((banner, index) => (
-              <CarouselItem key={index}>
-                <Image height={1000} width={1000}
-                  src={`/${banner}`}
-                  alt="Banner"
-                  className="w-full lg:h-[80vh] h-[20vh] object-cover"
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="absolute top-1/2 left-4 -translate-y-1/2" />
-          <CarouselNext className="absolute top-1/2 right-4 -translate-y-1/2" />
-        </Carousel>
-
-      </section>
-
-
-      {/* <section className="p-4 md:px-32 md:py-10  bg-gray-200">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
-          <div className="category  relative">
-            <Image src="/man.jpg" alt="Category" width={200} height={200} className="w-full" />
-            <Link href="/" className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold text-white backdrop-blur-sm px-2 py-1 rounded-md hover:scale-105 transition-all duration-200 " >Man</Link>
-          </div>
-
-          <div className="category  relative">
-            <Image src="/girl.jpg" alt="Category" width={200} height={200} className="w-full" />
-            <Link href="/" className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold text-white backdrop-blur-sm px-2 py-1 rounded-md hover:scale-105 transition-all duration-200 " >Woman</Link>
-          </div>
-
-          <div className="category  relative">
-            <Image src="/children.jpg" alt="Category" width={200} height={200} className="w-full" />
-            <Link href="/" className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold text-white backdrop-blur-sm px-2 py-1 rounded-md hover:scale-105 transition-all duration-200 " >Children</Link>
-          </div>
-
-          <div className="category  relative">
-            <Image src="/lense.jpg" alt="Category" width={200} height={200} className="w-full" />
-            <Link href="/" className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold text-white backdrop-blur-sm px-2 py-1 rounded-md hover:scale-105 transition-all duration-200 " >Lenses</Link>
-          </div>
-
-        </div>
-      </section> */}
-
+    <div className="container" >
       <section className="p-4 md:px-32 md:py-10">
         <div className="w-full flex flex-col items-center justify-center ">
           <Tabs
@@ -139,6 +92,6 @@ export default function Home() {
       </section >
 
 
-    </>
+    </div>
   );
 }

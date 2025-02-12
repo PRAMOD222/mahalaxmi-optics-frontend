@@ -16,9 +16,9 @@ export default function Navbar() {
         </Link>
         <nav className=" flex items-center justify-center">
           <Link href='/' className="p-2 m-2 text-xl hover:text-[#763F98] flex items-center">Home</Link>
-          <Link href='/' className="p-2 m-2 text-xl hover:text-[#763F98] flex items-center">About</Link>
-          <Link href='/' className="p-2 m-2 text-xl hover:text-[#763F98] flex items-center">Products</Link>
-          <Link href='/' className="p-2 m-2 text-xl hover:text-[#763F98] flex items-center">Contact</Link>
+          <Link href='/about' className="p-2 m-2 text-xl hover:text-[#763F98] flex items-center">About</Link>
+          <Link href='/product' className="p-2 m-2 text-xl hover:text-[#763F98] flex items-center">Products</Link>
+          <Link href='/contact' className="p-2 m-2 text-xl hover:text-[#763F98] flex items-center">Contact</Link>
         </nav>
         <Link href={'/cart'} className='flex flex-row'>
           <FaShoppingCart className='text-xl'/>
