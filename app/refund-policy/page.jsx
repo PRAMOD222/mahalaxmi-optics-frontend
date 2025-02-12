@@ -7,7 +7,7 @@ const TermsAndConditions = () => {
       <div className=" px-4 py-8 md:mx-28 ">
         <h1 className="text-3xl font-bold mb-6">Returns and Refunds</h1>
         <div className="space-y-4 w-fit">
-          <div className="space-y-2 ">
+          {/* <div className="space-y-2 ">
             <h2 className='font-bold text-lg' >No Returns</h2>
             <p>
               All sales are final, and we do not accept returns on any of our products. We encourage our customers to carefully review all product descriptions and details before making a purchase.
@@ -24,7 +24,7 @@ const TermsAndConditions = () => {
             <p>
               By completing a purchase, you agree to this no refund policy.
             </p>
-          </div>
+          </div> */}
           <ul className="list-disc ">
             <h2 className='font-bold text-lg' >Order Cancellation</h2>
             <h2 className='font-semibold' >Physical Products </h2>
