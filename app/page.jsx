@@ -47,7 +47,7 @@ export default function Home() {
             ))}
           </CarouselContent>
           <CarouselPrevious className="absolute top-1/2 left-4 -translate-y-1/2" />
-          <CarouselNext className="absolute top-1/2 right-4 -translate-y-1/2" />
+          <CarouselNext className="absolute top-1/2 right-4  -translate-y-1/2" />
         </Carousel>
 
       </section>
