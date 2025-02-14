@@ -30,7 +30,7 @@ export default function LoginPage() {
             const data = await response.json();
             if (response.ok) {
                 alert('Login successful!');
-                router.push('/cart'); // Redirect to a dashboard or homepag
+                router.push('/cart'); // Redirect to a dashboard or homepage
             } else {
                 alert(`Error: ${data.message}`);
             }
