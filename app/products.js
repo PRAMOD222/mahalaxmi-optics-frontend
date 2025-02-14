@@ -6,7 +6,7 @@ const products = {
         description:
           "Rayban is a popular brand of sunglasses.",
         price: 11200,
-        image: "/one.png",
+        image: "/img/one.png",
       },
       {
         id: 1200000002,
@@ -14,7 +14,7 @@ const products = {
         description:
           "See the world clearer, one frame at a time.",
         price: 12520,
-        image: "/two.png",
+        image: "/img/two.png",
       },
 
     ],
@@ -25,7 +25,7 @@ const products = {
         description:
           "Vogue is a popular brand of sunglasses.",
         price: 11320,
-        image: "/three.jpg",
+        image: "/img/three.jpg",
       },
       {
         id: 1300000002,
@@ -33,7 +33,7 @@ const products = {
         description:
           "Spectacles: Your stylish window to the world.",
         price: 14525,
-        image: "/four.jpg",
+        image: "/img/four.jpg",
       },
 
     ],
@@ -43,7 +43,7 @@ const products = {
         name: "Oakley",
         description: "Framing your vision with perfection.",
         price: 13330,
-        image: "/five.png",
+        image: "/img/five.png",
       },
       {
         id: 1410000002,
@@ -51,7 +51,7 @@ const products = {
         description:
           "Smart looks, sharper vision.",
         price: 12890,
-        image: "/six.jpg",
+        image: "/img/six.jpg",
       },
     ],
     15: [
@@ -61,7 +61,7 @@ const products = {
         description:
           "Spectacles that suit your sight and style.",
         price: 8850,
-        image: "/two.png",
+        image: "/img/seven.jpg",
       },
       {
         id: 1500000002,
@@ -69,7 +69,7 @@ const products = {
         description:
           "Vision meets elegance, beautifully.",
         price: 7556,
-        image: "/three.jpg",
+        image: "/img/eight.jpg",
       },
     ],
     16: [
@@ -78,14 +78,14 @@ const products = {
         name: "Calvin Klein",
         description: "Focus on what matters—clearly.",
         price: 9078,
-        image: "/four.jpg",
+        image: "/img/nine.jpg",
       },
       {
         id: 1600000002,
         name: "Calvin Klein",
         description: "Frames that define your personality.",
         price: 9500,
-        image: "/one.png",
+        image: "/img/ten.jpg",
       },
     ],
     17: [
@@ -94,14 +94,14 @@ const products = {
         name: "Nike",
         description: "Look sharp, see sharper.",
         price: 20000,
-        image: "/five.png",
+        image: "/img/eleven.jpg",
       },
       {
         id: 1700000002,
         name: "Nike",
         description: "Glasses: Where clarity meets fashion.",
         price: 18000,
-        image: "/two.png",
+        image: "/img/twelve.jpg",
       },
     ],
     18: [
@@ -110,14 +110,14 @@ const products = {
         name: "Carrera",
         description: "Framing your vision with perfection.",
         price: 7500,
-        image: "/six.jpg",
+        image: "/img/thirteen.jpg",
       },
       {
         id: 1800000002,
         name: "Carrera",
         description: "Smart looks, sharper vision.",
         price: 14500,
-        image: "/four.jpg",
+        image: "/img/fourteen.jpg",
       },
     ],
     19: [
@@ -126,14 +126,14 @@ const products = {
         name: "Lacoste",
         description: "Spectacles that suit your sight and style.",
         price: 7500,
-        image: "/three.jpg",
+        image: "/img/fifteen.jpg",
       },
       {
         id: 1900000002,
         name: "Lacoste",
         description: "Vision meets elegance, beautifully.",
         price: 10405,
-        image: "/four.jpg",
+        image: "/img/sixteen.jpg",
       },
     ],
   };
