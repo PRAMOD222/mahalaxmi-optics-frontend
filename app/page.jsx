@@ -17,11 +17,11 @@ export default function Home() {
     { id: "12", name: "Rayban" },
     { id: "13", name: "Vogue" },
     { id: "14", name: "Oakley" },
-    { id: "15", name: "Tommy Hilfiger" },
-    { id: "16", name: "Calvin Klein" },
-    { id: "17", name: "Nike" },
+    { id: "15", name: "Prada" },
+    { id: "16", name: "Versace" },
+    { id: "17", name: "Gucci" },
     { id: "18", name: "Carrera" },
-    { id: "19", name: "Lacoste" },
+    { id: "19", name: "Burberry" },
   ];
 
 

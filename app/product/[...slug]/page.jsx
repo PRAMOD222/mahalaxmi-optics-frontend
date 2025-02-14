@@ -18,13 +18,13 @@ const page = async ({ params }) => {
     <div className="min-h-screen h-fit mx-4 md:mx-32">
       {product ? (
         <div className="flex flex-col md:flex-row ">
-          <div className="md:w-[70%] h-[70vh] p-2 pb-8 md:pr-12">
+          <div className=" p-2 pb-8 md:pr-12">
             <Image
               width={1000}
               height={1000}
               src={product.image}
               alt={product.name}
-              className=" h-full object-cover mb-4 md:mb-0"
+              className=" h-full w-full object-cover mb-4 md:mb-0"
             />
           </div>
           <div className="md:ml-8 w-full">
