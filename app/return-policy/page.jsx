@@ -24,7 +24,7 @@ const ReturnPolicy = () => {
       <ul className="list-disc ml-6 mt-2">
         <li>Perishable goods, personalized items, or digital products.</li>
         <li>Products that have been used, damaged, or altered after delivery.</li>
-        <li>Products purchased during clearance sales or marked as non-returnable.</li>
+        <li>Products purchased during clearance sales or marked as non-returnable. </li>
       </ul>
 
       <h2 className="text-xl font-semibold mt-6">How to Request a Return</h2>
