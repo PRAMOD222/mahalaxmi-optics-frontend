@@ -4,7 +4,7 @@ const products = {
         id: 1200000001,
         name: "RAY BAN 0RB 3721",
         description:
-          "BLACK SILVER & DRAK GREEN 914471",
+          "BLACK SILVER & DARK GREEN 914471",
         price: 13290,
         image: "/img/rayban1.png",
       },

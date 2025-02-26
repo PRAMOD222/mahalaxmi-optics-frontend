@@ -9,7 +9,7 @@ import AddCartButton from "@/components/AddCartButton";
 import products from "./products";
 
 
-const banners = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg"]
+const banners = ["1.png", "2.png", "3.png", "4.png"]
 
 
 export default function Home() {
