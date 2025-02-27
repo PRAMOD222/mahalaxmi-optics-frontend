@@ -3,6 +3,7 @@ import "./globals.css";
 import ReduxProvider from '../store/reduxProvider';
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import TopBar from "@/components/TopBar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,7 +26,8 @@ export default function RootLayout({ children }) {
     <ReduxProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Navbar />
+          <TopBar />
+          <Navbar />
           {children}
           <Footer />
         </body>
