@@ -1,308 +1,125 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogTitle } from "@/components/ui/dialog"
 import Image from "next/image";
-
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+} from "@/components/ui/alert-dialog";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
-
 const Products = () => {
-  // State for form fields
-  const [product, setProduct] = useState({
-    name: '',
-    description: '',
-    price: '',
-    quantity: '',
-    addInfo: '',
-    category: '',
-    images: [],
-  });
-
-
-
   const [products, setProducts] = useState([]);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [addproductopen, setAddProductOpen] = useState(false);
-
+  const [deleteProductId, setDeleteProductId] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${baseApi}/api/products/all`);
+      const response = await fetch(`${baseApi}/api/products`);
       const data = await response.json();
       setProducts(data);
-      console.log("Products fetched:", data);
-
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
-  // Handle input changes
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-  // Handle image file uploads
-  const handleFileChange = (e) => {
-    setProduct({ ...product, images: e.target.files });
-  };
-
-
-  const handleEdit = (product) => {
-    console.log(product);
-
-    setProduct({
-      _id: product._id,
-      name: product.name,
-      description: product.description,
-      category: product.category,
-      quantity: product.quantity,
-      price: product.price,
-      addInfo: product.addInfo,
-      images: product.image,
-    });
-    setIsEditMode(true);
-    setAddProductOpen(true);
-  };
-
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Prepare form data
-    const formData = new FormData();
-    formData.append("name", product.name);
-    formData.append("description", product.description);
-    formData.append("barcode", product.barcode);
-    formData.append("price", product.price);
-    formData.append("quantity", product.quantity);
-    formData.append("discount", product.discount);
-    formData.append("discountedPrice", product.discountedPrice);
-    formData.append("addInfo", product.addInfo);
-    formData.append("volume", product.volume);
-    formData.append("veg", product.veg);
-    formData.append("category", product.category); // Append the category
-
-    // Append images to form data
-    for (let i = 0; i < product.images.length; i++) {
-      formData.append("image", product.images[i]);
-    }
-
-    // Send the form data to the backend
+  const handleDelete = async () => {
     try {
-
-      if (isEditMode) {
-        // Update product
-        const response = await fetch(`${baseApi}/api/products/edit/${product._id}`, {
-          method: "PUT",
-          body: formData,
-        });
-
-        if (response.ok) {
-          const updatedProduct = await response.json();
-
-          // Update the products state
-          setProducts((prevProducts) =>
-            prevProducts.map((prod) => (prod._id === updatedProduct._id ? updatedProduct : prod))
-          );
-
-          console.log("Product updated successfully");
-          fetchProducts();
-        } else {
-          console.error("Failed to update product");
+      const response = await fetch(
+        `${baseApi}/api/products/${deleteProductId}`,
+        {
+          method: "DELETE",
         }
-      } else {
-        const res = await axios.post(`${baseApi}/api/products/add-product`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        alert("Product added successfully!");
-        console.log(res.data);
-        fetchProducts();
-      }
-
-      setIsEditMode(false);
-    } catch (error) {
-      console.error("Error adding product", error);
-      alert("Failed to add product.");
-    }
-  };
-
-  const handleDelete = async (productId) => {
-    try {
-      const response = await fetch(`${baseApi}/api/products/delete/${productId}`, {
-        method: "DELETE",
-      });
-
+      );
       if (response.ok) {
-        // Update the products state by filtering out the deleted product
-        setProducts((prevProducts) => prevProducts.filter(product => product._id !== productId));
-        console.log("Product deleted successfully");
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product._id !== deleteProductId)
+        );
       } else {
         console.error("Failed to delete product");
       }
     } catch (error) {
       console.error("Error deleting product:", error);
     }
+    setIsDialogOpen(false);
   };
-
-const closeAddProduct = () => {
-  setAddProductOpen(false);
-}
-  useEffect(() => {
-
-
-    fetchProducts();
-  }, []);
 
   return (
     <div className="container mx-auto p-4">
+      <Button asChild className="bg-blue-500 text-white">
+        <Link href="./products/add-product">Add Product</Link>
+      </Button>
 
-      <div className="flex gap-10 my-10">
+      <div className="grid grid-cols-4 gap-6 mt-4">
+        {products.map((product) => {
+          const firstColor = product.colors?.[0]?.color_name;
+          const firstImage = firstColor && product.images?.[firstColor]?.[0];
 
-        <h2 onClick={() => setAddProductOpen(true)} className='px-4 py-2 rounded-md text-white bg-blue-500'>
-          Add Product
-        </h2>
-
-        <Dialog open={addproductopen} onOpenChange={closeAddProduct}>
-          {/*<DialogTrigger>
-
-          </DialogTrigger>*/}
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add Product</DialogTitle>
-
-              <form className="space-y-2" onSubmit={handleSubmit} encType="multipart/form-data">
-
-                <div className="">
-                  <input
-                    placeholder="Product Name"
-                    type="text"
-                    name="name"
-                    value={product.name}
-                    onChange={handleChange}
-                    className="border p-2 w-full rounded-md focus:outline-[#c19f5f] "
-                    required
-                  />
-                </div>
-
-                <div className="">
-                  <textarea
-                    placeholder="Product Description"
-                    name="description"
-                    value={product.description}
-                    onChange={handleChange}
-                    className="border p-2 w-full rounded-md focus:outline-[#c19f5f]"
-                    required
-                  ></textarea>
-                </div>
-
-                <div className="w-full">
-                  <select name="category" value={product.category} onChange={handleChange} className="border p-2 w-full rounded-md focus:outline-[#c19f5f]" required >
-                    <option value="">Select a Category</option>
-                    <option value="category1" >Category1</option>
-                    <option value="category2" >Category2</option>
-                    <option value="category3" >Category3</option>
-                  </select>
-
-
-                </div>
-
-                <div className="flex  gap-3">
-                  <div className=" w-full">
-                    <input
-                      placeholder="Quantity"
-                      type="text"
-                      name="quantity"
-                      value={product.quantity}
-                      onChange={handleChange}
-                      className="border p-2 w-full rounded-md focus:outline-[#c19f5f]"
-                      required
-                    />
-                  </div>
-
-                  <div className=" w-full">
-                    <input
-                      placeholder="Price"
-                      type="number"
-                      name="price"
-                      value={product.price}
-                      onChange={handleChange}
-                      className="border p-2 w-full rounded-md focus:outline-[#c19f5f]"
-                      required
-                    />
-                  </div>
-                </div>
-
-
-
-                <div className="">
-                  <input
-                    placeholder="Additional Info"
-                    type="text"
-                    name="addInfo"
-                    value={product.addInfo}
-                    onChange={handleChange}
-                    className="border p-2 w-full rounded-md focus:outline-[#c19f5f]"
-                    required
-                  />
-                </div>
-
-                <div className=" flex gap-4">
-                  <input
-                    placeholder="Product Image"
-                    type="file"
-                    name="image"
-                    multiple
-                    onChange={handleFileChange}
-                    className="border p-2 w-full rounded-md focus:outline-[#c19f5f]"
-                    required
-                  />
-                  {isEditMode && <Image className="aspect-square object-cover" src={`${baseApi}/api/${product.images[0]}`} alt={product.name} width={200} height={200} />}
-                  {/* <p>{`${baseApi}/api/${product.images[0]}`}</p> */}
-                </div>
-
-
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-                  Add Product
-                </button>
-              </form>
-
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-
+          return (
+            <div key={product._id} className="border rounded-lg p-4 shadow-md">
+              {firstImage && (
+                <Image
+                  className="w-full h-40 object-cover rounded-md"
+                  src={`${baseApi}/api${firstImage}`}
+                  alt={product.name}
+                  width={200}
+                  height={200}
+                />
+              )}
+              <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
+              <p className="text-gray-600">{product.description}</p>
+              <p className="text-gray-700">Price: ${product.price}</p>
+              <p className="text-gray-700">Stock: {product.quantity}</p>
+              <div className="flex gap-2 mt-4">
+                <Button className="bg-yellow-500 text-white">Edit</Button>
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Button
+                      className="bg-red-500 text-white"
+                      onClick={() => {
+                        setDeleteProductId(product._id);
+                        setIsDialogOpen(true);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </AlertDialogTrigger>
+                  {isDialogOpen && (
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        Are you sure you want to delete this product?
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <Button onClick={() => setIsDialogOpen(false)}>
+                          Cancel
+                        </Button>
+                        <Button
+                          className="bg-red-500 text-white"
+                          onClick={handleDelete}
+                        >
+                          Confirm
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  )}
+                </AlertDialog>
+              </div>
+            </div>
+          );
+        })}
       </div>
-
-      <div className="grid grid-cols-4 gap-4">
-        {products.map((product) => (
-          <div key={product._id} className="border rounded p-4 mb-4">
-            <Image className="aspect-square object-cover" src={`${baseApi}/api/${product.image[0]}`} alt={product.name} width={200} height={200} />
-            <h2 className="text-lg font-semibold">{product.name}</h2>
-            <p className="text-gray-600">{product.description}</p>
-            <p className="text-gray-600">Category: {product.category}</p>
-            <p className="text-gray-600">Price: {product.price}</p>
-            <p className="text-gray-600">Quantity: {product.quantity}</p>
-            <p className="text-gray-600">Additional Info: {product.addInfo}</p>
-
-            <button className="bg-red-500 text-white px-4 py-2 rounded mt-4" onClick={() => handleDelete(product._id)} >Delete</button>
-
-            <button onClick={() => handleEdit(product)} className="bg-yellow-500 text-white px-4 py-2 rounded mt-2" >Edit</button>
-          </div>
-        ))}
-      </div>
-
-
-
     </div>
   );
 };
-
 
 export default Products;

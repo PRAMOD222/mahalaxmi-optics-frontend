@@ -6,8 +6,11 @@ const layout = ({ children }) => {
     return (
         <div>
             <div className='flex '>
+                <div className='w-[20vw]'>
                 <DashNav />
-                <div className=''>
+                </div>
+                
+                <div className='w-full'>
                     {children}
                 </div>
             </div>
