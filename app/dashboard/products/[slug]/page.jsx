@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -45,33 +46,31 @@ export default function ProductPage() {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
 
-
   useEffect(() => {
     if (!product?.colors || product.colors.length === 0) return;
 
     const saveColors = async () => {
-        try {
-            const response = await fetch(`${baseApi}/api/products/colors`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ colors: product.colors })
-            });
+      try {
+        const response = await fetch(`${baseApi}/api/products/colors`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ colors: product.colors }),
+        });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            console.log("✅ Colors saved:", product.colors);
-        } catch (error) {
-            console.error("❌ Error saving colors:", error);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        console.log("✅ Colors saved:", product.colors);
+      } catch (error) {
+        console.error("❌ Error saving colors:", error);
+      }
     };
 
     saveColors();
-}, [product.colors]);
-
+  }, [product.colors]);
 
   // Fetch categories and brands
   useEffect(() => {
@@ -150,7 +149,11 @@ export default function ProductPage() {
 
     // Append non-image fields
     Object.keys(product).forEach((key) => {
-      if (key !== "colors" && key !== "images" && typeof product[key] !== "object") {
+      if (
+        key !== "colors" &&
+        key !== "images" &&
+        typeof product[key] !== "object"
+      ) {
         formData.append(key, product[key]);
       } else if (key === "colors") {
         // Append colors as JSON
@@ -207,7 +210,10 @@ export default function ProductPage() {
           <h2 className="text-xl font-semibold mb-4">
             {isNew ? "Add Product" : "Edit Product"}
           </h2>
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          >
             {/* Product Fields */}
             <div className="col-span-2">
               <Label>Name</Label>
@@ -330,13 +336,17 @@ export default function ProductPage() {
                     type="text"
                     placeholder="Color Name"
                     value={newColor.color_name}
-                    onChange={(e) => setNewColor({ ...newColor, color_name: e.target.value })}
+                    onChange={(e) =>
+                      setNewColor({ ...newColor, color_name: e.target.value })
+                    }
                     className="w-20"
                   />
                   <Input
                     type="color"
                     value={newColor.color_code}
-                    onChange={(e) => setNewColor({ ...newColor, color_code: e.target.value })}
+                    onChange={(e) =>
+                      setNewColor({ ...newColor, color_code: e.target.value })
+                    }
                     className="w-20"
                   />
                   <Button type="button" onClick={handleAddColor}>
@@ -350,16 +360,34 @@ export default function ProductPage() {
             {selectedColor && (
               <div className="col-span-2">
                 <Label>Images for {selectedColor.color_name}</Label>
-                <Input type="file" multiple onChange={handleImageChange} className="w-full" />
+                <Input
+                  type="file"
+                  multiple
+                  onChange={handleImageChange}
+                  className="w-full"
+                />
                 <div className="flex flex-wrap gap-2 mt-2">
-                  {product.images[selectedColor.color_name]?.map((image, index) => (
-                    <img
-                      key={index}
-                      src={URL.createObjectURL(image)}
-                      alt={`Product Preview ${index}`}
-                      className="rounded-md w-32 h-32 object-cover"
-                    />
-                  ))}
+                  {product.images[selectedColor.color_name]?.map(
+                    (image, index) => {
+                      // Check if the image is a URL (string) or a File object
+                      const imageUrl =
+                        typeof image === "string"
+                          ? `${baseApi}/api${image}` // Prepend base URL to the image path
+                          : URL.createObjectURL(image); // Handle File objects
+                      return (
+                        <div>
+                          <Image
+                            key={index}
+                            src={imageUrl}
+                            width={400}
+                            height={400}
+                            alt={`Product Preview ${index}`}
+                            className="rounded-md w-32 h-32 object-cover"
+                          />
+                        </div>
+                      );
+                    }
+                  )}
                 </div>
               </div>
             )}

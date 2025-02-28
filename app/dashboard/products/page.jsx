@@ -78,10 +78,10 @@ const Products = () => {
               )}
               <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
               <p className="text-gray-600">{product.description}</p>
-              <p className="text-gray-700">Price: ${product.price}</p>
+              <p className="text-gray-700">Price: Rs{product.price}</p>
               <p className="text-gray-700">Stock: {product.quantity}</p>
               <div className="flex gap-2 mt-4">
-                <Button className="bg-yellow-500 text-white">Edit</Button>
+                <Button asChild className="bg-yellow-500 text-white"><Link href={`./products/${product._id}`}>Edit</Link></Button>
                 <AlertDialog>
                   <AlertDialogTrigger>
                     <Button
