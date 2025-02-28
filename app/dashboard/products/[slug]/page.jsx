@@ -45,6 +45,34 @@ export default function ProductPage() {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
 
+
+  useEffect(() => {
+    if (!product?.colors || product.colors.length === 0) return;
+
+    const saveColors = async () => {
+        try {
+            const response = await fetch(`${baseApi}/api/products/colors`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ colors: product.colors })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            console.log("✅ Colors saved:", product.colors);
+        } catch (error) {
+            console.error("❌ Error saving colors:", error);
+        }
+    };
+
+    saveColors();
+}, [product.colors]);
+
+
   // Fetch categories and brands
   useEffect(() => {
     const fetchCategories = async () => {
