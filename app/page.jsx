@@ -7,6 +7,10 @@ import { FiShoppingCart } from "react-icons/fi";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import AddCartButton from "@/components/AddCartButton";
 import products from "./products";
+import TopBar from "@/components/TopBar";
+import Navbar from "@/components/Navbar";
+import HomeCaroucel from "@/components/HomeCaroucel";
+import HomeCategories from "@/components/HomeCategories";
 
 
 const banners = ["1.png", "2.png", "3.png", "4.png"]
@@ -31,54 +35,20 @@ export default function Home() {
   return (
 
     <>
+      <div className="z-40">
+        <TopBar />
+      </div>
+      <div className="sticky top-0 z-50 bg-white">
+        <Navbar />
+      </div>
 
 
       <section>
-        <Carousel className="relative">
-          <CarouselContent>
-            {banners.map((banner, index) => (
-              <CarouselItem key={index}>
-                <Image height={1000} width={1000}
-                  src={`/${banner}`}
-                  alt="Banner"
-                  className="w-full lg:h-[80vh] h-[20vh] object-cover"
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="absolute top-1/2 left-4 -translate-y-1/2" />
-          <CarouselNext className="absolute top-1/2 right-4  -translate-y-1/2" />
-        </Carousel>
-
+        <HomeCaroucel />
       </section>
 
 
-      {/* <section className="p-4 md:px-32 md:py-10  bg-gray-200">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
-          <div className="category  relative">
-            <Image src="/man.jpg" alt="Category" width={200} height={200} className="w-full" />
-            <Link href="/" className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold text-white backdrop-blur-sm px-2 py-1 rounded-md hover:scale-105 transition-all duration-200 " >Man</Link>
-          </div>
-
-          <div className="category  relative">
-            <Image src="/girl.jpg" alt="Category" width={200} height={200} className="w-full" />
-            <Link href="/" className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold text-white backdrop-blur-sm px-2 py-1 rounded-md hover:scale-105 transition-all duration-200 " >Woman</Link>
-          </div>
-
-          <div className="category  relative">
-            <Image src="/children.jpg" alt="Category" width={200} height={200} className="w-full" />
-            <Link href="/" className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold text-white backdrop-blur-sm px-2 py-1 rounded-md hover:scale-105 transition-all duration-200 " >Children</Link>
-          </div>
-
-          <div className="category  relative">
-            <Image src="/lense.jpg" alt="Category" width={200} height={200} className="w-full" />
-            <Link href="/" className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold text-white backdrop-blur-sm px-2 py-1 rounded-md hover:scale-105 transition-all duration-200 " >Lenses</Link>
-          </div>
-
-        </div>
-      </section> */}
-
-      <section className="p-4 md:px-32 md:py-10">
+      {/* <section className="p-4 md:px-32 md:py-10">
         <div className="w-full flex flex-col items-center justify-center ">
           <Tabs
             defaultValue="12"
@@ -132,11 +102,15 @@ export default function Home() {
               </TabsContent>
             ))}
           </Tabs>
-          
+
 
         </div>
 
-      </section >
+      </section > */}
+
+      <section>
+        <HomeCategories />
+      </section>
 
 
     </>
