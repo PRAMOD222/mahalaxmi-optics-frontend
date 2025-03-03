@@ -22,7 +22,7 @@ export default function TopBar() {
   }, []);
 
   return (
-    <div className="bg-gray-200 text-center py-2 w-full cursor-pointer">
+    <div className="bg-gray-200 text-center py-2 w-full cursor-pointer z-50">
       <AnimatePresence mode="wait">
         <motion.p
           key={index}
