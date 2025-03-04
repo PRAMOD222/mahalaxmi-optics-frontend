@@ -19,6 +19,7 @@ const Products = () => {
   const [deleteProductId, setDeleteProductId] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const token = localStorage.getItem("token");
   const fetchProducts = async () => {
     try {
       const response = await fetch(`${baseApi}/api/products`);
@@ -39,6 +40,10 @@ const Products = () => {
         `${baseApi}/api/products/${deleteProductId}`,
         {
           method: "DELETE",
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       if (response.ok) {

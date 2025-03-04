@@ -9,6 +9,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -38,6 +45,7 @@ export default function ProductPage() {
       front_color: "",
     },
     stock: "",
+    isOptical: false,
   });
   const [productImage, setProductImage] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -45,6 +53,20 @@ export default function ProductPage() {
 
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+
+  const token = localStorage.getItem("token");
+
+  const shapes = [
+    "angular",
+    "aviator",
+    "cat-eye",
+    "clubmaster",
+    "round",
+    "oval",
+    "rectangle",
+    "wayfarer",
+    "square",
+  ];
 
   useEffect(() => {
     if (!product?.colors || product.colors.length === 0) return;
@@ -55,7 +77,9 @@ export default function ProductPage() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
+
           body: JSON.stringify({ colors: product.colors }),
         });
 
@@ -135,6 +159,11 @@ export default function ProductPage() {
   };
 
   const handleAddColor = () => {
+    // check if color with same is already added
+    if (
+      product.colors.some((color) => color.color_name === newColor.color_name)
+    )
+      return;
     if (newColor.color_name && newColor.color_code) {
       const newColors = [...product.colors, newColor];
       setProduct({ ...product, colors: newColors });
@@ -180,10 +209,18 @@ export default function ProductPage() {
       const response = isNew
         ? await fetch(`${baseApi}/api/products`, {
             method: "POST",
+            headers: {
+              // "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
             body: formData,
           })
         : await fetch(`${baseApi}/api/products/${slug}`, {
             method: "PUT",
+            headers: {
+              // "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
             body: formData,
           });
 
@@ -214,7 +251,6 @@ export default function ProductPage() {
             onSubmit={handleSubmit}
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
           >
-            {/* Product Fields */}
             <div className="col-span-2">
               <Label>Name</Label>
               <Input
@@ -310,28 +346,30 @@ export default function ProductPage() {
                 className="w-full"
               />
             </div>
-
-            {/* Colors Section */}
+            <div className="col-span-2">
+              <Label>Optical/Glasses</Label>
+              <Select
+                value = {product.isOptical ? "Optical" : "Glasses"}
+                onValueChange={(value) => {
+                  setProduct((prev) => ({
+                    ...prev,
+                    isOptical: value === "Optical",
+                  }));
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select an option" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Optical">Optical</SelectItem>
+                  <SelectItem value="Glasses">Glasses</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <div className="col-span-2">
               <Label>Colors</Label>
-              <div className="flex flex-wrap gap-2">
-                {product.colors.map((color) => (
-                  <div
-                    key={color.color_name}
-                    className="flex flex-col items-center cursor-pointer"
-                    onClick={() => setSelectedColor(color)}
-                  >
-                    <div
-                      className="w-8 h-8 rounded-full border-2 border-gray-300"
-                      style={{ backgroundColor: color.color_code }}
-                    />
-                    <span className="text-sm">{color.color_name}</span>
-                  </div>
-                ))}
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer">
-                    +
-                  </div>
+              <div className="flex flex-col flex-wrap gap-2">
+                <div className="flex gap-2">
                   <Input
                     type="text"
                     placeholder="Color Name"
@@ -339,7 +377,7 @@ export default function ProductPage() {
                     onChange={(e) =>
                       setNewColor({ ...newColor, color_name: e.target.value })
                     }
-                    className="w-20"
+                    className="w-fit"
                   />
                   <Input
                     type="color"
@@ -349,14 +387,35 @@ export default function ProductPage() {
                     }
                     className="w-20"
                   />
-                  <Button type="button" onClick={handleAddColor}>
-                    Add Color
-                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {product.colors.map((color) => (
+                    <div
+                      key={color.color_name + color.color_code}
+                      className="flex flex-col items-center cursor-pointer"
+                      onClick={() => setSelectedColor(color)}
+                    >
+                      <div
+                        className={`w-8 h-8 rounded-full border-2  ${
+                          selectedColor?.color_code == color.color_code
+                            ? " border-black "
+                            : "border-gray-300"
+                        }`}
+                        style={{ backgroundColor: color.color_code }}
+                      />
+                      <span className="text-sm">{color.color_name}</span>
+                    </div>
+                  ))}
+                  <div
+                    onClick={handleAddColor}
+                    className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer"
+                  >
+                    +
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Image Upload for Selected Color */}
             {selectedColor && (
               <div className="col-span-2">
                 <Label>Images for {selectedColor.color_name}</Label>
@@ -369,11 +428,10 @@ export default function ProductPage() {
                 <div className="flex flex-wrap gap-2 mt-2">
                   {product.images[selectedColor.color_name]?.map(
                     (image, index) => {
-                      // Check if the image is a URL (string) or a File object
                       const imageUrl =
                         typeof image === "string"
-                          ? `${baseApi}/api${image}` // Prepend base URL to the image path
-                          : URL.createObjectURL(image); // Handle File objects
+                          ? `${baseApi}/api${image}`
+                          : URL.createObjectURL(image);
                       return (
                         <div>
                           <Image
@@ -392,7 +450,131 @@ export default function ProductPage() {
               </div>
             )}
 
-            {/* Submit Button */}
+            <div className="col-span-2">
+              <h3 className="text-lg font-semibold mb-4">
+                Product Information
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Lens Size</Label>
+                  <Input
+                    name="lens_size"
+                    value={product.information.lens_size}
+                    onChange={(e) =>
+                      setProduct({
+                        ...product,
+                        information: {
+                          ...product.information,
+                          lens_size: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <Label>Nose Bridge Length</Label>
+                  <Input
+                    name="nose_bridge_length"
+                    value={product.information.nose_bridge_length}
+                    onChange={(e) =>
+                      setProduct({
+                        ...product,
+                        information: {
+                          ...product.information,
+                          nose_bridge_length: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <Label>Temple Length</Label>
+                  <Input
+                    name="temple_length"
+                    value={product.information.temple_length}
+                    onChange={(e) =>
+                      setProduct({
+                        ...product,
+                        information: {
+                          ...product.information,
+                          temple_length: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <Label>Material</Label>
+                  <Input
+                    name="material"
+                    value={product.information.material}
+                    onChange={(e) =>
+                      setProduct({
+                        ...product,
+                        information: {
+                          ...product.information,
+                          material: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <Label>Shape</Label>
+
+                  <Select>
+                    <SelectTrigger className="">
+                      <SelectValue placeholder="Shape" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {shapes.map((shape) => (
+                        <SelectItem
+                          key={shape}
+                          value={shape}
+                          onClick={() =>
+                            setProduct({
+                              ...product,
+                              information: {
+                                ...product.information,
+                                shape: shape,
+                              },
+                            })
+                          }
+                        >
+                          {shape}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Country of Origin</Label>
+                  <Input
+                    name="country_of_origin"
+                    value={product.information.country_of_origin}
+                    onChange={(e) =>
+                      setProduct({
+                        ...product,
+                        information: {
+                          ...product.information,
+                          country_of_origin: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            </div>
+
             <div className="col-span-2">
               <Button type="submit" className="w-full">
                 {isNew ? "Add Product" : "Update Product"}
