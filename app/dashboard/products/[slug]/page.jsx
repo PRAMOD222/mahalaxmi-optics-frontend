@@ -32,6 +32,7 @@ export default function ProductPage() {
     category: "",
     brand: "",
     price: "",
+    discounted_price:"",
     warranty: "",
     colors: [],
     images: {},
@@ -332,7 +333,18 @@ export default function ProductPage() {
               <Label>Price</Label>
               <Input
                 name="price"
+                type="number"
                 value={product.price}
+                onChange={handleChange}
+                className="w-full"
+              />
+            </div>
+            <div className="col-span-2">
+              <Label>Discounted Price</Label>
+              <Input
+                name="discounted_price"
+                type="number"
+                value={product.discounted_price}
                 onChange={handleChange}
                 className="w-full"
               />
