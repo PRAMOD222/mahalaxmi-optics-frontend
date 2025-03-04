@@ -30,8 +30,8 @@ const DashNav = () => {
             <h2
               className={`flex items-center gap-2 px-4 py-4 rounded-md font-semibold transition-all duration-300 ${
                 pathname === "/dashboard"
-                  ? "bg-[#c19f5f] text-white"
-                  : "bg-[#c19f5f]/30 text-black hover:text-white hover:bg-[#c19f5f]"
+                  ? "bg-[#763f98] text-white"
+                  : "bg-[#763f98]/30 text-black hover:text-white hover:bg-[#763f98]"
               }`}
             >
               {" "}
@@ -43,8 +43,8 @@ const DashNav = () => {
             <h2
               className={`flex items-center gap-2 px-4 py-4 rounded-md font-semibold transition-all duration-300 ${
                 pathname === "/dashboard/categories"
-                  ? "bg-[#c19f5f] text-white"
-                  : "bg-[#c19f5f]/30 text-black hover:text-white hover:bg-[#c19f5f]"
+                  ? "bg-[#763f98] text-white"
+                  : "bg-[#763f98]/30 text-black hover:text-white hover:bg-[#763f98]"
               }`}
             >
               {" "}
@@ -56,8 +56,8 @@ const DashNav = () => {
             <h2
               className={`flex items-center gap-2 px-4 py-4 rounded-md font-semibold transition-all duration-300 ${
                 pathname === "/dashboard/brands"
-                  ? "bg-[#c19f5f] text-white"
-                  : "bg-[#c19f5f]/30 text-black hover:text-white hover:bg-[#c19f5f]"
+                  ? "bg-[#763f98] text-white"
+                  : "bg-[#763f98]/30 text-black hover:text-white hover:bg-[#763f98]"
               }`}
             >
               {" "}
@@ -68,8 +68,8 @@ const DashNav = () => {
             <h2
               className={`flex items-center gap-2 px-4 py-4 rounded-md font-semibold transition-all duration-300 ${
                 pathname.startsWith("/dashboard/products")
-                  ? "bg-[#c19f5f] text-white"
-                  : "bg-[#c19f5f]/30 text-black hover:text-white hover:bg-[#c19f5f]"
+                  ? "bg-[#763f98] text-white"
+                  : "bg-[#763f98]/30 text-black hover:text-white hover:bg-[#763f98]"
               }`}
             >
               <AiFillProduct className="inline text-xl" />
@@ -77,14 +77,14 @@ const DashNav = () => {
             </h2>
           </Link>
           <Link href={"/dashboard"}>
-            <h2 className="flex items-center px-4 py-4 bg-[#c19f5f]/30 rounded-md font-semibold text-gray-700 hover:text-white hover:bg-[#c19f5f] transition-all duration-300">
+            <h2 className="flex items-center px-4 py-4 bg-[#763f98]/30 rounded-md font-semibold text-gray-700 hover:text-white hover:bg-[#763f98] transition-all duration-300">
               {" "}
               <CiCircleList className="inline text-xl" />
               Orders
             </h2>
           </Link>
           <Link href={"/dashboard/banners"}>
-            <h2 className="flex items-center px-4 py-4 bg-[#c19f5f]/30 rounded-md font-semibold text-gray-700 hover:text-white hover:bg-[#c19f5f] transition-all duration-300">
+            <h2 className="flex items-center px-4 py-4 bg-[#763f98]/30 rounded-md font-semibold text-gray-700 hover:text-white hover:bg-[#763f98] transition-all duration-300">
               {" "}
               <RiAdvertisementFill className="inline text-xl" />
               Banners

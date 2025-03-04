@@ -44,11 +44,13 @@ export default function ProductPage() {
       shape: "",
       country_of_origin: "",
       front_color: "",
+      temple_color:"",
+      lens_color:"",
+      style_tip:""
     },
     stock: "",
     isOptical: false,
   });
-  const [productImage, setProductImage] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [newColor, setNewColor] = useState({ color_name: "", color_code: "" });
 
@@ -252,16 +254,17 @@ export default function ProductPage() {
             onSubmit={handleSubmit}
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
           >
-            <div className="col-span-2">
+            <div className="col-span-1">
               <Label>Name</Label>
               <Input
                 name="name"
                 value={product.name}
                 onChange={handleChange}
                 className="w-full"
+                required
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1">
               <Label>Code</Label>
               <Input
                 name="code"
@@ -279,7 +282,7 @@ export default function ProductPage() {
                 className="w-full"
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1">
               <Label>Type</Label>
               <Input
                 name="type"
@@ -288,7 +291,7 @@ export default function ProductPage() {
                 className="w-full"
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1">
               <Label>Ideal For</Label>
               <Input
                 name="ideal_for"
@@ -297,7 +300,7 @@ export default function ProductPage() {
                 className="w-full"
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1">
               <Label>Category</Label>
               <select
                 name="category"
@@ -313,7 +316,7 @@ export default function ProductPage() {
                 ))}
               </select>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1">
               <Label>Brand</Label>
               <select
                 name="brand"
@@ -329,7 +332,7 @@ export default function ProductPage() {
                 ))}
               </select>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1">
               <Label>Price</Label>
               <Input
                 name="price"
@@ -339,7 +342,7 @@ export default function ProductPage() {
                 className="w-full"
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1">
               <Label>Discounted Price</Label>
               <Input
                 name="discounted_price"
@@ -349,7 +352,7 @@ export default function ProductPage() {
                 className="w-full"
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1">
               <Label>Warranty</Label>
               <Input
                 name="warranty"
@@ -358,7 +361,7 @@ export default function ProductPage() {
                 className="w-full"
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1">
               <Label>Optical/Glasses</Label>
               <Select
                 value = {product.isOptical ? "Optical" : "Glasses"}
@@ -584,11 +587,84 @@ export default function ProductPage() {
                     className="w-full"
                   />
                 </div>
+
+                <div>
+                  <Label>Front Color</Label>
+                  <Input
+                    name="front_color"
+                    value={product.information.front_color}
+                    onChange={(e) =>
+                      setProduct({
+                        ...product,
+                        information: {
+                          ...product.information,
+                          front_color: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <Label>Temple Color</Label>
+                  <Input
+                    name="temple_color"
+                    value={product.information.temple_color}
+                    onChange={(e) =>
+                      setProduct({
+                        ...product,
+                        information: {
+                          ...product.information,
+                          temple_color: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-full"
+                  />
+                </div>
+
+
+                <div>
+                  <Label>Lens Color</Label>
+                  <Input
+                    name="lens_color"
+                    value={product.information.lens_color}
+                    onChange={(e) =>
+                      setProduct({
+                        ...product,
+                        information: {
+                          ...product.information,
+                          lens_color: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <Label>Style Tip</Label>
+                  <Input
+                    name="style_tip"
+                    value={product.information.style_tip}
+                    onChange={(e) =>
+                      setProduct({
+                        ...product,
+                        information: {
+                          ...product.information,
+                          style_tip: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-full"
+                  />
+                </div>
               </div>
             </div>
 
             <div className="col-span-2">
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full max-w-xs bg-[#763f98] hover:bg-[#a373c1]">
                 {isNew ? "Add Product" : "Update Product"}
               </Button>
             </div>
