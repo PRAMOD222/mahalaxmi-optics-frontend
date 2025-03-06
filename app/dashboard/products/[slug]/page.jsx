@@ -51,7 +51,7 @@ export default function ProductPage() {
 
     const saveColors = async () => {
       try {
-        const response = await fetch(`${baseApi}/api/products/colors`, {
+        const response = await fetch(`${baseApi}/products/colors`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export default function ProductPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(`${baseApi}/api/categories`);
+        const response = await fetch(`${baseApi}/categories`);
         const data = await response.json();
         setCategories(data);
       } catch (error) {
@@ -86,7 +86,7 @@ export default function ProductPage() {
 
     const fetchBrands = async () => {
       try {
-        const response = await fetch(`${baseApi}/api/brands`);
+        const response = await fetch(`${baseApi}/brands`);
         const data = await response.json();
         setBrands(data);
       } catch (error) {
@@ -110,7 +110,7 @@ export default function ProductPage() {
 
   const fetchProductById = async () => {
     try {
-      const response = await fetch(`${baseApi}/api/products/${slug}`);
+      const response = await fetch(`${baseApi}/products/${slug}`);
       const data = await response.json();
       setProduct(data);
     } catch (error) {
@@ -178,11 +178,11 @@ export default function ProductPage() {
 
     try {
       const response = isNew
-        ? await fetch(`${baseApi}/api/products`, {
+        ? await fetch(`${baseApi}/products`, {
             method: "POST",
             body: formData,
           })
-        : await fetch(`${baseApi}/api/products/${slug}`, {
+        : await fetch(`${baseApi}/products/${slug}`, {
             method: "PUT",
             body: formData,
           });

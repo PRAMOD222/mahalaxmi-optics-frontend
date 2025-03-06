@@ -28,7 +28,7 @@ const Brands = () => {
 
   const fetchBrands = async () => {
     try {
-      const response = await fetch(`${baseApi}/api/brands`);
+      const response = await fetch(`${baseApi}/brands`);
       const data = await response.json();
       setBrands(data);
     } catch (error) {
@@ -68,13 +68,13 @@ const Brands = () => {
     
     try {
       if (isEditMode) {
-        await fetch(`${baseApi}/api/brands/${brand._id}`, {
+        await fetch(`${baseApi}/brands/${brand._id}`, {
           method: "PUT",
           body: formData,
         });
         toast.success("Brand updated!");
       } else {
-        await axios.post(`${baseApi}/api/brands`, formData, {
+        await axios.post(`${baseApi}/brands`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         toast.success("Brand added!");
@@ -89,7 +89,7 @@ const Brands = () => {
   const handleDelete = async (brandId) => {
     if (!confirm("Are you sure you want to delete this brand?")) return;
     try {
-      await fetch(`${baseApi}/api/brands/${brandId}`, {
+      await fetch(`${baseApi}/brands/${brandId}`, {
         method: "DELETE",
       });
       toast.success("Brand deleted!");

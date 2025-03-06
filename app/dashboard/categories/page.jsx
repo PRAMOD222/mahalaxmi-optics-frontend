@@ -27,7 +27,7 @@ const Categories = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${baseApi}/api/categories`);
+      const response = await fetch(`${baseApi}/categories`);
       const data = await response.json();
       setCategories(data);
     } catch (error) {
@@ -65,13 +65,13 @@ const Categories = () => {
     }
     try {
       if (isEditMode) {
-        await fetch(`${baseApi}/api/categories/${category._id}`, {
+        await fetch(`${baseApi}/categories/${category._id}`, {
           method: "PUT",
           body: formData,
         });
         toast.success("Category updated!");
       } else {
-        await axios.post(`${baseApi}/api/categories`, formData, {
+        await axios.post(`${baseApi}/categories`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         toast.success("Category added!");

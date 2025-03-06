@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
 
 // Dummy product data
 const categories = [
@@ -188,10 +191,25 @@ const categories = [
     },
 ];
 
+
+
 export default function HomeCategories() {
     const [active, setActive] = useState("Best Sellers");
+    const [currentPage, setCurrentPage] = useState(1);
 
     const activeCategory = categories.find((cat) => cat.label === active);
+
+    const totalPages = 25
+
+    const startPage = Math.max(1, currentPage - 1);
+    const endPage = Math.min(totalPages, currentPage + 1);
+    const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+
+    const onPageChange = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    }
 
     return (
         <div className="text-center py-10 mx-6 md:mx-32">
@@ -214,7 +232,7 @@ export default function HomeCategories() {
                             }`}
                         whileHover={{ scale: 1.05 }}
                     >
-                        <Image width={18} height={18} alt="emoji" src={emoji} className="hidden md:block"/>
+                        <Image width={18} height={18} alt="emoji" src={emoji} className="hidden md:block" />
                         {label}
                     </motion.button>
                 ))}
@@ -223,7 +241,7 @@ export default function HomeCategories() {
             {/* Products */}
             <motion.div
                 key={active}
-                className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-[6.67%]"
+                className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-[6.67%] md:gap-y-10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
@@ -233,14 +251,14 @@ export default function HomeCategories() {
                         key={product.id}
                         className=" text-center "
                     >
-                        <div className="border border-[#763f98] aspect-square flex flex-col justify-between">
-                            <div className="flex-1 flex items-center justify-center  w-full">
+                        <div className="border border-[#763f98] flex flex-col justify-between">
+                            <div className="flex-1 w-full  aspect-[5/4] flex items-center justify-center overflow-hidden">
                                 <Image
                                     src={product.image}
                                     width={150}
                                     height={150}
                                     alt={product.name}
-                                    className="w-full max-w-full h-auto "
+                                    className="w-full object-contain"
                                 />
                             </div>
 
@@ -250,7 +268,7 @@ export default function HomeCategories() {
                         </div>
                         <p className="text-[#763f98] font-semibold mt-2">{product.name}</p>
                         <p className="text-gray-500 text-sm line-through">{product.originalPrice}</p>
-                        <p className="text-xl font-bold">{product.price}</p> 
+                        <p className="text-xl font-bold">{product.price}</p>
                         <p className="text-gray-600 text-sm">AVAILABLE IN {product.colors} COLORS</p>
                         <button className="mt-3 bg-[#763f98] text-white px-4 py-2  text-sm md:text-base xl:text-xl font-semibold">
                             GRAB NOW!
@@ -258,6 +276,46 @@ export default function HomeCategories() {
                     </div>
                 ))}
             </motion.div>
+
+            <section className="flex items-center justify-center mt-8">
+                <div className="flex items-center space-x-2">
+                    {/* Previous Button */}
+                    <Button
+                        variant="outline"
+                        className="px-4 py-2"
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                    >
+                        &lt; Previous
+                    </Button>
+
+                    {/* Page Numbers */}
+                    {pageNumbers.map((page) => (
+                        <Button
+                            key={page}
+                            variant={currentPage === page ? "default" : "outline"}
+                            className={cn("w-10 h-10", currentPage === page && "border border-white")}
+                            onClick={() => setCurrentPage(page)}
+                        >
+                            {page}
+                        </Button>
+                    ))}
+
+                    {/* Ellipsis if more pages exist */}
+                    {currentPage < totalPages - 1 && <span className="text-gray-400">...</span>}
+
+                    {/* Next Button */}
+                    <Button
+                        variant="outline"
+                        className="px-4 py-2"
+                        disabled={currentPage === totalPages}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                    >
+                        Next &gt;
+                    </Button>
+                </div>
+            </section>
+
         </div>
     );
 }

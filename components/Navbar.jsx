@@ -1,7 +1,7 @@
 "use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 // import { NavigationMenu, NavigationMenuContent, NavigationMenuIndicator, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport } from "@/components/ui/navigation-menu"
@@ -10,6 +10,14 @@ import { TfiClose } from "react-icons/tfi";
 import { Separator } from './ui/separator';
 import { FaChevronDown } from "react-icons/fa6";
 import { ScrollArea } from './ui/scroll-area';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import SearchBar from './SearchBar';
+
+
+
+
+
+const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
 
 export default function Navbar() {
@@ -20,6 +28,8 @@ export default function Navbar() {
   const [submenuOpen, setSubmenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileBrandOpen, setIsMobileBrandOpen] = useState(false);
+
+  const [glassesBrands, setGlassesBrands] = useState([]);
 
 
   const dropdownAnimation = {
@@ -34,48 +44,49 @@ export default function Navbar() {
     exit: { y: "-100%", opacity: 0, transition: { duration: 0.3 } },
   };
 
-  const glassesBrands = [
-    { _id: 1, name: "Ray-Ban" },
-    { _id: 2, name: "Oakley" },
-    { _id: 3, name: "Gucci" },
-    { _id: 4, name: "Prada" },
-    { _id: 5, name: "Versace" },
-    { _id: 6, name: "Armani Exchange" },
-    { _id: 7, name: "Dolce & Gabbana" },
-    { _id: 8, name: "Burberry" },
-    { _id: 9, name: "Michael Kors" },
-    { _id: 10, name: "Tom Ford" },
-    { _id: 11, name: "Persol" },
-    { _id: 12, name: "Coach" },
-    { _id: 13, name: "Fendi" },
-    { _id: 14, name: "Tiffany & Co." },
-    { _id: 15, name: "Jimmy Choo" },
-    { _id: 16, name: "Police" },
-    { _id: 17, name: "Hugo Boss" },
-    { _id: 18, name: "Balenciaga" },
-    { _id: 19, name: "Cartier" },
-    { _id: 20, name: "Bvlgari" },
-    { _id: 21, name: "Lacoste" },
-    { _id: 22, name: "Chanel" },
-    { _id: 23, name: "Dior" },
-    { _id: 24, name: "Montblanc" },
-    { _id: 25, name: "Calvin Klein" },
-    { _id: 26, name: "Tommy Hilfiger" },
-    { _id: 27, name: "Nike" },
-    { _id: 28, name: "Puma" },
-    { _id: 29, name: "Reebok" },
-    { _id: 30, name: "Adidas" },
-    { _id: 31, name: "Under Armour" },
-    { _id: 32, name: "New Balance" },
-    { _id: 33, name: "Superdry" },
-    { _id: 34, name: "Guess" },
-    { _id: 35, name: "Fossil" },
-    { _id: 36, name: "Kate Spade" },
-    { _id: 37, name: "Diesel" },
-    { _id: 38, name: "Emporio Armani" },
-    { _id: 39, name: "Bose Frames" },
-    { _id: 40, name: "Vogue Eyewear" }
-  ];
+  // const glassesBrands = [
+  //   { _id: 1, name: "Ray-Ban" },
+  //   { _id: 2, name: "Oakley" },
+  //   { _id: 3, name: "Gucci" },
+  //   { _id: 4, name: "Prada" },
+  //   { _id: 5, name: "Versace" },
+  //   { _id: 6, name: "Armani Exchange" },
+  //   { _id: 7, name: "Dolce & Gabbana" },
+  //   { _id: 8, name: "Burberry" },
+  //   { _id: 9, name: "Michael Kors" },
+  //   { _id: 10, name: "Tom Ford" },
+  //   { _id: 11, name: "Persol" },
+  //   { _id: 12, name: "Coach" },
+  //   { _id: 13, name: "Fendi" },
+  //   { _id: 14, name: "Tiffany & Co." },
+  //   { _id: 15, name: "Jimmy Choo" },
+  //   { _id: 16, name: "Police" },
+  //   { _id: 17, name: "Hugo Boss" },
+  //   { _id: 18, name: "Balenciaga" },
+  //   { _id: 19, name: "Cartier" },
+  //   { _id: 20, name: "Bvlgari" },
+  //   { _id: 21, name: "Lacoste" },
+  //   { _id: 22, name: "Chanel" },
+  //   { _id: 23, name: "Dior" },
+  //   { _id: 24, name: "Montblanc" },
+  //   { _id: 25, name: "Calvin Klein" },
+  //   { _id: 26, name: "Tommy Hilfiger" },
+  //   { _id: 27, name: "Nike" },
+  //   { _id: 28, name: "Puma" },
+  //   { _id: 29, name: "Reebok" },
+  //   { _id: 30, name: "Adidas" },
+  //   { _id: 31, name: "Under Armour" },
+  //   { _id: 32, name: "New Balance" },
+  //   { _id: 33, name: "Superdry" },
+  //   { _id: 34, name: "Guess" },
+  //   { _id: 35, name: "Fossil" },
+  //   { _id: 36, name: "Kate Spade" },
+  //   { _id: 37, name: "Diesel" },
+  //   { _id: 38, name: "Emporio Armani" },
+  //   { _id: 39, name: "Bose Frames" },
+  //   { _id: 40, name: "Vogue Eyewear" }
+  // ];
+
   const sortedBrands = [...glassesBrands].sort((a, b) => a.name.localeCompare(b.name));
 
   // Divide the array into 4 equal parts
@@ -87,11 +98,26 @@ export default function Navbar() {
   }
 
   const cart = useSelector(state => state.cart.cartItems);
+
+
+  const fetchBrands = async () => {
+    try {
+      const response = await fetch(`${baseApi}/brands`);
+      const data = await response.json();
+      setGlassesBrands(data);
+    } catch (error) {
+      console.error("Error fetching brands:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBrands();
+  }, []);
   return (
     <>
       <header className="mx-6 md:mx-32 hidden md:block ">
         <div className="flex justify-between items-center py-2">
-          <div>
+          <div className='flex-1'>
             <div className='w-max flex items-center gap-2'>
               <Link className='border rounded-full border-[#763f98] block' href='/'><FaFacebookF className='text-[#763f98] m-1' /></Link>
               <Link className='border rounded-full border-[#763f98] block' href='/'><FaInstagram className='text-[#763f98] m-1' /></Link>
@@ -100,12 +126,12 @@ export default function Navbar() {
               <Link className='' href='/'>Customer Care 98900 98900</Link>
             </div>
           </div>
-          <div>
-            <Link href='/'>
-              <Image src='/logo.png' alt='logo' width={160} height={160} />
+          <div className='flex-1 flex justify-center items-center mt-2'>
+            <Link className='' href='/'>
+              <Image src='/logo.png' alt='logo' width={180} height={180} />
             </Link>
           </div>
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center justify-end gap-2 flex-1'>
             <Link href='/login' className='flex flex-col items-center'>
               <Image className='w-8' alt='user' width={20} height={20} src='/user.svg' />
               <h2 className='text-xs text-[#763f98]'>Account</h2>
@@ -120,7 +146,7 @@ export default function Navbar() {
         <nav className="flex justify-between items-center py-2">
           <div className=" flex justify-between items-center py-3 uppercase">
             {/* Navigation Links */}
-            <ul className="flex space-x-6 text-xl ">
+            <ul className="flex space-x-6 text-lg ">
               <li>
                 <Link href="#" className="hover:text-[#763f98] font-semibold">Best Seller</Link>
               </li>
@@ -156,7 +182,7 @@ export default function Navbar() {
                             <h3 className="font-semibold ">{sectionLabel}</h3>
                             <ul className=''>
                               {section.map((brand) => (
-                                <Link href='/' key={brand._id} className='whitespace-nowrap py-2 hover:text-[#763f98] hover:font-semibold transition-all duration-150 block'>{brand.name}</Link>
+                                <Link href={`/collection/${brand.name.toLocaleLowerCase().split(" ").join("-")}`} key={brand._id} className='whitespace-nowrap py-2 hover:text-[#763f98] hover:font-semibold transition-all duration-150 block'>{brand.name}</Link>
                               ))}
                             </ul>
                           </div>
@@ -211,17 +237,15 @@ export default function Navbar() {
             </ul>
           </div>
           <div className="searchbar">
-            <div className="bg-purple-700 flex  rounded-md">
+            {/* <div className="bg-purple-700 flex  rounded-md">
               <input
                 type="text"
                 placeholder="Search for best brands "
                 className=" py-1 px-2 rounded-md bg-gray-200 focus:outline-none text-sm"
               />
-              <h2 className='px-2 text-white flex items-center gap-2'>
-                <span className='text-sm'>SEARCH</span>
-                <Image alt='serach icon' width={18} height={18} src='/search.svg' />
-              </h2>
-            </div>
+            </div> */}
+            <SearchBar />
+
           </div>
         </nav>
 

@@ -21,7 +21,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${baseApi}/api/products`);
+      const response = await fetch(`${baseApi}/products`);
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -36,7 +36,7 @@ const Products = () => {
   const handleDelete = async () => {
     try {
       const response = await fetch(
-        `${baseApi}/api/products/${deleteProductId}`,
+        `${baseApi}/products/${deleteProductId}`,
         {
           method: "DELETE",
         }
@@ -56,7 +56,7 @@ const Products = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <Button asChild className="bg-blue-500 text-white">
+      <Button asChild className="bg-[#763f98] text-white">
         <Link href="./products/add-product">Add Product</Link>
       </Button>
 
