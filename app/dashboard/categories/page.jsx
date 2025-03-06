@@ -76,7 +76,7 @@ const Categories = () => {
         });
         toast.success("Category updated!");
       } else {
-        await axios.post(`${baseApi}/api/categories`, formData, {
+        await axios.post(`${baseApi}/categories`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
@@ -94,7 +94,7 @@ const Categories = () => {
   const handleDelete = async (categoryId) => {
     if (!confirm("Are you sure you want to delete this category?")) return;
     try {
-      await fetch(`${baseApi}/api/categories/${categoryId}`, {
+      await fetch(`${baseApi}/categories/${categoryId}`, {
         method: "DELETE",
         headers: {
           // "Content-Type": "multipart/form-data",
@@ -135,7 +135,7 @@ const Categories = () => {
       <div className="grid grid-cols-4 gap-4 mt-4">
         {categories.map((cat) => (
           <div key={cat._id} className="border rounded p-4">
-            <Image src={`${baseApi}/api${cat.image}`} alt={cat.name} width={200} height={200} className="aspect-square w-full object-cover" />
+            <Image src={`${baseApi}${cat.image}`} alt={cat.name} width={200} height={200} className="aspect-square w-full object-cover" />
             <h2 className="text-lg font-semibold mt-2">{cat.name}</h2>
             <p className="text-gray-600">{cat.description}</p>
             <div className="mt-4 flex space-x-2">

@@ -75,7 +75,7 @@ const Products = () => {
               {firstImage && (
                 <Image
                   className="w-full h-40 object-cover rounded-xs"
-                  src={`${baseApi}/api${firstImage}`}
+                  src={`${baseApi}${firstImage}`}
                   alt={product.name}
                   width={200}
                   height={200}

@@ -7,9 +7,18 @@ import { CiCircleList } from "react-icons/ci";
 import { AiFillProduct } from "react-icons/ai";
 import { RiAdvertisementFill } from "react-icons/ri";
 import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const DashNav = () => {
   const pathname = usePathname();
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
+
+  
   return (
     <div className="w-[20vw]">
       <div className="fixed  bg-[#763f98] shadow-lg min-h-screen h-full p-8 w-[20vw]">
@@ -88,7 +97,11 @@ const DashNav = () => {
           </Link>
           
         </div>
+
+        <Button className="bg-white hover:bg-white border-2 text-black" onClick={handleLogout} >Logout</Button>
       </div>
+      
+      
     </div>
   );
 };
