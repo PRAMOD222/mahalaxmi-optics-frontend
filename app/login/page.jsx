@@ -29,8 +29,13 @@ export default function LoginPage() {
             });
             const data = await response.json();
             if (response.ok) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('isAdmin', data.isAdmin);
                 alert('Login successful!');
-                router.push('/cart'); // Redirect to a dashboard or homepage git
+                if(data.isAdmin === true) 
+                    router.push('/dashboard');
+                else
+                    router.push('/cart'); // Redirect to a dashboard or homepage git
             } else {
                 alert(`Error: ${data.message}`);
             }

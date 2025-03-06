@@ -9,6 +9,7 @@ const withAuth = (WrappedComponent, allowedRoles = []) => {
 
     useEffect(() => {
       const token = localStorage.getItem('token');
+      const isAdmin = localStorage.getItem('isAdmin');
 
       if (!token) {
         router.push('/login'); // Redirect to login if no token
@@ -23,7 +24,7 @@ const withAuth = (WrappedComponent, allowedRoles = []) => {
           return;
         }
 
-        if (!allowedRoles.includes(decodedToken.role)) {
+        if (allowedRoles.includes("admin") && !isAdmin ) {
           router.push('/login'); // Redirect if role does not match
           return;
         }

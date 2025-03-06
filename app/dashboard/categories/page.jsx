@@ -24,6 +24,7 @@ const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const [addCategoryOpen, setAddCategoryOpen] = useState(false);
+  const token = localStorage.getItem("token");
 
   const fetchCategories = async () => {
     try {
@@ -67,12 +68,19 @@ const Categories = () => {
       if (isEditMode) {
         await fetch(`${baseApi}/categories/${category._id}`, {
           method: "PUT",
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
           body: formData,
         });
         toast.success("Category updated!");
       } else {
-        await axios.post(`${baseApi}/categories`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
+        await axios.post(`${baseApi}/api/categories`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         });
         toast.success("Category added!");
       }
@@ -88,6 +96,10 @@ const Categories = () => {
     try {
       await fetch(`${baseApi}/api/categories/${categoryId}`, {
         method: "DELETE",
+        headers: {
+          // "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       });
       toast.success("Category deleted!");
       fetchCategories();

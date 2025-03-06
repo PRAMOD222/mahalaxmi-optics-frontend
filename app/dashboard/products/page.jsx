@@ -19,6 +19,7 @@ const Products = () => {
   const [deleteProductId, setDeleteProductId] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const token = localStorage.getItem("token");
   const fetchProducts = async () => {
     try {
       const response = await fetch(`${baseApi}/products`);
@@ -39,6 +40,10 @@ const Products = () => {
         `${baseApi}/products/${deleteProductId}`,
         {
           method: "DELETE",
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       if (response.ok) {
@@ -66,16 +71,18 @@ const Products = () => {
           const firstImage = firstColor && product.images?.[firstColor]?.[0];
 
           return (
-            <div key={product._id} className="border rounded-lg p-4 shadow-md">
+            <div key={product._id} className="border rounded-sm p-1 shadow-md">
               {firstImage && (
                 <Image
-                  className="w-full h-40 object-cover rounded-md"
+                  className="w-full h-40 object-cover rounded-xs"
                   src={`${baseApi}/api${firstImage}`}
                   alt={product.name}
                   width={200}
                   height={200}
                 />
               )}
+              <div className="p-2">
+
               <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
               <p className="text-gray-600">{product.description}</p>
               <p className="text-gray-700">Price: Rs{product.price}</p>
@@ -113,6 +120,7 @@ const Products = () => {
                     </AlertDialogContent>
                   )}
                 </AlertDialog>
+              </div>
               </div>
             </div>
           );

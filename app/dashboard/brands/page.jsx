@@ -26,6 +26,8 @@ const Brands = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [addBrandOpen, setAddBrandOpen] = useState(false);
 
+  const token = localStorage.getItem("token");
+
   const fetchBrands = async () => {
     try {
       const response = await fetch(`${baseApi}/brands`);
@@ -70,12 +72,16 @@ const Brands = () => {
       if (isEditMode) {
         await fetch(`${baseApi}/brands/${brand._id}`, {
           method: "PUT",
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
           body: formData,
         });
         toast.success("Brand updated!");
       } else {
-        await axios.post(`${baseApi}/brands`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
+        await axios.post(`${baseApi}/api/brands`, formData, {
+          headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` },
         });
         toast.success("Brand added!");
       }
@@ -91,6 +97,10 @@ const Brands = () => {
     try {
       await fetch(`${baseApi}/brands/${brandId}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       });
       toast.success("Brand deleted!");
       fetchBrands();
@@ -113,7 +123,7 @@ const Brands = () => {
           <DialogHeader>
             <DialogTitle>{isEditMode ? "Edit Brand" : "Add Brand"}</DialogTitle>
             <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-2">
-              <Input type="text" name="name" value={brand.name} onChange={handleChange} placeholder="Brand Name" required />
+              <Input type="text" name="name" value={brand.name.replace(/[^a-zA-Z0-9 ]/g, '')} onChange={handleChange} placeholder="Brand Name" required />
               <Textarea name="description" value={brand.description} onChange={handleChange} placeholder="Description" required />
               <Input type="file" name="logo" onChange={handleFileChange} required={!isEditMode} />
               <Input type="file" name="banner_image" onChange={handleFileChange} required={!isEditMode} />
