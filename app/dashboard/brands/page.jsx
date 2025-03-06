@@ -80,7 +80,7 @@ const Brands = () => {
         });
         toast.success("Brand updated!");
       } else {
-        await axios.post(`${baseApi}/api/brands`, formData, {
+        await axios.post(`${baseApi}/brands`, formData, {
           headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` },
         });
         toast.success("Brand added!");

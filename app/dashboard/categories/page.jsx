@@ -76,7 +76,7 @@ const Categories = () => {
         });
         toast.success("Category updated!");
       } else {
-        await axios.post(`${baseApi}/api/categories`, formData, {
+        await axios.post(`${baseApi}/categories`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
@@ -94,7 +94,7 @@ const Categories = () => {
   const handleDelete = async (categoryId) => {
     if (!confirm("Are you sure you want to delete this category?")) return;
     try {
-      await fetch(`${baseApi}/api/categories/${categoryId}`, {
+      await fetch(`${baseApi}/categories/${categoryId}`, {
         method: "DELETE",
         headers: {
           // "Content-Type": "multipart/form-data",

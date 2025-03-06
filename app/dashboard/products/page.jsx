@@ -75,7 +75,7 @@ const Products = () => {
               {firstImage && (
                 <Image
                   className="w-full h-40 object-cover rounded-xs"
-                  src={`${baseApi}/api${firstImage}`}
+                  src={`${baseApi}${firstImage}`}
                   alt={product.name}
                   width={200}
                   height={200}
@@ -89,9 +89,9 @@ const Products = () => {
               <p className="text-gray-700">Stock: {product.quantity}</p>
               <div className="flex gap-2 mt-4">
                 <Button asChild className="bg-yellow-500 text-white"><Link href={`./products/${product._id}`}>Edit</Link></Button>
-                <AlertDialog>
+                <AlertDialog >
                   <AlertDialogTrigger>
-                    <Button
+                    <Button 
                       className="bg-red-500 text-white"
                       onClick={() => {
                         setDeleteProductId(product._id);
