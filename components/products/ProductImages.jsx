@@ -15,8 +15,8 @@ const ProductImages = ({ product }) => {
   }, [dispatch, product]);
 
   return (
-    <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
-      <div className="flex md:flex-col gap-2">
+    <div className="flex w-full flex-col md:flex-row items-center md:items-start gap-4">
+      <div className="flex w-fit md:flex-col gap-2">
         {images[selectedColor]?.map((img, index) => (
           <Image
             key={index}
@@ -24,19 +24,19 @@ const ProductImages = ({ product }) => {
             height={100}
             src={`${baseApi}${img}`}
             alt={`Thumbnail ${index}`}
-            className="w-20 h-20 object-cover border-2 border-gray-300 cursor-pointer"
+            className="w-full h-fit object-cover border-2 border-gray-300 cursor-pointer"
             onClick={() => dispatch(setMainImage(img))}
           />
         ))}
       </div>
 
-      <div className="w-[400px] h-[400px]">
+      <div className="w-full h-fit">
         <Image
           width={400}
           height={400}
           src={`${baseApi}${mainImage}`}
           alt={product.name}
-          className="w-full h-full object-cover border"
+          className="w-full h-fit object-cover border"
         />
       </div>
 

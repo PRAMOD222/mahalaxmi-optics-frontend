@@ -28,7 +28,6 @@ const Page = async ({ params }) => {
 
   return (
     <div>
-      {/* TopBar & Navbar */}
       <div className="z-40">
         <TopBar />
       </div>
@@ -36,17 +35,16 @@ const Page = async ({ params }) => {
         <Navbar />
       </div>
 
-      {/* Product Details */}
       <div className="min-h-screen mx-4 md:mx-32 flex flex-col md:flex-row">
-        {/* Product Images */}
+        <div className="w-full">
         <ProductImages product={product} />
+        </div>
+        
 
-        {/* Product Information */}
-        <div className="md:ml-8 w-full md:w-1/2">
+        <div className="md:ml-8 w-full md:w-full">
           <h1 className="text-2xl font-semibold mb-4">{product.name}</h1>
           <p className="text-gray-500 text-sm">Code: {product.code}</p>
 
-          {/* Price Section */}
           <p className="text-4xl font-semibold text-[#0071E3]">₹{product.price}</p>
           {product.discounted_price && (
             <p className="text-lg line-through text-gray-400">₹{product.discounted_price}</p>
@@ -56,30 +54,24 @@ const Page = async ({ params }) => {
             Tax included. Shipping calculated at checkout.
           </p>
 
-          {/* Product Buttons (Add to Cart, Buy Now, etc.) */}
           <ProductButtons product={product} />
 
-          {/* Product Colors */}
           {product.colors && product.colors.length > 0 && <ProductColors product={product} />}
 
-          {/* Additional Details */}
           <p className="text-gray-600 mt-4">Ideal For: {product.ideal_for}</p>
           <p className="text-gray-600">Warranty: {product.warranty}</p>
           <p className="text-gray-600">Type: {product.type}</p>
 
-          {/* Product Brand */}
           <div className="flex items-center mt-4">
             <img src={`${baseApi}${product.brand.logo}`} alt={product.brand.name} className="h-10 w-10 rounded-md mr-2" />
             <p className="text-gray-600">Brand: {product.brand.name}</p>
           </div>
 
-          {/* Product Category */}
           <div className="flex items-center mt-2">
             <img src={`${baseApi}${product.category.image}`} alt={product.category.name} className="h-10 w-10 rounded-md mr-2" />
             <p className="text-gray-600">Category: {product.category.name}</p>
           </div>
 
-          {/* Product Information */}
           <div className="mt-4">
             <h3 className="font-semibold text-lg">Product Details:</h3>
             <p className="text-gray-600">Material: {product.information.material}</p>
@@ -88,7 +80,6 @@ const Page = async ({ params }) => {
             <p className="text-gray-600">Temple Length: {product.information.temple_length}</p>
           </div>
 
-          {/* Key Features */}
           <div className="mt-6">
             <h2 className="text-gray-600 mt-4">
               <FaShippingFast className="inline text-xl mr-5" />
