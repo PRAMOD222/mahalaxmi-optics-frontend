@@ -26,20 +26,19 @@ const ProductButtons = ({ product }) => {
     dispatch(addItem(product));
   };
   return (
-    <div>
-      <div className="flex flex-row space-x-3 items-center ">
+      <div className="flex flex-row mt-2 space-x-3 items-center ">
         {item ? (
           <div className="flex border-2 border-black rounded-md items-center space-x-4 ">
             <button
               onClick={() => handleDecreaseQuantity(product.id)}
-              className=" text-black px-2 py-3 border-r-2 border-black rounded-l-md  hover:bg-gray-300"
+              className=" text-black px-2 py-3 border-r-2 bg-[#763f98] rounded-l-md  hover:bg-gray-300"
             >
               <FaMinus />
             </button>
             <span className="text-xl">{item?.quantity}</span>
             <button
               onClick={() => handleIncreaseQuantity(product.id)}
-              className=" text-black px-2 py-3 rounded-r-md border-l-2 border-black  hover:bg-gray-300"
+              className=" text-black px-2 py-3 rounded-r-md border-l-2 bg-[#763f98]  hover:bg-gray-300"
             >
               <FaPlus />
             </button>
@@ -47,7 +46,7 @@ const ProductButtons = ({ product }) => {
         ) : (
           <button
             onClick={() => addToCart()}
-            className="bg-black/80 text-sm font-[500] h-full text-white px-6 py-4   hover:bg-gray-800"
+            className="bg-[#763f98] rounded-full font-[900] text-sm h-full text-white px-6 py-4   hover:bg-gray-800"
           >
             Add to Cart
           </button>
@@ -55,12 +54,12 @@ const ProductButtons = ({ product }) => {
 
         <Link
           href={`/checkout/${product.id}`}
-          className="bg-black/80 text-sm font-[500] h-full text-white px-6 py-4   hover:bg-gray-800"
+          className="bg-[#763f98] text-sm  rounded-full font-[900] h-full text-white px-6 py-4   hover:bg-gray-800"
         >
           Buy Now
         </Link>
       </div>
-    </div>
+
   );
 };
 
