@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-
+const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 export default function LoginPage() {
     const [formData, setFormData] = useState({
         email: '',
@@ -20,7 +20,7 @@ export default function LoginPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/users/login', {
+            const response = await fetch(`${baseApi}/users/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
