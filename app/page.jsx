@@ -11,6 +11,8 @@ import TopBar from "@/components/TopBar";
 import Navbar from "@/components/Navbar";
 import HomeCaroucel from "@/components/HomeCaroucel";
 import HomeCategories from "@/components/HomeCategories";
+import Styles from '@/css/home.module.css'
+import LogosScroller from "@/components/HomeLogoScroller";
 
 
 const banners = ["1.png", "2.png", "3.png", "4.png"]
@@ -48,69 +50,78 @@ export default function Home() {
       </section>
 
 
-      {/* <section className="p-4 md:px-32 md:py-10">
-        <div className="w-full flex flex-col items-center justify-center ">
-          <Tabs
-            defaultValue="12"
-            className="w-full  flex flex-col items-center justify-center"
-          >
-            <TabsList className="text-2xl h-fit bg-white my-6">
-              {categories.map((category) => (
-                <TabsTrigger
-                  className="text-xl p-4 "
-                  key={category.id}
-                  value={category.id}
-                >
-                  {category.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            {categories.map((category) => (
-              <TabsContent className="w-full" key={category.id} value={category.id}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-                  {products[category.id]?.map((product) => (
-                    <Link
-                      href={`/product/${product.id}`}
-                      key={product.id}
-                      className="border flex flex-col bg-gray-50 h-full hover:scale-105 transition-all duration-300"
-                    >
-                      <div className="relative h-[250px]">
-                        <Image
-                          src={product.image}
-                          alt={product.name}
-                          layout="fill"
-                          objectFit="cover"
-                          className=" rounded-t-md w-full h-fit"
-                        />
-                      </div>
-                      <div className="flex flex-col p-2">
-                        <h3 className="text-sm font-[600] text-gray-600 uppercase">
-                          {product.name}
-                        </h3>
-                        <p className="font-[200] w-full text-gray-500">
-                          {product.description}
-                        </p>
-                      </div>
-                      <div className="flex flex-row w-full justify-between mt-auto  pt-8 p-2">
-                        <p className="text-3xl py-2 font-[700] mt-auto">₹{product.price}</p>
-                        <AddCartButton product={product} />
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-
-
-        </div>
-
-      </section > */}
-
       <section>
         <HomeCategories />
       </section>
+
+      <section className={`${Styles.homebg}`}>
+        <div className="mx-6 md:mx-32 py-8">
+          <h2 className="text-xl md:text-4xl mb-8 text-white font-semibold">CHANGING THE WAY PEOPLE BUY GLASSES</h2>
+          <div className="grid grid-cols-5 gap-6 ">
+            <div className="flex flex-col items-center text-white p-6 gap-4">
+              <Image className="w-1/2 " width={400} height={400} alt="icons" src={'/delivery-man.svg'} />
+              <h2 className="text-xl font-semibold text-center">Pan India <br /> Delivery</h2>
+            </div>
+            <div className="flex flex-col items-center text-white p-6 gap-4">
+              <Image className="w-1/2 " width={400} height={400} alt="icons" src={'/original.svg'} />
+              <h2 className="text-xl font-semibold text-center">100% <br /> Authentic</h2>
+            </div>
+            <div className="flex flex-col items-center text-white p-6 gap-4">
+              <Image className="w-1/2 " width={400} height={400} alt="icons" src={'/rating.svg'} />
+              <h2 className="text-xl font-semibold text-center">After <br /> Sales Service</h2>
+            </div>
+            <div className="flex flex-col items-center text-white p-6 gap-4">
+              <Image className="w-1/2 " width={400} height={400} alt="icons" src={'/payment.svg'} />
+              <h2 className="text-xl font-semibold text-center">After <br /> Sales Service</h2>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-6 md:mx-32 mt-10">
+        <div className="text-center">
+          <h2 className="font-semibold">SUNGLASSES | OPTICALS</h2>
+          <h2 className=" text-2xl md:text-4xl font-semibold text-[#763f98]">State-of-Art Optical Solutions</h2>
+        </div>
+        <div className="grid grid-cols-2 gap-10 md:gap-20 mt-10">
+          <div className=" aspect-square relative">
+            <Image src={'/his.png'} width={500} height={500} alt="His collection" className="w-3/4 h-3/4" />
+            <div className="absolute  aspect-square w-1/2 bottom-0 right-0 flex flex-col gap-4 ">
+              <h2 className="text-white bg-[#763f98] h-1/4 flex justify-center items-center text-xl font-semibold">HIS COLLECTION</h2>
+              <div className="flex flex-col justify-center p-6 bg-[#763f98] flex-1 gap-2">
+                <h2 className="text-white text-lg ">Handsomeness Comes From A Stylish Face</h2>
+                <Link className="block border-4 px-2 py-1 text-white font-semibold w-max" href={'/'} >View Collection</Link>
+              </div>
+            </div>
+          </div>
+          <div className=" aspect-square relative">
+            <Image src={'/her.png'} width={500} height={500} alt="Her collection" className="w-3/4 h-3/4" />
+            <div className="absolute  aspect-square w-1/2 bottom-0 right-0 flex flex-col gap-4 ">
+              <h2 className="text-white bg-[#763f98] h-1/4 flex justify-center items-center text-xl font-semibold">HER COLLECTION</h2>
+              <div className="flex flex-col justify-center p-6 bg-[#763f98] flex-1 gap-2">
+                <h2 className="text-white text-lg ">Beautify Your Day By Beautiful Glasses</h2>
+                <Link className="block border-4 px-2 py-1 text-white font-semibold w-max" href={'/'} >View Collection</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-6 md:mx-32 my-10">
+
+        <div className="text-center">
+          <h2 className="font-semibold">POPULAR BRANDS</h2>
+          <h2 className=" text-2xl md:text-4xl font-semibold text-[#763f98]">The Perfect Pair, A Click Away</h2>
+        </div>
+
+        <div>
+          <LogosScroller />
+        </div>
+        
+
+      </section>
+
+      
 
 
     </>
