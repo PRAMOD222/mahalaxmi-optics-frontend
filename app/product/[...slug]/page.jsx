@@ -134,44 +134,55 @@ const Page = async ({ params }) => {
             </TabsList>
             <div className="h-[1px] bg-gray-200 w-full"></div>
             <TabsContent className="p-4 min-h-[200px]" value="moreDetails">
-  <div className="">
-    <div className="space-y-3">
-      <p className="text-gray-600">
-        <span className="font-bold">Material:</span> {product.information.material}
-      </p>
-      <p className="text-gray-600">
-        <span className="font-bold">Lens Size:</span> {product.information.lens_size}
-      </p>
-      <p className="text-gray-600">
-        <span className="font-bold">Nose Bridge Length:</span> {product.information.nose_bridge_length}
-      </p>
-      <p className="text-gray-600">
-        <span className="font-bold">Temple Length:</span> {product.information.temple_length}
-      </p>
-    </div>
-  </div>
-</TabsContent>
+              <div className="">
+                <div className="space-y-3">
+                  <p className="text-gray-600">
+                    <span className="font-bold">Material:</span>{" "}
+                    {product.information.material}
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-bold">Lens Size:</span>{" "}
+                    {product.information.lens_size}
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-bold">Nose Bridge Length:</span>{" "}
+                    {product.information.nose_bridge_length}
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-bold">Temple Length:</span>{" "}
+                    {product.information.temple_length}
+                  </p>
+                </div>
+              </div>
+            </TabsContent>
 
-<TabsContent className="p-4 min-h-[200px]" value="shippingandreturns">
-  <div className="space-y-6">
-    <h2 className="text-gray-600 flex items-center gap-2">
-      <FaShippingFast className="text-xl" />
-      <span className="font-semibold">Free Shipping Across India</span>
-    </h2>
-    <h2 className="text-gray-600 flex items-center gap-2">
-      <FaRegStar className="text-xl" />
-      <span className="font-semibold">100% Authentic</span>
-    </h2>
-    <h2 className="text-gray-600 flex items-center gap-2">
-      <FaRegHeart className="text-xl" />
-      <span className="font-semibold">Free in-house repairs & adjustments</span>
-    </h2>
-    <h2 className="text-gray-600 flex items-center gap-2">
-      <IoIosReturnLeft className="text-xl" />
-      <span className="font-semibold">7-days easy exchange</span>
-    </h2>
-  </div>
-</TabsContent>
+            <TabsContent
+              className="p-4 min-h-[200px]"
+              value="shippingandreturns"
+            >
+              <div className="space-y-6">
+                <h2 className="text-gray-600 flex items-center gap-2">
+                  <FaShippingFast className="text-xl" />
+                  <span className="font-semibold">
+                    Free Shipping Across India
+                  </span>
+                </h2>
+                <h2 className="text-gray-600 flex items-center gap-2">
+                  <FaRegStar className="text-xl" />
+                  <span className="font-semibold">100% Authentic</span>
+                </h2>
+                <h2 className="text-gray-600 flex items-center gap-2">
+                  <FaRegHeart className="text-xl" />
+                  <span className="font-semibold">
+                    Free in-house repairs & adjustments
+                  </span>
+                </h2>
+                <h2 className="text-gray-600 flex items-center gap-2">
+                  <IoIosReturnLeft className="text-xl" />
+                  <span className="font-semibold">7-days easy exchange</span>
+                </h2>
+              </div>
+            </TabsContent>
           </Tabs>
         </div>
       </div>
