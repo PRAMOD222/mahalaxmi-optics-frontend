@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@mui/material";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -32,7 +33,7 @@ export default function ProductPage() {
     category: "",
     brand: "",
     price: "",
-    discounted_price:"",
+    discounted_price: "",
     warranty: "",
     colors: [],
     images: {},
@@ -44,18 +45,21 @@ export default function ProductPage() {
       shape: "",
       country_of_origin: "",
       front_color: "",
-      temple_color:"",
-      lens_color:"",
-      style_tip:""
+      temple_color: "",
+      lens_color: "",
+      style_tip: "",
     },
     stock: "",
     isOptical: false,
   });
   const [selectedColor, setSelectedColor] = useState(null);
   const [newColor, setNewColor] = useState({ color_name: "", color_code: "" });
+  const [searchValue, setSearchValue] = useState("");
 
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  const idealForOptions = ["Men", "Women", "Unisex"];
+  const [isDiscountEnabled, setIsDiscountEnabled] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -293,12 +297,25 @@ export default function ProductPage() {
             </div>
             <div className="col-span-1">
               <Label>Ideal For</Label>
-              <Input
+              {/* <Input
                 name="ideal_for"
                 value={product.ideal_for}
                 onChange={handleChange}
                 className="w-full"
-              />
+              /> */}
+              <select
+                name="ideal_for"
+                value={product.ideal_for}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              >
+                <option value="">Select Ideal For</option>
+                {idealForOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="col-span-1">
               <Label>Category</Label>
@@ -318,20 +335,32 @@ export default function ProductPage() {
             </div>
             <div className="col-span-1">
               <Label>Brand</Label>
-              <select
+              <input
+                type="text"
+                list="brand-options"
                 name="brand"
-                value={product.brand}
-                onChange={handleChange}
+                value={product?.brand?.name || searchValue} // Allows free typing
+                onChange={(e) => {
+                  setSearchValue(e.target.value); // Update UI immediately
+                  const selectedBrand = brands.find(
+                    (brand) => brand.name === e.target.value
+                  );
+                  if (selectedBrand) {
+                    handleChange({
+                      target: { name: "brand", value: selectedBrand._id },
+                    });
+                  }
+                }}
                 className="w-full p-2 border rounded"
-              >
-                <option value="">Select Brand</option>
+                placeholder="Search Brand..."
+              />
+              <datalist id="brand-options">
                 {brands.map((brand) => (
-                  <option key={brand._id} value={brand._id}>
-                    {brand.name}
-                  </option>
+                  <option key={brand._id} value={brand.name} />
                 ))}
-              </select>
+              </datalist>
             </div>
+            ;
             <div className="col-span-1">
               <Label>Price</Label>
               <Input
@@ -341,16 +370,30 @@ export default function ProductPage() {
                 onChange={handleChange}
                 className="w-full"
               />
+
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={isDiscountEnabled}
+                  onChange={(e) => setIsDiscountEnabled(e.target.checked)}
+                  className="w-4 h-4"
+                />
+                <span>Enable Discounted Price</span>
+              </label>
             </div>
             <div className="col-span-1">
-              <Label>Discounted Price</Label>
-              <Input
-                name="discounted_price"
-                type="number"
-                value={product.discounted_price}
-                onChange={handleChange}
-                className="w-full"
-              />
+              {isDiscountEnabled && (
+                <>
+                  <Label>Discounted Price</Label>
+                  <Input
+                    name="discounted_price"
+                    type="number"
+                    value={product.discounted_price}
+                    onChange={handleChange}
+                    className="w-full"
+                  />
+                </>
+              )}
             </div>
             <div className="col-span-1">
               <Label>Warranty</Label>
@@ -364,7 +407,7 @@ export default function ProductPage() {
             <div className="col-span-1">
               <Label>Optical/Glasses</Label>
               <Select
-                value = {product.isOptical ? "Optical" : "Glasses"}
+                value={product.isOptical ? "Optical" : "Glasses"}
                 onValueChange={(value) => {
                   setProduct((prev) => ({
                     ...prev,
@@ -430,7 +473,6 @@ export default function ProductPage() {
                 </div>
               </div>
             </div>
-
             {selectedColor && (
               <div className="col-span-2">
                 <Label>Images for {selectedColor.color_name}</Label>
@@ -445,7 +487,7 @@ export default function ProductPage() {
                     (image, index) => {
                       const imageUrl =
                         typeof image === "string"
-                          ? `${baseApi}/api${image}`
+                          ? `${baseApi}${image}`
                           : URL.createObjectURL(image);
                       return (
                         <div>
@@ -464,7 +506,6 @@ export default function ProductPage() {
                 </div>
               </div>
             )}
-
             <div className="col-span-2">
               <h3 className="text-lg font-semibold mb-4">
                 Product Information
@@ -624,7 +665,6 @@ export default function ProductPage() {
                   />
                 </div>
 
-
                 <div>
                   <Label>Lens Color</Label>
                   <Input
@@ -662,9 +702,11 @@ export default function ProductPage() {
                 </div>
               </div>
             </div>
-
             <div className="col-span-2">
-              <Button type="submit" className="w-full max-w-xs bg-[#763f98] hover:bg-[#a373c1]">
+              <Button
+                type="submit"
+                className="w-full max-w-xs bg-[#763f98] hover:bg-[#a373c1]"
+              >
                 {isNew ? "Add Product" : "Update Product"}
               </Button>
             </div>

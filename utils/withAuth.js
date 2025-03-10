@@ -9,7 +9,7 @@ const withAuth = (WrappedComponent, allowedRoles = []) => {
 
     useEffect(() => {
       const token = localStorage.getItem('token');
-      const isAdmin = localStorage.getItem('isAdmin');
+      const isAdmin = localStorage.getItem('isAdmin') === "true";
 
       if (!token) {
         router.push('/login'); // Redirect to login if no token
@@ -24,10 +24,13 @@ const withAuth = (WrappedComponent, allowedRoles = []) => {
           return;
         }
 
-        if (allowedRoles.includes("admin") && !isAdmin ) {
-          router.push('/login'); // Redirect if role does not match
+        if (allowedRoles.includes("admin") && !isAdmin) {
+          console.log("Redirecting to login...");  // <-- Add this
+          router.push('/login');
           return;
         }
+        
+        
       } catch (error) {
         console.error('Error decoding token:', error);
         router.push('/login'); // Redirect on error

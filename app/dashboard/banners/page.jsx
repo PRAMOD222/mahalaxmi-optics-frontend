@@ -61,7 +61,7 @@ const BannerForm = () => {
         formData.append('image', image);
 
         try {
-            const response = await fetch(`${baseApi}/api/banners/add`, {
+            const response = await fetch(`${baseApi}/banners/add`, {
                 method: 'POST',
                 body: formData,
             });
@@ -86,7 +86,7 @@ const BannerForm = () => {
 
     const fetchBanners = async () => {
         try {
-            const response = await fetch(`${baseApi}/api/banners/all`); // Replace with your API endpoint
+            const response = await fetch(`${baseApi}/banners/all`); // Replace with your API endpoint
             const data = await response.json();
             setBanners(data);
         } catch (error) {
@@ -96,7 +96,7 @@ const BannerForm = () => {
 
     const handleDelete = async (bannerId) => {
         try {
-            const response = await fetch(`${baseApi}/api/banners/delete/${bannerId}`, {
+            const response = await fetch(`${baseApi}/banners/delete/${bannerId}`, {
                 method: 'DELETE',
             });
             if (response.ok) {
@@ -221,7 +221,7 @@ const BannerForm = () => {
                         <h3 className="text-lg font-bold mb-2">{banner.title}</h3>
                         <p className="mb-2">{banner.description}</p>
                         {/* <p className="mb-2">Link: {`${baseApi}/${banner.image}`}</p> */}
-                        <Image width={500} height={500} src={`${baseApi}/api/${banner.image}`} alt={banner.title} className="max-w-full h-auto" />
+                        <Image width={500} height={500} src={`${baseApi}/${banner.image}`} alt={banner.title} className="max-w-full h-auto" />
                     </div>
                 ))}
             </section>

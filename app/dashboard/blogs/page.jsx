@@ -149,7 +149,7 @@ const Blogs = () => {
           );
           console.log("Blog updated successfully");
           fetchBlogs();
-          await fetch(`/api/revalidate?tag=cleardata`, { method: "POST" });
+          await fetch(`/revalidate?tag=cleardata`, { method: "POST" });
         } else {
           console.error("Failed to update blog");
         }
@@ -161,7 +161,7 @@ const Blogs = () => {
         alert("Blog added successfully!");
         console.log(res.data);
         fetchBlogs();
-        await fetch(`/api/revalidate?tag=cleardata`, { method: "POST" });
+        await fetch(`/revalidate?tag=cleardata`, { method: "POST" });
       }
 
       setIsEditMode(false);

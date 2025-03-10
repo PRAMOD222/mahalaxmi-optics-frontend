@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-hot-toast";
+import { Label } from "@/components/ui/label";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -125,8 +126,15 @@ const Brands = () => {
             <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-2">
               <Input type="text" name="name" value={brand.name.replace(/[^a-zA-Z0-9 ]/g, '')} onChange={handleChange} placeholder="Brand Name" required />
               <Textarea name="description" value={brand.description} onChange={handleChange} placeholder="Description" required />
-              <Input type="file" name="logo" onChange={handleFileChange} required={!isEditMode} />
-              <Input type="file" name="banner_image" onChange={handleFileChange} required={!isEditMode} />
+              <Label>
+                Logo
+                <Input type="file" name="logo" onChange={handleFileChange} required={!isEditMode} />
+              </Label>  
+              <Label>
+                Banner Image
+                <Input type="file" name="banner_image" onChange={handleFileChange} required={!isEditMode} />
+              </Label>
+              
               <Button type="submit" className="bg-blue-500 text-white">
                 {isEditMode ? "Update Brand" : "Add Brand"}
               </Button>
@@ -137,7 +145,7 @@ const Brands = () => {
       <div className="grid grid-cols-4 gap-4 mt-4">
         {brands.map((brand) => (
           <div key={brand._id} className="border rounded p-4">
-            <Image src={`${baseApi}/api${brand.logo}`} alt={brand.name} width={100} height={100} className="aspect-square w-full object-cover" />
+            <Image src={`${baseApi}${brand.logo}`} alt={brand.name} width={100} height={100} className="aspect-square w-full object-cover" />
             <h2 className="text-lg font-semibold mt-2">{brand.name}</h2>
             <p className="text-gray-600">{brand.description}</p>
             <div className="mt-4 flex space-x-2">
