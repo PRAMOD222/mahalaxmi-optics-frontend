@@ -228,7 +228,7 @@ export default function HomeCategories() {
 
     const fetchProducts = async (category) => {
         try {
-            const response = await fetch(`${baseApi}/products/getProductsByCategory/${category}?page=${currentPage}`); // Wait for response
+            const response = await fetch(`${baseApi}/products/getProductsByCategory/${category}?currentPage=${currentPage}`); // Wait for response
             const data = await response.json(); // Wait for JSON parsing
             setProductsInfo(data);
             console.log("Products fetched:", data);
@@ -411,13 +411,16 @@ export default function HomeCategories() {
                     {/* Page Numbers */}
                     {pageNumbers.map((page) => (
                         <Button
-                            key={page}
-                            variant={currentPage === page ? "default" : "outline"}
-                            className={cn("w-10 h-10", currentPage === page && "border border-white")}
-                            onClick={() => setCurrentPage(page)}
-                        >
-                            {page}
-                        </Button>
+                        key={page}
+                        variant={currentPage === page ? "default" : "outline"}
+                        className={cn(
+                          "w-10 h-10 transition-all duration-300",
+                          currentPage === page ? "bg-[#763f98] text-white border border-[#763f98]" : "border border-gray-300"
+                        )}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </Button>
                     ))}
 
                     {/* Ellipsis if more pages exist */}

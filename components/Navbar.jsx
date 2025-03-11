@@ -43,48 +43,6 @@ export default function Navbar() {
 
 
 
-  // const glassesBrands = [
-  //   { _id: 1, name: "Ray-Ban" },
-  //   { _id: 2, name: "Oakley" },
-  //   { _id: 3, name: "Gucci" },
-  //   { _id: 4, name: "Prada" },
-  //   { _id: 5, name: "Versace" },
-  //   { _id: 6, name: "Armani Exchange" },
-  //   { _id: 7, name: "Dolce & Gabbana" },
-  //   { _id: 8, name: "Burberry" },
-  //   { _id: 9, name: "Michael Kors" },
-  //   { _id: 10, name: "Tom Ford" },
-  //   { _id: 11, name: "Persol" },
-  //   { _id: 12, name: "Coach" },
-  //   { _id: 13, name: "Fendi" },
-  //   { _id: 14, name: "Tiffany & Co." },
-  //   { _id: 15, name: "Jimmy Choo" },
-  //   { _id: 16, name: "Police" },
-  //   { _id: 17, name: "Hugo Boss" },
-  //   { _id: 18, name: "Balenciaga" },
-  //   { _id: 19, name: "Cartier" },
-  //   { _id: 20, name: "Bvlgari" },
-  //   { _id: 21, name: "Lacoste" },
-  //   { _id: 22, name: "Chanel" },
-  //   { _id: 23, name: "Dior" },
-  //   { _id: 24, name: "Montblanc" },
-  //   { _id: 25, name: "Calvin Klein" },
-  //   { _id: 26, name: "Tommy Hilfiger" },
-  //   { _id: 27, name: "Nike" },
-  //   { _id: 28, name: "Puma" },
-  //   { _id: 29, name: "Reebok" },
-  //   { _id: 30, name: "Adidas" },
-  //   { _id: 31, name: "Under Armour" },
-  //   { _id: 32, name: "New Balance" },
-  //   { _id: 33, name: "Superdry" },
-  //   { _id: 34, name: "Guess" },
-  //   { _id: 35, name: "Fossil" },
-  //   { _id: 36, name: "Kate Spade" },
-  //   { _id: 37, name: "Diesel" },
-  //   { _id: 38, name: "Emporio Armani" },
-  //   { _id: 39, name: "Bose Frames" },
-  //   { _id: 40, name: "Vogue Eyewear" }
-  // ];
 
   const sortedBrands = [...glassesBrands].sort((a, b) => a.name.localeCompare(b.name));
 
@@ -215,35 +173,43 @@ export default function Navbar() {
                     >
 
                       <div>
-                        <h2 className='font-semibold'>Featured Brands</h2>
+                        <h2 className='font-semibold mb-2'>Featured Brands</h2>
                         <ul className=''>
                           {sortedBrands.slice(0, 8).map((brand) => (
-                            <li key={brand._id}><Link href="#" className="block py-1 text-sm hover:text-[#763f98]">{brand.name}</Link></li>
+                            <li key={brand._id}><Link href={`/collection/${brand.name.toLocaleLowerCase().split(" ").join("-")}`} className="block py-1 text-sm hover:text-[#763f98]">{brand.name}</Link></li>
                           ))}
                         </ul>
                       </div>
-                      <ul className='font-semibold'>
-                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Mens</Link></li>
-                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Womens</Link></li>
-                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Kids</Link></li>
-                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Unisex</Link></li>
-                      </ul>
-                      <ul className='font-semibold'>
-                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Mens</Link></li>
-                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Womens</Link></li>
-                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Kids</Link></li>
-                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Unisex</Link></li>
-                      </ul>
+                      <div>
+                        <h2 className='font-semibold mb-2'>Shop For</h2>
+                        <ul className=''>
+                          <li><Link href="/ideal-for/men" className="block py-1 hover:text-[#763f98]">Mens</Link></li>
+                          <li><Link href="/ideal-for/women" className="block py-1 hover:text-[#763f98]">Womens</Link></li>
+                          <li><Link href="/ideal-for/kids" className="block py-1 hover:text-[#763f98]">Kids</Link></li>
+                          <li><Link href="/ideal-for/unisex" className="block py-1 hover:text-[#763f98]">Unisex</Link></li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h2 className='font-semibold mb-2'>By Style</h2>
+                        <ul className=''>
+                          <li><Link href="/style/square" className="block py-1 hover:text-[#763f98]">Square</Link></li>
+                          <li><Link href="/style/round" className="block py-1 hover:text-[#763f98]">Round</Link></li>
+                          <li><Link href="/style/aviator" className="block py-1 hover:text-[#763f98]">Aviator</Link></li>
+                          <li><Link href="/style/wayfarer" className="block py-1 hover:text-[#763f98]">Wayfarer</Link></li>
+                          <li><Link href="/style/rectangle" className="block py-1 hover:text-[#763f98]">Rectangle</Link></li>
+                        </ul>
+                      </div>
+
                     </motion.div>
                   )}
                 </AnimatePresence>
               </li>
 
               <li>
-                <Link href="#" className="hover:text-[#763f98] font-semibold">Opticals</Link>
+                <Link href="/opticals" className="hover:text-[#763f98] font-semibold">Opticals</Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#763f98] font-semibold">Sunglasses</Link>
+                <Link href="/sunglasses" className="hover:text-[#763f98] font-semibold">Sunglasses</Link>
               </li>
               <li>
                 <Link href="#" className="hover:text-[#763f98] font-semibold">About Us</Link>
@@ -401,7 +367,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      <SideCart isOpen={isSidecardOpen} setIsOpen={setIsSidecartOpen} />
+      {/* <SideCart isOpen={isSidecardOpen} setIsOpen={setIsSidecartOpen} /> */}
 
     </>
   );

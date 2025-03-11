@@ -231,21 +231,21 @@ export default function ProductPage() {
     try {
       const response = isNew
         ? await fetch(`${baseApi}/products`, {
-            method: "POST",
-            headers: {
-              // "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          })
+          method: "POST",
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        })
         : await fetch(`${baseApi}/products/${slug}`, {
-            method: "PUT",
-            headers: {
-              // "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          });
+          method: "PUT",
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
 
       const data = await response.json();
       if (response.ok) {
@@ -265,6 +265,19 @@ export default function ProductPage() {
   const handleButtonClick = () => {
     fileInputRef.current.click();
   };
+
+  const handleShapeChange = (value) => {
+    // console.log(value); // Correct way to get selected value
+
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      information: {
+        ...prevProduct.information,
+        shape: value, // Directly use the value
+      },
+    }));
+  };
+
   return (
     <div className="w-full mx-auto p-6">
       <Button variant="outline" onClick={() => router.back()} className="mb-6">
@@ -497,11 +510,10 @@ export default function ProductPage() {
                       onClick={() => setSelectedColor(color)}
                     >
                       <div
-                        className={`w-8 h-8 rounded-full border-2  ${
-                          selectedColor?.color_code == color.color_code
+                        className={`w-8 h-8 rounded-full border-2  ${selectedColor?.color_code == color.color_code
                             ? " border-black "
                             : "border-gray-300"
-                        }`}
+                          }`}
                         style={{ backgroundColor: color.color_code }}
                       />
                       <span className="text-sm">{color.color_name}</span>
@@ -659,25 +671,13 @@ export default function ProductPage() {
                 <div>
                   <Label>Shape</Label>
 
-                  <Select>
-                    <SelectTrigger className="">
+                  <Select onValueChange={handleShapeChange}>
+                    <SelectTrigger>
                       <SelectValue placeholder="Shape" />
                     </SelectTrigger>
                     <SelectContent>
                       {shapes.map((shape) => (
-                        <SelectItem
-                          key={shape}
-                          value={shape}
-                          onClick={() =>
-                            setProduct({
-                              ...product,
-                              information: {
-                                ...product.information,
-                                shape: shape,
-                              },
-                            })
-                          }
-                        >
+                        <SelectItem key={shape} value={shape}>
                           {shape}
                         </SelectItem>
                       ))}

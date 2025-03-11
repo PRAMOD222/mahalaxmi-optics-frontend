@@ -68,6 +68,8 @@ const Brands = () => {
     formData.append("description", brand.description);
     if (brand.logo) formData.append("logo", brand.logo);
     if (brand.banner_image) formData.append("banner_image", brand.banner_image);
+
+    
     
     try {
       if (isEditMode) {

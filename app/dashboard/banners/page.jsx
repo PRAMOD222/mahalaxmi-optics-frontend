@@ -5,12 +5,15 @@ import Cropper from 'react-easy-crop';
 import { Slider, Button } from '@mui/material';
 import getCroppedImg from '@/utils/cropImage';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
+import { ScrollArea } from "@/components/ui/scroll-area"
+
 
 const BannerForm = () => {
     const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
     const [link, setLink] = useState('');
-    const [image, setImage] = useState(null); // For storing the selected image
+    const [linkText, setLinkText] = useState('');
+    const [banner_image, setBanner_Image] = useState(null); // For storing the selected image
+    const [logo, setLogo] = useState(null);
     const [preview, setPreview] = useState(null); // For storing the preview URL
 
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null); // Pixels for cropping
@@ -20,13 +23,17 @@ const BannerForm = () => {
 
     const [banners, setBanners] = useState([]);
 
+    const token = localStorage.getItem('token');
+
     const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
+        console.log(file);
+        
         if (file) {
             const objectUrl = URL.createObjectURL(file);
-            setImage(objectUrl);
+            setBanner_Image(objectUrl);
             setShowCropper(true);
         }
     };
@@ -37,9 +44,13 @@ const BannerForm = () => {
 
     const handleCropSave = async () => {
         try {
-            const croppedImage = await getCroppedImg(image, croppedAreaPixels);
+            const croppedImage = await getCroppedImg(banner_image, croppedAreaPixels);
             setPreview(URL.createObjectURL(croppedImage));
-            setImage(croppedImage);
+            console.log('croppedImage', croppedImage);
+            
+            setBanner_Image(croppedImage);
+            console.log(title, link, linkText, banner_image, logo);
+            
             setShowCropper(false);
         } catch (e) {
             console.error('Error cropping the image:', e);
@@ -49,19 +60,26 @@ const BannerForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!image) {
+        if (!banner_image) {
             alert('Please upload and crop an image.');
             return;
         }
 
+
+
         const formData = new FormData();
         formData.append('title', title);
-        formData.append('description', description);
+        formData.append('linkText', linkText);
         formData.append('link', link);
-        formData.append('image', image);
+        formData.append('logo', logo);
+        formData.append('banner_image', banner_image);
 
         try {
-            const response = await fetch(`${baseApi}/banners/add`, {
+            const response = await fetch(`${baseApi}/banners/`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
                 method: 'POST',
                 body: formData,
             });
@@ -70,9 +88,10 @@ const BannerForm = () => {
                 const data = await response.json();
                 alert(data.message || 'Banner added successfully!');
                 setTitle('');
-                setDescription('');
+                setLinkText('');
                 setLink('');
-                setImage(null);
+                setBanner_Image(null);
+                setLogo(null);
                 setPreview(null);
             } else {
                 const error = await response.json();
@@ -126,6 +145,8 @@ const BannerForm = () => {
                         <DialogTitle>Add Banner</DialogTitle>
                     </DialogHeader>
 
+                    <ScrollArea className="h-[80vh]  rounded-md border p-4">
+
                     <div className="p-4 ">
                         <form onSubmit={handleSubmit}>
                             <div className="mb-4">
@@ -140,22 +161,34 @@ const BannerForm = () => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="description" className="block font-bold mb-1">Description:</label>
-                                <textarea
-                                    id="description"
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    className="w-full p-2 border rounded"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-4">
                                 <label htmlFor="link" className="block font-bold mb-1">Link:</label>
                                 <input
                                     type="text"
                                     id="link"
                                     value={link}
                                     onChange={(e) => setLink(e.target.value)}
+                                    className="w-full p-2 border rounded"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="linkText" className="block font-bold mb-1">Link Text:</label>
+                                <input
+                                    type="text"
+                                    id="linkText"
+                                    value={linkText}
+                                    onChange={(e) => setLinkText(e.target.value)}
+                                    className="w-full p-2 border rounded"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="logo" className="block font-bold mb-1">Logo</label>
+                                <input
+                                    type="file"
+                                    id="logo"
+                                    value={logo}
+                                    onChange={(e) => setLogo(e.target.value)}
                                     className="w-full p-2 border rounded"
                                     required
                                 />
@@ -185,7 +218,7 @@ const BannerForm = () => {
                                 <div className="bg-white p-4 rounded shadow-md w-full max-w-2xl">
                                     <div className="relative w-full h-64">
                                         <Cropper
-                                            image={image}
+                                            image={banner_image}
                                             crop={crop}
                                             zoom={zoom}
                                             aspect={16 / 9} // Aspect ratio for the banner
@@ -211,6 +244,8 @@ const BannerForm = () => {
                         )}
                     </div>
 
+                    </ScrollArea>
+
                 </DialogContent>
             </Dialog>
 
@@ -221,7 +256,7 @@ const BannerForm = () => {
                         <h3 className="text-lg font-bold mb-2">{banner.title}</h3>
                         <p className="mb-2">{banner.description}</p>
                         {/* <p className="mb-2">Link: {`${baseApi}/${banner.image}`}</p> */}
-                        <Image width={500} height={500} src={`${baseApi}/${banner.image}`} alt={banner.title} className="max-w-full h-auto" />
+                        <Image width={500} height={500} src={`${baseApi}/${banner.banner_image}`} alt={banner.title} className="max-w-full h-auto" />
                     </div>
                 ))}
             </section>
