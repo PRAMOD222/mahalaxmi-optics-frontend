@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { loginUser, signupUser } from '@/store/authSlice';
+import { updateCart } from '@/store/cartSlice';
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -21,9 +22,13 @@ export default function LoginPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(loginUser(formData));
+        await dispatch(loginUser(formData));
+
+            
+
+        
     };
 
     return (

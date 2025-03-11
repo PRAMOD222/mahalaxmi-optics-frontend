@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { updateCart } from './cartSlice';
+
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
 // Async Thunks for API Calls
-export const signupUser = createAsyncThunk('auth/signupUser', async (userData, { rejectWithValue }) => {
+export const signupUser = createAsyncThunk('auth/signupUser', async (userData, { rejectWithValue , dispatch }) => {
     try {
         const response = await fetch(`${baseApi}/users/signup`, {
             method: 'POST',
@@ -19,13 +21,15 @@ export const signupUser = createAsyncThunk('auth/signupUser', async (userData, {
         localStorage.setItem('token', data.token);
         localStorage.setItem('isAdmin', data.isAdmin || 'user');
 
+
+        dispatch(updateCart())
         return data;
     } catch (error) {
         return rejectWithValue(error.message);
     }
 });
 
-export const loginUser = createAsyncThunk('auth/loginUser', async (userData, { rejectWithValue }) => {
+export const loginUser = createAsyncThunk('auth/loginUser', async (userData, { rejectWithValue , dispatch }) => {
     try {
         const response = await fetch(`${baseApi}/users/login`, {
             method: 'POST',
@@ -41,6 +45,7 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (userData, { r
         localStorage.setItem('token', data.token);
         localStorage.setItem('isAdmin', data.isAdmin);
 
+        dispatch(updateCart())
         return data;
     } catch (error) {
         return rejectWithValue(error.message);
