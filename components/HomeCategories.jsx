@@ -299,14 +299,14 @@ export default function HomeCategories() {
                         className=" text-center "
                     >
                         <div className=" border border-[#763f98] flex flex-col justify-between">
-                            <Link href={`/product/${formatSlug(product.name)}`} className="flex-1 w-full  aspect-[5/4] flex items-center justify-center overflow-hidden">
-                                <Image
-                                    src={`${baseApi}/${product.image}`}
+                            <Link href={`/product/${formatSlug(product.name)}`} className="flex-1 w-full aspect-[5/4] flex items-center justify-center overflow-hidden">
+                                {product.thumbnail && <Image
+                                    src={`${baseApi}${product.thumbnail}`}
                                     width={150}
                                     height={150}
                                     alt={product.name}
                                     className="w-full object-contain"
-                                />
+                                />}
                             </Link>
 
                             <Dialog>
@@ -331,13 +331,13 @@ export default function HomeCategories() {
                                             <p className="text-gray-500 text-sm">Code: {product.code}</p>
 
                                             <div className="flex items-center gap-4">
-                                                {product.price && (<p className="text-4xl font-bold text-[#0071E3]">
-                                                    ₹{product.discounted_price}
-                                                </p>)}
-
-                                                <p className="text-lg line-through text-gray-400">
+                                                <p className="text-4xl font-bold text-[#0071E3]">
                                                     ₹{product.price}
                                                 </p>
+
+                                                {product.discounted_price && (<p className="text-lg line-through text-gray-400">
+                                                    ₹{product.discounted_price}
+                                                </p>)}
 
                                             </div>
 
@@ -386,10 +386,10 @@ export default function HomeCategories() {
 
                         </div>
                         <p className="text-[#763f98] font-semibold mt-2">{product.name}</p>
-                        <p className="text-gray-500 text-sm line-through">Rs {product.price} /-</p>
-                        <p className="text-xl font-bold">Rs {product.discounted_price} /-</p>
+                        {product.discounted_price && <p className="text-gray-500 text-sm line-through">Rs {product.discounted_price} /-</p>}
+                        <p className="text-xl font-bold">Rs {product.price} /-</p>
                         <p className="text-sm text-[#763f98]">AVAILABLE IN <br /> {product.colors.length} COLORS</p>
-                        <Link href={`/product/${formatSlug(product.name)}`} className="mt-3 bg-[#763f98] text-white px-4 py-2  text-sm md:text-base xl:text-xl font-semibold">
+                        <Link href={`/product/${formatSlug(product.name)}`} className="mt-3 bg-[#763f98] text-white px-4 py-2  text-sm md:text-base xl:text-xl font-semibold block">
                             GRAB NOW!
                         </Link>
                     </div>

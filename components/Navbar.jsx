@@ -41,7 +41,7 @@ export default function Navbar() {
     exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
   };
 
-  
+
 
   // const glassesBrands = [
   //   { _id: 1, name: "Ray-Ban" },
@@ -194,7 +194,7 @@ export default function Navbar() {
 
               {/* Shop For Dropdown */}
               <li
-                className="relative"
+                className=""
                 onMouseEnter={() => setIsShopForOpen(true)}
                 onMouseLeave={() => setIsShopForOpen(false)}
               >
@@ -211,8 +211,23 @@ export default function Navbar() {
                       animate="visible"
                       exit="exit"
                       variants={dropdownAnimation}
-                      className="absolute left-0 mt-3 bg-white shadow-lg p-3 rounded-lg w-48 z-50"
+                      className="absolute left-0 pt-3 w-screen h-max bg-white shadow-lg p-3 rounded-lg px-32 grid grid-cols-4 gap-4 z-50"
                     >
+
+                      <div>
+                        <h2 className='font-semibold'>Featured Brands</h2>
+                        <ul className=''>
+                          {sortedBrands.slice(0, 8).map((brand) => (
+                            <li key={brand._id}><Link href="#" className="block py-1 text-sm hover:text-[#763f98]">{brand.name}</Link></li>
+                          ))}
+                        </ul>
+                      </div>
+                      <ul className='font-semibold'>
+                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Mens</Link></li>
+                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Womens</Link></li>
+                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Kids</Link></li>
+                        <li><Link href="#" className="block py-2 hover:text-[#763f98]">Unisex</Link></li>
+                      </ul>
                       <ul className='font-semibold'>
                         <li><Link href="#" className="block py-2 hover:text-[#763f98]">Mens</Link></li>
                         <li><Link href="#" className="block py-2 hover:text-[#763f98]">Womens</Link></li>
@@ -386,7 +401,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      <SideCart isOpen={isSidecardOpen} setIsOpen={setIsSidecartOpen}/>
+      <SideCart isOpen={isSidecardOpen} setIsOpen={setIsSidecartOpen} />
 
     </>
   );
