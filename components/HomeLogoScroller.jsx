@@ -1,8 +1,6 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 
 const logos = [
     "/logo1.png",
@@ -13,46 +11,63 @@ const logos = [
 ];
 
 const LogosScroller = () => {
-    const [items, setItems] = useState([...logos, ...logos]); // Duplicate logos initially
+    const carouselRef1 = useRef(null);
+    const carouselRef2 = useRef(null);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            moveLogos(); // Shift the first logo to the end
-        }, 2000); // Adjust speed as needed
+        const cloneUL = (ref) => {
+            const ul = ref.current;
+            if (ul) {
+                ul.insertAdjacentHTML("afterend", ul.outerHTML); // Duplicate the list
+                ul.nextSibling.setAttribute("aria-hidden", "true"); // Hide duplicate for screen readers
+            }
+        };
 
-        return () => clearInterval(interval);
+        cloneUL(carouselRef1);
+        cloneUL(carouselRef2);
     }, []);
-
-    const moveLogos = () => {
-        setItems((prevItems) => {
-            const firstLogo = prevItems[0]; // Get first logo
-            return [...prevItems.slice(1), firstLogo]; // Move first to last
-        });
-    };
 
     return (
         <div className="overflow-hidden w-full bg-white py-4">
-            <motion.div
-                className="flex w-max gap-8"
-                animate={{ x: ["0%", "-100%"] }}
-                transition={{
-                    repeat: Infinity,
-                    duration: 10,
-                    ease: "linear",
-                }}
-            >
-                {items.map((logo, index) => (
-                    <div key={index} className="flex-shrink-0 w-1/5">
-                        <Image
-                            src={logo}
-                            alt={`Logo ${index + 1}`}
-                            width={100}
-                            height={50}
-                            className="object-contain w-full h-auto"
-                        />
-                    </div>
-                ))}
-            </motion.div>
+            {/* Forward Scroll */}
+            <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+                <ul
+                    ref={carouselRef1}
+                    className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-[infinite-scroll_25s_linear_infinite]"
+                >
+                    {logos.map((logo, index) => (
+                        <li key={index}>
+                            <Image
+                                className="w-[16vw]"
+                                src={logo}
+                                alt={`Logo ${index + 1}`}
+                                width={100}
+                                height={50}
+                            />
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/* Reverse Scroll */}
+            <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)] mt-4">
+                <ul
+                    ref={carouselRef2}
+                    className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-[infinite-scroll_reverse_25s_linear_infinite]"
+                >
+                    {logos.map((logo, index) => (
+                        <li key={index}>
+                            <Image
+                                className="w-[20vw]"
+                                src={logo}
+                                alt={`Logo ${index + 1}`}
+                                width={100}
+                                height={50}
+                            />
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };

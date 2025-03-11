@@ -38,11 +38,7 @@ export default function Navbar() {
     exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
   };
 
-  const menuVariants = {
-    hidden: { y: "-100%", opacity: 0 },
-    visible: { y: "0%", opacity: 1, transition: { duration: 0.3 } },
-    exit: { y: "-100%", opacity: 0, transition: { duration: 0.3 } },
-  };
+  
 
   // const glassesBrands = [
   //   { _id: 1, name: "Ray-Ban" },

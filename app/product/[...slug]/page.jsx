@@ -24,8 +24,9 @@ const fetchProduct = async (productName) => {
 };
 
 const Page = async ({ params }) => {
-  const productName = params.slug;
-  const product = await fetchProduct(productName);
+  const { slug } = await params;
+
+  const product = await fetchProduct(slug);
 
   if (!product) return <p>Product not found</p>;
 
@@ -53,14 +54,14 @@ const Page = async ({ params }) => {
             <p className="text-gray-500 text-sm">Code: {product.code}</p>
 
             <div className="flex items-center gap-4">
-              <p className="text-4xl font-bold text-[#0071E3]">
+              {product.price && (<p className="text-4xl font-bold text-[#0071E3]">
+                ₹{product.discounted_price}
+              </p>)}
+
+              <p className="text-lg line-through text-gray-400">
                 ₹{product.price}
               </p>
-              {product.discounted_price && (
-                <p className="text-lg line-through text-gray-400">
-                  ₹{product.discounted_price}
-                </p>
-              )}
+
             </div>
 
             <p className="text-gray-500 text-sm">
@@ -84,13 +85,13 @@ const Page = async ({ params }) => {
             </div>
 
             <div className="flex items-center gap-2">
-              <Image
+              {product.brand && <Image
                 src={`${baseApi}${product.brand.logo}`}
                 width={100}
                 height={100}
                 alt={product.brand.name}
                 className="h-8 w-fit rounded-md"
-              />
+              />}
               {/* <p className="text-gray-600">Brand: {product.brand.name}</p> */}
             </div>
 
