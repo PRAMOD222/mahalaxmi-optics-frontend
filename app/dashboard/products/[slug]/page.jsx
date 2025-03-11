@@ -19,6 +19,8 @@ import {
 import { Checkbox } from "@mui/material";
 import ImageCropper from "@/components/cropper/ImageCropper";
 import { MdCancel } from "react-icons/md";
+import { IoIosColorPalette } from "react-icons/io";
+import { CgColorPicker } from "react-icons/cg";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -273,8 +275,8 @@ export default function ProductPage() {
           <h2 className="text-xl font-semibold mb-4">
             {isNew ? "Add Product" : "Edit Product"}
           </h2>
-          <form
-            onSubmit={handleSubmit}
+          <div
+            // onSubmit={handleSubmit}
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
           >
             <div className="col-span-1">
@@ -468,10 +470,12 @@ export default function ProductPage() {
                   <div className="relative">
                     <div className="w-16 h-full border-2 border-gray-200 rounded-md cursor-pointer relative p-1">
                       <div
-                        className="w-full h-full rounded"
+                        className="flex items-center justify-center w-full h-full rounded"
                         style={{ backgroundColor: newColor.color_code }}
                         onClick={() => colorInputRef.current.click()}
-                      ></div>
+                      >
+                        <CgColorPicker className="text-white text-md" />
+                      </div>
                     </div>
 
                     <input
@@ -773,13 +777,13 @@ export default function ProductPage() {
             </div>
             <div className="col-span-2">
               <Button
-                type="submit"
+                onClick={handleSubmit}
                 className="w-full max-w-xs bg-[#763f98] hover:bg-[#a373c1]"
               >
                 {isNew ? "Add Product" : "Update Product"}
               </Button>
             </div>
-          </form>
+          </div>
         </CardContent>
       </Card>
     </div>
