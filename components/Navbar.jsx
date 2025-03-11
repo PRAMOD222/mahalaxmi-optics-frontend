@@ -12,6 +12,7 @@ import { FaChevronDown } from "react-icons/fa6";
 import { ScrollArea } from './ui/scroll-area';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import SearchBar from './SearchBar';
+import SideCart from './cart/SideCart';
 
 
 
@@ -28,6 +29,8 @@ export default function Navbar() {
   const [submenuOpen, setSubmenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileBrandOpen, setIsMobileBrandOpen] = useState(false);
+
+  const [isSidecardOpen, setIsSidecartOpen] = useState(true)
 
   const [glassesBrands, setGlassesBrands] = useState([]);
 
@@ -387,8 +390,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-
-
+      <SideCart isOpen={isSidecardOpen} setIsOpen={setIsSidecartOpen}/>
 
     </>
   );
