@@ -161,8 +161,13 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: getCartFromLocalStorage(),
+    isSliderOpen: false,
   },
-  reducers: {},
+  reducers: {
+    toggleSlider: (state, action) => {
+      state.isSliderOpen = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCart.fulfilled, (state, action) => {
@@ -183,5 +188,5 @@ const cartSlice = createSlice({
       });
   },
 });
-
+export const { toggleSlider } = cartSlice.actions;
 export default cartSlice.reducer;

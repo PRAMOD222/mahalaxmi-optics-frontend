@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
+import AddToCart from "./AddToCart";
 
 const ProductButtons = ({ product }) => {
   const dispatch = useDispatch();
@@ -11,22 +12,19 @@ const ProductButtons = ({ product }) => {
   const authUser = useSelector((state) => state.auth.user);
   const item = cartItems.find((item) => item._id === product._id);
 
-
-
-
-  const handleIncreaseQuantity = async(id) => {
+  const handleIncreaseQuantity = async (id) => {
     await dispatch(addToCart(product));
-    dispatch(getCart())
+    dispatch(getCart());
   };
 
-  const handleDecreaseQuantity = async(id) => {
-    await dispatch(removeFromCart({product}));
-    dispatch(getCart())
+  const handleDecreaseQuantity = async (id) => {
+    await dispatch(removeFromCart({ product }));
+    dispatch(getCart());
   };
 
-  const handleAddToCart = async() => {
+  const handleAddToCart = async () => {
     await dispatch(addToCart(product));
-    dispatch(getCart())
+    dispatch(getCart());
   };
 
   return (
@@ -48,12 +46,17 @@ const ProductButtons = ({ product }) => {
           </button>
         </div>
       ) : (
-        <button
-          onClick={handleAddToCart}
-          className="bg-[#763f98] rounded-full font-[900] text-sm h-full text-white px-6 py-4 hover:bg-gray-800"
-        >
-          Add to Cart
-        </button>
+        <AddToCart
+          product={product}
+          text={
+            <h2
+              // onClick={handleAddToCart}
+              className="bg-[#763f98] rounded-full font-[900] text-sm h-full text-white px-6 py-4 hover:bg-gray-800"
+            >
+              Add to Cart
+            </h2>
+          }
+        />
       )}
 
       <Link

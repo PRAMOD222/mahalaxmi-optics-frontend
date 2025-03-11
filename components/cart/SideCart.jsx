@@ -2,15 +2,16 @@
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, getCart, removeFromCart } from "@/store/cartSlice";
+import { addToCart, getCart, removeFromCart, toggleSlider } from "@/store/cartSlice";
 import { ImCancelCircle } from "react-icons/im";
 import { useEffect } from "react";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
-export default function SideCart({ isOpen, setIsOpen }) {
+export default function SideCart() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
+  const isSliderOpen = useSelector((state) => state.cart.isSliderOpen);
 
   const handleIncreaseQuantity = async (item) => {
     await dispatch(addToCart(item));
@@ -50,15 +51,15 @@ export default function SideCart({ isOpen, setIsOpen }) {
   return (
     <div>
       {/* Cart Toggle Button */}
-      <button
+      {/* <button
         onClick={() => setIsOpen(true)}
         className="fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-md shadow-lg hover:bg-blue-700 transition-colors z-50"
       >
         Open Cart
-      </button>
+      </button> */}
 
       {/* Cart Overlay */}
-      {isOpen && (
+      {isSliderOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
           onClick={() => setIsOpen(false)}
@@ -68,14 +69,14 @@ export default function SideCart({ isOpen, setIsOpen }) {
       {/* Cart Sidebar */}
       <div
         className={`fixed top-0 right-0 h-full w-96 bg-white shadow-2xl transform ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+          isSliderOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-300 ease-in-out flex flex-col z-50 overflow-hidden`}
       >
         {/* Cart Header */}
         <div className="p-6 flex justify-between items-center border-b">
           <h2 className="text-xl font-semibold">Shopping Cart</h2>
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={() => dispatch(toggleSlider(false))}
             className="text-gray-600 hover:text-gray-900 transition-colors"
           >
             <X className="w-6 h-6" />
