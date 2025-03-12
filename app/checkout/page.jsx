@@ -4,34 +4,25 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearCart } from "@/store/cartSlice";
 import Link from "next/link";
 import Image from "next/image";
+
 const CheckoutPage = () => {
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart.cartItems);
+  const cartItems = useSelector((state) => state.cart.items); // Matching CartPage Redux state
 
-  const groupedCart = cart.reduce((acc, item) => {
-    const existingItem = acc.find((i) => i.id === item.id);
-    if (existingItem) {
-      existingItem.quantity += item.quantity;
-    } else {
-      acc.push({ ...item });
-    }
-    return acc;
-  }, []);
-
-  const cartTotal = groupedCart.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const cartTotal = cartItems.reduce((total, item) => {
+    const price = item.product?.discounted_price || item.product.price;
+    return total + price * item.quantity;
+  }, 0);
 
   const handlePlaceOrder = () => {
     dispatch(clearCart());
-    alert("Order placed successfully!"); 
+    alert("Order placed successfully!");
   };
 
   return (
     <div className="mx-4 md:mx-32">
       <h1 className="text-2xl font-bold mb-4">Checkout</h1>
-      {groupedCart.length === 0 ? (
+      {cartItems.length === 0 ? (
         <p className="text-gray-500">Your cart is empty. Please add items before proceeding.</p>
       ) : (
         <div className="flex flex-col">
@@ -45,22 +36,24 @@ const CheckoutPage = () => {
               </tr>
             </thead>
             <tbody>
-              {groupedCart.map((item) => (
-                <tr key={item.id} className="border-b">
+              {cartItems.map((item) => (
+                <tr key={item._id} className="border-b">
                   <td className="px-4 py-4 flex items-center">
-                    {item.image && (
-                      <Image height={1000} width={1000}
-                        src={item.image}
-                        alt={item.name}
+                    {item.product.images[item.product.colors[0].color_name] && (
+                      <Image
+                        height={1000}
+                        width={1000}
+                        src={item.product.images[item.product.colors[0].color_name][0]}
+                        alt={item.product.name}
                         className="w-16 h-16 object-cover mr-4"
                       />
                     )}
-                    <span className="font-medium text-lg">{item.name}</span>
+                    <span className="font-medium text-lg">{item.product.name}</span>
                   </td>
-                  <td className="py-2 px-4">₹{item.price}</td>
+                  <td className="py-2 px-4">₹{item.product.discounted_price || item.product.price}</td>
                   <td className="py-2 px-4">{item.quantity}</td>
                   <td className="py-2 px-4 text-right">
-                    ₹{(item.price * item.quantity).toFixed(2)}
+                    ₹{((item.product.discounted_price || item.product.price) * item.quantity).toFixed(2)}
                   </td>
                 </tr>
               ))}

@@ -20,6 +20,7 @@ export const signupUser = createAsyncThunk('auth/signupUser', async (userData, {
 
         localStorage.setItem('token', data.token);
         localStorage.setItem('isAdmin', data.isAdmin || 'user');
+        localStorage.setItem('user', data.user)
 
 
         dispatch(updateCart())
@@ -42,8 +43,10 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (userData, { r
 
         if (!response.ok) throw new Error(data.message || 'Login failed');
 
+        console.log("data user:", data.user)
         localStorage.setItem('token', data.token);
         localStorage.setItem('isAdmin', data.isAdmin);
+        localStorage.setItem('user', data.user)
 
         dispatch(updateCart())
         return data;
@@ -56,7 +59,7 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (userData, { r
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        user: null,
+        user: localStorage.getItem("user")||null,
         isLoading: false,
         error: null,
     },
