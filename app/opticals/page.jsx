@@ -38,7 +38,7 @@ const Page = async () => {
 
             <section className="products mx-6 md:mx-32">
                 <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-[6.67%]">
-                    {ProductsData.products.map((product) => (
+                    {ProductsData?.products?.map((product) => (
                         <div
                             key={product._id}
                             className="text-center"

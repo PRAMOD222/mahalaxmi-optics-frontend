@@ -22,7 +22,7 @@ const Page = async () => {
         }
     };
 
-    const ProductsData = await fetchData();
+    const ProductsData = await fetchData() || {products: []};
     // console.log("Ideal For Data:", ProductsData);
 
 

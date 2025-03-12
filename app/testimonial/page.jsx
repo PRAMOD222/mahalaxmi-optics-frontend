@@ -4,9 +4,9 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Topbar from "@/components/Topbar";
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 import Image from "next/image";
-import { BreadcrumbWithCustomSeparator } from "@/components/BreadcrumbWithCustomSeparator";
+// import { BreadcrumbWithCustomSeparator } from "@/components/BreadcrumbWithCustomSeparator";
 
 export default function Home() {
     const [testimonials, setTestimonials] = useState([]);
@@ -14,10 +14,10 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const breadcrumbPaths = [
-        { label: "Home", href: "/" },
-        { label: "Testimonials" },
-    ];
+    // const breadcrumbPaths = [
+    //     { label: "Home", href: "/" },
+    //     { label: "Testimonials" },
+    // ];
 
     const fetchTestimonials = async () => {
         try {
@@ -52,14 +52,14 @@ export default function Home() {
         <>
             <Topbar />
             <div className="sticky top-0 z-50">
-                <Header />
+                <Navbar />
             </div>
-            <BreadcrumbWithCustomSeparator
+            {/* <BreadcrumbWithCustomSeparator
                 paths={breadcrumbPaths}
                 imageSrc="/testimonial.png"
                 title="Testimonials"
                 className="imageSrc:h-200"
-            />
+            /> */}
             <main className="space-y-4 mx-6 md:mx-32 xl:mx-44 py-12 ">
                 <h2 className="text-center text-3xl font-semibold text-[#007dc6]" >Testimonials</h2>
                 {loading ? (

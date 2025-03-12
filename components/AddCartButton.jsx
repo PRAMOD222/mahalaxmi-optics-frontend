@@ -1,15 +1,21 @@
 "use client";
-import { addItem } from "@/store/cartSlice";
-import React from "react";
+import { addToCart } from "@/store/cartSlice";
+import React, { useEffect } from "react";
 import { FiShoppingCart } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddCartButton = ({ product }) => {
   const dispatch = useDispatch();
+
+  const cartItems = useSelector((state) => state.cart.items);
+
+  useEffect(()=>{
+    console.log("cartItems:", cartItems);
+  }, [cartItems])
   const addToCart = (e) => {
     e.stopPropagation(); 
     e.preventDefault();
-    dispatch(addItem(product));
+    dispatch(addToCart(product));
   };
   return (
     <div

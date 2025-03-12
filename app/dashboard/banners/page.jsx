@@ -27,7 +27,12 @@ const BannerForm = () => {
     const [isEditMode, setIsEditMode] = useState(false)
     const [addBannerOpen, setAddBannerOpen] = useState(false)
     const [banners, setBanners] = useState([]);
-    const token = localStorage.getItem('token');
+    const [token, setToken] = useState([])
+
+    useEffect(()=>{
+        setToken(localStorage.getItem('token'))
+    },[])
+
     const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
     const handleBannerChange = (e) => {

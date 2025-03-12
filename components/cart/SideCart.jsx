@@ -1,116 +1,160 @@
-import { CrossIcon, X } from "lucide-react";
+"use client";
+import { X } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, getCart, removeFromCart, toggleSlider } from "@/store/cartSlice";
 import { ImCancelCircle } from "react-icons/im";
+import { useEffect } from "react";
 
-export default function SideCart({ isOpen, setIsOpen }) {
-  const [cart, setCart] = useState([
-    {
-      id: 1,
-      name: "Product 1",
-      description: "Short description of product 1",
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      description: "Short description of product 2",
-      quantity: 1,
-    },
-  ]);
+const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
-  const increaseQuantity = (id) => {
-    setCart(
-      cart.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+export default function SideCart() {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const isSliderOpen = useSelector((state) => state.cart.isSliderOpen);
+
+  const handleIncreaseQuantity = async (item) => {
+    await dispatch(addToCart(item));
+    dispatch(getCart());
   };
 
-  const decreaseQuantity = (id) => {
-    setCart(
-      cart.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
+  const handleDecreaseQuantity = async (id) => {
+    await dispatch(removeFromCart({product:id}));
+    dispatch(getCart());
   };
 
-  const removeItem = (id) => {
-    setCart(cart.filter((item) => item.id !== id));
+  const removeAnItem = async (id, quantity)=>{
+    await dispatch(removeFromCart({product:id,quantity}))
+    dispatch(getCart())
+  }
+
+  const fetchCart = async () => {
+    await dispatch(getCart());
+  };
+
+  useEffect(() => {
+    fetchCart();
+  }, [dispatch]);
+
+  useEffect(()=>{
+    console.log("fetched cart:", cartItems)
+  }, [cartItems])
+
+  // Calculate the total price of the cart
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => {
+      const price = item.product?.discounted_price || item.product.price;
+      return total + price * item.quantity;
+    }, 0);
   };
 
   return (
     <div>
-      <button
+      {/* Cart Toggle Button */}
+      {/* <button
         onClick={() => setIsOpen(true)}
-        className="fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-md shadow-lg"
+        className="fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-md shadow-lg hover:bg-blue-700 transition-colors z-50"
       >
         Open Cart
-      </button>
+      </button> */}
 
+      {/* Cart Overlay */}
+      {isSliderOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
+
+      {/* Cart Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full w-84 bg-white shadow-2xl transform ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        } transition-transform duration-300 ease-in-out flex flex-col overflow-hidden`}
+        className={`fixed top-0 right-0 h-full w-96 bg-white shadow-2xl transform ${
+          isSliderOpen ? "translate-x-0" : "translate-x-full"
+        } transition-transform duration-300 ease-in-out flex flex-col z-50 overflow-hidden`}
       >
-        <div className="p-4 flex justify-between items-center border-b">
+        {/* Cart Header */}
+        <div className="p-6 flex justify-between items-center border-b">
           <h2 className="text-xl font-semibold">Shopping Cart</h2>
-          <button onClick={() => setIsOpen(false)}>
+          <button
+            onClick={() => dispatch(toggleSlider(false))}
+            className="text-gray-600 hover:text-gray-900 transition-colors"
+          >
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        <div className="p-4 space-y-4 flex-1 overflow-y-auto overflow-x-hidden">
-          {cart.length > 0 ? (
-            cart.map((item) => (
-              <div
-                key={item.id}
-                className="flex relative flex-row justify-between items-center border-b pb-2"
-              >
-                <div>
-                  <Image src={item?.thumbnail} height={48} width={48} className="h-12 w-fit"/>
-                </div>
-                <div className="flex flex-col">
-                  <div className="w-40">
-                    <p className="font-medium truncate">{item.name}</p>
+        {/* Cart Items */}
+        <div className="flex-1 overflow-y-auto p-6">
+          {cartItems.length > 0 ? (
+            cartItems.map((item) => {
+              const price = item.product?.discounted_price || item.product?.price;
+              const totalPrice = price * item.quantity;
+
+              return (
+                <div
+                  key={item?.product?._id || `${item?.product?.name}${Date.now()}`}
+                  className="flex items-center space-x-4 py-4 border-b last:border-b-0"
+                >
+                  {/* Product Image */}
+                  <div className="flex-shrink-0">
+                    <Image
+                      src={`${baseApi}${item?.product?.thumbnail}` || "/default-image.jpg"}
+                      height={80}
+                      width={80}
+                      alt={item?.product?.name}
+                      className="h-20 w-20 object-cover rounded"
+                    />
+                  </div>
+
+                  {/* Product Details */}
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium truncate">{item?.product?.name}</p>
                     <p className="text-sm text-gray-600 truncate">
-                      {item.description}
+                      {item?.product?.description}
+                    </p>
+                    <div className="flex items-center space-x-2 mt-2">
+                      <button
+                        onClick={() => handleDecreaseQuantity(item?.product)}
+                        className="px-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
+                      >
+                        -
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button
+                        onClick={() => handleIncreaseQuantity(item?.product)}
+                        className="px-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <p className="text-sm text-gray-600 mt-2">
+                      Price: ₹{price?.toFixed(2)} x {item.quantity} = ₹{totalPrice.toFixed(2)}
                     </p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => decreaseQuantity(item.id)}
-                      className="px-2 bg-gray-200 rounded"
-                    >
-                      -
-                    </button>
-                    <span>{item.quantity}</span>
-                    <button
-                      onClick={() => increaseQuantity(item.id)}
-                      className="px-2 bg-gray-200 rounded"
-                    >
-                      +
-                    </button>
-                  </div>
+
+                  {/* Remove Item Button */}
                   <button
-                    onClick={() => removeItem(item.id)}
-                    className="text-red-500 absolute top-0 right-0"
+                    onClick={() => removeAnItem(item?.product , item?.quantity)}
+                    className="text-red-500 hover:text-red-700 transition-colors"
                   >
-                    <ImCancelCircle />
+                    <ImCancelCircle className="w-5 h-5" />
                   </button>
                 </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <p className="text-center text-gray-500">Your cart is empty.</p>
           )}
         </div>
 
-        {cart.length > 0 && (
-          <div className="p-4 border-t mt-auto">
-            <button className="w-full bg-blue-600 text-white py-2 rounded-md">
+        {/* Checkout Section */}
+        {cartItems.length > 0 && (
+          <div className="p-6 border-t">
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-lg font-semibold">Total:</p>
+              <p className="text-lg font-semibold">₹{calculateTotal().toFixed(2)}</p>
+            </div>
+            <button className="w-full bg-[#763f98] text-white py-3 rounded-md hover:bg-[#985ebc] transition-colors">
               Checkout
             </button>
           </div>
