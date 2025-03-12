@@ -8,6 +8,20 @@ module.exports = {
   ],
   theme: {
   	extend: {
+		animation: {
+			'infinite-scroll': 'infinite-scroll 10s linear infinite',
+		},
+		keyframes: {
+			'infinite-scroll': {
+				from: { transform: 'translateX(0)' },
+				to: { transform: 'translateX(-100%)' },
+			},
+			'infinite-scroll-reverse': {
+				from: { transform: 'translateX(-100%)' },
+				to: { transform: 'translateX(0)' },
+			}
+		},
+	
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

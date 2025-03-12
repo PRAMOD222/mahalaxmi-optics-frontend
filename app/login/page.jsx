@@ -1,85 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
-
+import { loginUser, signupUser } from '@/store/authSlice';
+import { updateCart } from '@/store/cartSlice';
 
 export default function LoginPage() {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
-
+    const [formData, setFormData] = useState({ email: '', password: '' });
+    const dispatch = useDispatch();
     const router = useRouter();
+    const { user, isLoading, error } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (user) {
+            user.isAdmin ? router.push('/dashboard') : router.push('/cart');
+        }
+    }, [user, router]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch('/users/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('isAdmin', data.isAdmin);
-                alert('Login successful!');
-                if(data.isAdmin === true) 
-                    router.push('/dashboard');
-                else
-                    router.push('/cart'); // Redirect to a dashboard or homepage git
-            } else {
-                alert(`Error: ${data.message}`);
-            }
-        } catch (error) {
-            console.error('Error logging in:', error);
-        }
+        await dispatch(loginUser(formData));
+
+            
+
+        
     };
 
     return (
-        <>
-            {/* <Navbar /> */}
-            <div className="min-h-screen flex items-center justify-center bg-gray-100">
-                <form
-                    onSubmit={handleSubmit}
-                    className="bg-white p-6 rounded shadow-md w-80"
-                >
-                    <h2 className="text-2xl font-bold mb-4">Login</h2>
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="w-full p-2 mb-3 border rounded"
-                        required
-                    />
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        className="w-full p-2 mb-3 border rounded"
-                        required
-                    />
-                    <button
-                        type="submit"
-                        className="w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600"
-                    >
-                        Login
-                    </button>
-                </form>
-            </div>
-          
-        </>
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+            <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-80">
+                <h2 className="text-2xl font-bold mb-4">Login</h2>
+                <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="w-full p-2 mb-3 border rounded" required />
+                <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} className="w-full p-2 mb-3 border rounded" required />
+                <button type="submit" className="w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600" disabled={isLoading}>
+                    {isLoading ? 'Logging in...' : 'Login'}
+                </button>
+                {error && <p className="text-red-500 mt-2">{error}</p>}
+            </form>
+        </div>
     );
 }

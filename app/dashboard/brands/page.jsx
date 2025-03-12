@@ -26,8 +26,12 @@ const Brands = () => {
   const [brands, setBrands] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const [addBrandOpen, setAddBrandOpen] = useState(false);
+  const [token, setToken] = useState();
+  
 
-  const token = localStorage.getItem("token");
+  useEffect(()=>{
+    setToken(localStorage.getItem("token"))
+  },[])
 
   const fetchBrands = async () => {
     try {
@@ -68,6 +72,8 @@ const Brands = () => {
     formData.append("description", brand.description);
     if (brand.logo) formData.append("logo", brand.logo);
     if (brand.banner_image) formData.append("banner_image", brand.banner_image);
+
+    
     
     try {
       if (isEditMode) {

@@ -15,32 +15,35 @@ const ProductImages = ({ product }) => {
   }, [dispatch, product]);
 
   return (
-    <div className="flex w-full flex-col md:flex-row items-center md:items-start gap-4">
-      <div className="flex w-fit md:flex-col gap-2">
+    <div className="flex w-full flex-col-reverse md:flex-row items-start md:items-start gap-6">
+
+      <div className="flex w-fit md:flex-col gap-3">
         {images[selectedColor]?.map((img, index) => (
-          <Image
+          <div
             key={index}
-            width={100}
-            height={100}
-            src={`${baseApi}${img}`}
-            alt={`Thumbnail ${index}`}
-            className="w-full h-fit object-cover border-2 border-gray-300 cursor-pointer"
+            className="w-20 h-20 flex items-center justify-center bg-gray-100 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#0071E3] transition-all"
             onClick={() => dispatch(setMainImage(img))}
-          />
+          >
+            <Image
+              width={80}
+              height={80}
+              src={`${baseApi}${img}`}
+              alt={`Thumbnail ${index}`}
+              className="w-full h-full object-contain rounded-lg"
+            />
+          </div>
         ))}
       </div>
 
       <div className="w-full h-fit">
         <Image
-          width={400}
-          height={400}
+          width={600}
+          height={600}
           src={`${baseApi}${mainImage}`}
           alt={product.name}
-          className="w-full h-fit object-cover border"
+          className="w-full h-fit object-cover rounded-lg shadow-md"
         />
       </div>
-
-
     </div>
   );
 };

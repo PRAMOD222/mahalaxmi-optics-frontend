@@ -14,7 +14,10 @@ const DashNav = () => {
 
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("token");
+    }
+    
     window.location.href = "/";
   };
 

@@ -1,13 +1,13 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CrossIcon } from "lucide-react";
 import Image from "next/image";
 import {
   Select,
@@ -17,6 +17,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@mui/material";
+import ImageCropper from "@/components/cropper/ImageCropper";
+import { MdCancel } from "react-icons/md";
+import { IoIosColorPalette } from "react-icons/io";
+import { CgColorPicker } from "react-icons/cg";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -61,7 +65,13 @@ export default function ProductPage() {
   const idealForOptions = ["Men", "Women", "Unisex"];
   const [isDiscountEnabled, setIsDiscountEnabled] = useState(false);
 
-  const token = localStorage.getItem("token");
+  const colorInputRef = useRef(null);
+  const [token, setToken] = useState();
+  
+
+  useEffect(()=>{
+    setToken(localStorage.getItem("token"))
+  },[])
 
   const shapes = [
     "angular",
@@ -162,6 +172,16 @@ export default function ProductPage() {
       }
       newImages[selectedColor.color_name].push(...Array.from(e.target.files));
       setProduct({ ...product, images: newImages });
+
+      e.target.value = "";
+    }
+  };
+
+  const handleRemoveImage = (colorName, imageIndex) => {
+    const newImages = { ...product.images };
+    if (newImages[colorName]) {
+      newImages[colorName].splice(imageIndex, 1);
+      setProduct({ ...product, images: newImages });
     }
   };
 
@@ -215,21 +235,21 @@ export default function ProductPage() {
     try {
       const response = isNew
         ? await fetch(`${baseApi}/products`, {
-            method: "POST",
-            headers: {
-              // "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          })
+          method: "POST",
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        })
         : await fetch(`${baseApi}/products/${slug}`, {
-            method: "PUT",
-            headers: {
-              // "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          });
+          method: "PUT",
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
 
       const data = await response.json();
       if (response.ok) {
@@ -244,6 +264,24 @@ export default function ProductPage() {
     }
   };
 
+  const fileInputRef = useRef(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleShapeChange = (value) => {
+    // console.log(value); // Correct way to get selected value
+
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      information: {
+        ...prevProduct.information,
+        shape: value, // Directly use the value
+      },
+    }));
+  };
+
   return (
     <div className="w-full mx-auto p-6">
       <Button variant="outline" onClick={() => router.back()} className="mb-6">
@@ -254,8 +292,8 @@ export default function ProductPage() {
           <h2 className="text-xl font-semibold mb-4">
             {isNew ? "Add Product" : "Edit Product"}
           </h2>
-          <form
-            onSubmit={handleSubmit}
+          <div
+            // onSubmit={handleSubmit}
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
           >
             <div className="col-span-1">
@@ -360,7 +398,7 @@ export default function ProductPage() {
                 ))}
               </datalist>
             </div>
-            ;
+
             <div className="col-span-1">
               <Label>Price</Label>
               <Input
@@ -427,7 +465,7 @@ export default function ProductPage() {
             <div className="col-span-2">
               <Label>Colors</Label>
               <div className="flex flex-col flex-wrap gap-2">
-                <div className="flex gap-2">
+                <div className="flex h-fit gap-2">
                   <Input
                     type="text"
                     placeholder="Color Name"
@@ -437,14 +475,36 @@ export default function ProductPage() {
                     }
                     className="w-fit"
                   />
-                  <Input
+                  {/* <Input
                     type="color"
                     value={newColor.color_code}
                     onChange={(e) =>
                       setNewColor({ ...newColor, color_code: e.target.value })
                     }
-                    className="w-20"
-                  />
+                    className="w-16 h-10 rounded-md border-none p-0 cursor-pointer bg-transparent outline-none overflow-hidden"
+                  /> */}
+
+                  <div className="relative">
+                    <div className="w-16 h-full border-2 border-gray-200 rounded-md cursor-pointer relative p-1">
+                      <div
+                        className="flex items-center justify-center w-full h-full rounded"
+                        style={{ backgroundColor: newColor.color_code }}
+                        onClick={() => colorInputRef.current.click()}
+                      >
+                        <CgColorPicker className="text-white text-md" />
+                      </div>
+                    </div>
+
+                    <input
+                      type="color"
+                      ref={colorInputRef}
+                      value={newColor.color_code}
+                      onChange={(e) =>
+                        setNewColor({ ...newColor, color_code: e.target.value })
+                      }
+                      className="absolute top-0 left-0 opacity-0 cursor-pointer"
+                    />
+                  </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {product.colors.map((color) => (
@@ -454,11 +514,10 @@ export default function ProductPage() {
                       onClick={() => setSelectedColor(color)}
                     >
                       <div
-                        className={`w-8 h-8 rounded-full border-2  ${
-                          selectedColor?.color_code == color.color_code
+                        className={`w-8 h-8 rounded-full border-2  ${selectedColor?.color_code == color.color_code
                             ? " border-black "
                             : "border-gray-300"
-                        }`}
+                          }`}
                         style={{ backgroundColor: color.color_code }}
                       />
                       <span className="text-sm">{color.color_name}</span>
@@ -474,15 +533,36 @@ export default function ProductPage() {
               </div>
             </div>
             {selectedColor && (
-              <div className="col-span-2">
-                <Label>Images for {selectedColor.color_name}</Label>
-                <Input
+              <div className="col-span-2 ">
+                <div className="flex items-center">
+                  <Label className="text-lg font-semibold">
+                    Images for {selectedColor.color_name}
+                  </Label>
+                  <ImageCropper handleImageChange={handleImageChange} />
+                </div>
+
+                {/* <Input
                   type="file"
                   multiple
                   onChange={handleImageChange}
                   className="w-full"
-                />
-                <div className="flex flex-wrap gap-2 mt-2">
+                /> */}
+                {/* <button
+                  type="button"
+                  onClick={handleButtonClick}
+                  className="px-3 mx-2 py-1 my-4 bg-[#763f98] text-white rounded-md"
+                >
+                  Add Images
+                </button> */}
+                {/* <input
+                  type="file"
+                  multiple
+                  ref={fileInputRef}
+                  onChange={handleImageChange}
+                  className="hidden"
+                /> */}
+
+                <div className="flex flex-wrap gap-2 mt-2 p-2">
                   {product.images[selectedColor.color_name]?.map(
                     (image, index) => {
                       const imageUrl =
@@ -490,15 +570,23 @@ export default function ProductPage() {
                           ? `${baseApi}${image}`
                           : URL.createObjectURL(image);
                       return (
-                        <div>
+                        <div key={imageUrl+Date.now()} className="relative">
                           <Image
                             key={index}
                             src={imageUrl}
                             width={400}
                             height={400}
                             alt={`Product Preview ${index}`}
-                            className="rounded-md w-32 h-32 object-cover"
+                            className="rounded-md shadow-md w-48 h-48 object-cover"
                           />
+                          <button
+                            className="absolute top-0 right-0 text-2xl"
+                            onClick={() =>
+                              handleRemoveImage(selectedColor.color_name, index)
+                            }
+                          >
+                            <MdCancel />
+                          </button>
                         </div>
                       );
                     }
@@ -506,7 +594,8 @@ export default function ProductPage() {
                 </div>
               </div>
             )}
-            <div className="col-span-2">
+            <div className="col-span-2 bg-black h-[1px] w-full"></div>
+            <div className="col-span-2 p-2">
               <h3 className="text-lg font-semibold mb-4">
                 Product Information
               </h3>
@@ -586,25 +675,13 @@ export default function ProductPage() {
                 <div>
                   <Label>Shape</Label>
 
-                  <Select>
-                    <SelectTrigger className="">
+                  <Select onValueChange={handleShapeChange}>
+                    <SelectTrigger>
                       <SelectValue placeholder="Shape" />
                     </SelectTrigger>
                     <SelectContent>
                       {shapes.map((shape) => (
-                        <SelectItem
-                          key={shape}
-                          value={shape}
-                          onClick={() =>
-                            setProduct({
-                              ...product,
-                              information: {
-                                ...product.information,
-                                shape: shape,
-                              },
-                            })
-                          }
-                        >
+                        <SelectItem key={shape} value={shape}>
                           {shape}
                         </SelectItem>
                       ))}
@@ -704,13 +781,13 @@ export default function ProductPage() {
             </div>
             <div className="col-span-2">
               <Button
-                type="submit"
+                onClick={handleSubmit}
                 className="w-full max-w-xs bg-[#763f98] hover:bg-[#a373c1]"
               >
                 {isNew ? "Add Product" : "Update Product"}
               </Button>
             </div>
-          </form>
+          </div>
         </CardContent>
       </Card>
     </div>

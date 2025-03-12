@@ -2,13 +2,14 @@ import React from 'react'
 import Footer from "@/components/Footer";
 // import Navbar from "@/components/Navbar";
 import Topbar from "@/components/Topbar";
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 import Image from "next/image";
 import { PiClockCountdownFill } from "react-icons/pi";
 import Link from "next/link";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { BreadcrumbWithCustomSeparator } from "@/components/BreadcrumbWithCustomSeparator";
 import { CiCalendar } from "react-icons/ci";
+import Navbar from '@/components/Navbar';
 
 
 
@@ -60,7 +61,7 @@ async function Page() {
             <Topbar />
             <div className="sticky top-0 z-50">
                 {/* <Navbar /> */}
-                <Header />
+                <Navbar />
             </div>
 
             <BreadcrumbWithCustomSeparator

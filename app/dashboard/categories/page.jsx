@@ -24,7 +24,12 @@ const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const [addCategoryOpen, setAddCategoryOpen] = useState(false);
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState();
+  
+
+  useEffect(()=>{
+    setToken(localStorage.getItem("token"))
+  },[])
 
   const fetchCategories = async () => {
     try {

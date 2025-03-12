@@ -2,7 +2,7 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Topbar from "@/components/Topbar";
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 import Image from "next/image";
 import { CiCalendar } from "react-icons/ci";
 import Link from "next/link";
@@ -74,7 +74,7 @@ const Page = async ({ params }) => {
         <div className="relative">
             <Topbar />
             <div className="sticky top-0 z-50">
-                <Header />
+                <Navbar />
                 {/* <Header /> */}
             </div>
             <BreadcrumbWithCustomSeparator
