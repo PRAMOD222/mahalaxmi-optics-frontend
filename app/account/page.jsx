@@ -53,17 +53,14 @@ const AccountPage = () => {
 
   const handleLogout = () => {
     alert("Logging out...");
-    
   };
 
   const handleEditProfile = () => {
     alert("Redirecting to edit profile...");
-    
   };
 
   const handleAddToCart = (item) => {
     alert(`${item.name} added to cart`);
-    
   };
 
   const handleViewOrders = () => {
@@ -78,14 +75,13 @@ const AccountPage = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <div className="mx-6 md:mx-32 py-4">
-        
         <div className="mb-8 flex flex-col md:flex-row justify-between items-center">
-        <div className="text-center md:text-left">
-    <h1 className="text-2xl font-bold text-gray-800">
-      Welcome, {userDetails.name}!
-    </h1>
-    <p className="text-gray-600 mt-2">Your Account Overview</p>
-  </div>
+          <div className="text-center md:text-left">
+            <h1 className="text-2xl font-bold text-gray-800">
+              Welcome, {userDetails.name}!
+            </h1>
+            <p className="text-gray-600 mt-2">Your Account Overview</p>
+          </div>
 
           {/* Buttons */}
           <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mt-6 md:mt-0">
@@ -148,46 +144,45 @@ const AccountPage = () => {
           </h2>
           <div className="space-y-6">
             {orders.slice(0, visibleOrders).map((order) => (
-              <div
-                key={order.id}
-                
-              >
+              <div key={order.id}>
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 border rounded-lg">
-  {/* Left Section: Image and Order Details */}
-  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-    {/* Product Image */}
-    <img
-      src={order.productImage}
-      alt="Product"
-      className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg"
-    />
+                  
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    {/* Product Image */}
+                    <img
+                      src={order.productImage}
+                      alt="Product"
+                      className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg"
+                    />
 
-    {/* Order Details */}
-    <div>
-      <p className="text-gray-700">
-        <span className="font-medium">Order ID:</span> #{order.id}
-      </p>
-      <p className="text-gray-600">
-        <span className="font-medium">Date:</span> {order.date}
-      </p>
-    </div>
-  </div>
+                    {/* Order Details */}
+                    <div>
+                      <p className="text-gray-700">
+                        <span className="font-medium">Order ID:</span> #
+                        {order.id}
+                      </p>
+                      <p className="text-gray-600">
+                        <span className="font-medium">Date:</span> {order.date}
+                      </p>
+                    </div>
+                  </div>
 
-  {/* Right Section: Total and Status */}
-  <div className="flex flex-col sm:text-right sm:items-end gap-2 sm:gap-1">
-    <p className="text-gray-700">
-      <span className="font-medium">Total:</span> ${order.total}
-    </p>
-    <p
-      className={`text-sm font-semibold ${
-        order.status === "Delivered" ? "text-green-500" : "text-yellow-500"
-      }`}
-    >
-      {order.status}
-    </p>
-  </div>
-</div>
-
+                  {/* Right Section: Total and Status */}
+                  <div className="flex flex-col sm:text-right sm:items-end gap-2 sm:gap-1">
+                    <p className="text-gray-700">
+                      <span className="font-medium">Total:</span> ${order.total}
+                    </p>
+                    <p
+                      className={`text-sm font-semibold ${
+                        order.status === "Delivered"
+                          ? "text-green-500"
+                          : "text-yellow-500"
+                      }`}
+                    >
+                      {order.status}
+                    </p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
