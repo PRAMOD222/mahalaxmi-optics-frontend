@@ -48,6 +48,8 @@ export default function Navbar() {
     exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
   };
 
+
+
   // const glassesBrands = [
   //   { _id: 1, name: "Ray-Ban" },
   //   { _id: 2, name: "Oakley" },
@@ -91,9 +93,7 @@ export default function Navbar() {
   //   { _id: 40, name: "Vogue Eyewear" }
   // ];
 
-  const sortedBrands = [...glassesBrands].sort((a, b) =>
-    a.name.localeCompare(b.name)
-  );
+  const sortedBrands = [...glassesBrands].sort((a, b) => a.name.localeCompare(b.name));
 
   // Divide the array into 4 equal parts
   const chunkSize = Math.ceil(sortedBrands.length / 4);
@@ -277,102 +277,43 @@ export default function Navbar() {
                       className="absolute left-0 pt-3 w-screen h-max bg-white shadow-lg p-3 rounded-lg px-32 grid grid-cols-4 gap-4 z-50"
                     >
                       <div>
-                        <h2 className="font-semibold">Featured Brands</h2>
-                        <ul className="">
+                        <h2 className='font-semibold mb-2'>Featured Brands</h2>
+                        <ul className=''>
                           {sortedBrands.slice(0, 8).map((brand) => (
-                            <li key={brand._id}>
-                              <Link
-                                href="#"
-                                className="block py-1 text-sm hover:text-[#763f98]"
-                              >
-                                {brand.name}
-                              </Link>
-                            </li>
+                            <li key={brand._id}><Link href={`/collection/${brand.name.toLocaleLowerCase().split(" ").join("-")}`} className="block py-1 text-sm hover:text-[#763f98]">{brand.name}</Link></li>
                           ))}
                         </ul>
                       </div>
-                      <ul className="font-semibold">
-                        <li>
-                          <Link
-                            href="#"
-                            className="block py-2 hover:text-[#763f98]"
-                          >
-                            Mens
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="#"
-                            className="block py-2 hover:text-[#763f98]"
-                          >
-                            Womens
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="#"
-                            className="block py-2 hover:text-[#763f98]"
-                          >
-                            Kids
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="#"
-                            className="block py-2 hover:text-[#763f98]"
-                          >
-                            Unisex
-                          </Link>
-                        </li>
-                      </ul>
-                      <ul className="font-semibold">
-                        <li>
-                          <Link
-                            href="#"
-                            className="block py-2 hover:text-[#763f98]"
-                          >
-                            Mens
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="#"
-                            className="block py-2 hover:text-[#763f98]"
-                          >
-                            Womens
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="#"
-                            className="block py-2 hover:text-[#763f98]"
-                          >
-                            Kids
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="#"
-                            className="block py-2 hover:text-[#763f98]"
-                          >
-                            Unisex
-                          </Link>
-                        </li>
-                      </ul>
+                      <div>
+                        <h2 className='font-semibold mb-2'>Shop For</h2>
+                        <ul className=''>
+                          <li><Link href="/ideal-for/men" className="block py-1 hover:text-[#763f98]">Mens</Link></li>
+                          <li><Link href="/ideal-for/women" className="block py-1 hover:text-[#763f98]">Womens</Link></li>
+                          <li><Link href="/ideal-for/kids" className="block py-1 hover:text-[#763f98]">Kids</Link></li>
+                          <li><Link href="/ideal-for/unisex" className="block py-1 hover:text-[#763f98]">Unisex</Link></li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h2 className='font-semibold mb-2'>By Style</h2>
+                        <ul className=''>
+                          <li><Link href="/style/square" className="block py-1 hover:text-[#763f98]">Square</Link></li>
+                          <li><Link href="/style/round" className="block py-1 hover:text-[#763f98]">Round</Link></li>
+                          <li><Link href="/style/aviator" className="block py-1 hover:text-[#763f98]">Aviator</Link></li>
+                          <li><Link href="/style/wayfarer" className="block py-1 hover:text-[#763f98]">Wayfarer</Link></li>
+                          <li><Link href="/style/rectangle" className="block py-1 hover:text-[#763f98]">Rectangle</Link></li>
+                        </ul>
+                      </div>
+
                     </motion.div>
                   )}
                 </AnimatePresence>
               </li>
 
               <li>
-                <Link href="#" className="hover:text-[#763f98] font-semibold">
-                  Opticals
-                </Link>
+                <Link href="/opticals" className="hover:text-[#763f98] font-semibold">Opticals</Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#763f98] font-semibold">
-                  Sunglasses
-                </Link>
+                <Link href="/sunglasses" className="hover:text-[#763f98] font-semibold">Sunglasses</Link>
               </li>
               <li>
                 <Link href="#" className="hover:text-[#763f98] font-semibold">
