@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import BlogSequence from "@/components/dashboard/BlogSequence";
+// import BlogSequence from "@/components/dashboard/BlogSequence";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { CiEdit } from "react-icons/ci";
 
@@ -417,7 +417,7 @@ const Blogs = () => {
         </section>
       ) : (
         <section>
-          <BlogSequence blogs={blogs} fetchBlogs={fetchBlogs} />
+          {/* <BlogSequence blogs={blogs} fetchBlogs={fetchBlogs} /> */}
         </section>
       )}
 

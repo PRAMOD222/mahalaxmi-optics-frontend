@@ -26,8 +26,12 @@ const Brands = () => {
   const [brands, setBrands] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const [addBrandOpen, setAddBrandOpen] = useState(false);
+  const [token, setToken] = useState();
+  
 
-  const token = localStorage.getItem("token");
+  useEffect(()=>{
+    setToken(localStorage.getItem("token"))
+  },[])
 
   const fetchBrands = async () => {
     try {

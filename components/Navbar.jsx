@@ -22,9 +22,10 @@ import {
 import SearchBar from "./SearchBar";
 import SideCart from "./cart/SideCart";
 import { IoIosLogIn, IoIosLogOut } from "react-icons/io";
-import { logout } from "@/store/authSlice";
+import { getUserFromLocalStorage, logout, setUser } from "@/store/authSlice";
 import { Button } from "./ui/button";
 import { HiOutlineLogout } from "react-icons/hi";
+import { getCartFromLocalStorage } from "@/store/cartSlice";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -48,8 +49,16 @@ export default function Navbar() {
     exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
   };
 
+  useEffect(() => {
+     dispatch({ type: "cart/setCart", payload: getCartFromLocalStorage() });
+  }, [dispatch]);
 
-
+  useEffect(() => {
+    const storedUser = getUserFromLocalStorage();
+    if (storedUser) {
+       dispatch(setUser(storedUser));
+    }
+ }, [dispatch]);
   // const glassesBrands = [
   //   { _id: 1, name: "Ray-Ban" },
   //   { _id: 2, name: "Oakley" },

@@ -19,7 +19,12 @@ const Products = () => {
   const [deleteProductId, setDeleteProductId] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState();
+  
+
+  useEffect(()=>{
+    setToken(localStorage.getItem("token"))
+  },[])
   const fetchProducts = async () => {
     try {
       const response = await fetch(`${baseApi}/products`);

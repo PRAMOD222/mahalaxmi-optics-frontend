@@ -66,8 +66,12 @@ export default function ProductPage() {
   const [isDiscountEnabled, setIsDiscountEnabled] = useState(false);
 
   const colorInputRef = useRef(null);
+  const [token, setToken] = useState();
+  
 
-  const token = localStorage.getItem("token");
+  useEffect(()=>{
+    setToken(localStorage.getItem("token"))
+  },[])
 
   const shapes = [
     "angular",
@@ -566,7 +570,7 @@ export default function ProductPage() {
                           ? `${baseApi}${image}`
                           : URL.createObjectURL(image);
                       return (
-                        <div className="relative">
+                        <div key={imageUrl+Date.now()} className="relative">
                           <Image
                             key={index}
                             src={imageUrl}

@@ -1,8 +1,9 @@
+"use client"
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
-const getCartFromLocalStorage = () => {
+export const getCartFromLocalStorage = () => {
   if (typeof window !== "undefined") {
     const cart = localStorage.getItem("cart");
     return cart ? JSON.parse(cart) : [];
@@ -160,10 +161,13 @@ export const clearCart = createAsyncThunk("cart/clearCart", async () => {
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: getCartFromLocalStorage(),
+    items: [],
     isSliderOpen: false,
   },
   reducers: {
+    setCart: (state, action) => {
+      state.items = action.payload;
+    },
     toggleSlider: (state, action) => {
       state.isSliderOpen = action.payload;
     },

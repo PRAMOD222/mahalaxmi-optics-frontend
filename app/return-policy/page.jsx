@@ -1,3 +1,4 @@
+"use client";
 // pages/return-policy.js
 import React from 'react';
 import Link from 'next/link';

@@ -22,8 +22,11 @@ const BannerForm = () => {
     const [showCropper, setShowCropper] = useState(false);
 
     const [banners, setBanners] = useState([]);
+    const [token, setToken] = useState([])
 
-    const token = localStorage.getItem('token');
+    useEffect(()=>{
+        setToken(localStorage.getItem('token'))
+    },[])
 
     const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
