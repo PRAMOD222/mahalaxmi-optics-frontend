@@ -45,6 +45,8 @@ const Brands = () => {
   };
 
   const handleFileChange = (e) => {
+    console.log(e.target.files[0]);
+    
     const { name, files } = e.target;
     setBrand((prev) => ({ ...prev, [name]: files[0] }));
   };
@@ -69,8 +71,9 @@ const Brands = () => {
     if (brand.logo) formData.append("logo", brand.logo);
     if (brand.banner_image) formData.append("banner_image", brand.banner_image);
 
+    console.log(brand);
     
-    
+
     try {
       if (isEditMode) {
         await fetch(`${baseApi}/brands/${brand._id}`, {
