@@ -28,6 +28,7 @@ const LogoCarousel = () => {
 
   return (
     <div>
+      
       <Navbar />
       <BreadcrumbWithCustomSeparator paths={paths} imageSrc={"/5.jpg"} />
       <div className="relative min-h-screen flex flex-col justify-center bg-slate-900 overflow-hidden">
