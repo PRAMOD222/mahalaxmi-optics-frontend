@@ -53,7 +53,8 @@ export const loginUser = createAsyncThunk(
       if (typeof window !== "undefined") {
         localStorage.setItem("token", data.token);
         localStorage.setItem("isAdmin", data.isAdmin);
-        localStorage.setItem("user", data.user);
+        console.log("data.user", data.user)
+        localStorage.setItem("user", JSON.stringify(data.user));
       }
 
       dispatch(updateCart());
@@ -65,12 +66,13 @@ export const loginUser = createAsyncThunk(
 );
 
 export const getUserFromLocalStorage = () => {
-  if (typeof window !== "undefined") {
-    const user = localStorage.getItem("user");
-    return user ? JSON.parse(user) : null;
-  }
-  return null;
-};
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      return user ? JSON.parse(user) : null;
+    }
+    return null;
+  };
+  
 
 // Auth Slice
 const authSlice = createSlice({

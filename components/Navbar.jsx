@@ -26,6 +26,9 @@ import { getUserFromLocalStorage, logout, setUser } from "@/store/authSlice";
 import { Button } from "./ui/button";
 import { HiOutlineLogout } from "react-icons/hi";
 import { getCartFromLocalStorage } from "@/store/cartSlice";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -42,6 +45,8 @@ export default function Navbar() {
 
   const [glassesBrands, setGlassesBrands] = useState([]);
 
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
   const user = useSelector((state) => state.auth.user);
   const dropdownAnimation = {
     hidden: { opacity: 0, y: -10 },
@@ -50,15 +55,15 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-     dispatch({ type: "cart/setCart", payload: getCartFromLocalStorage() });
+    dispatch({ type: "cart/setCart", payload: getCartFromLocalStorage() });
   }, [dispatch]);
 
   useEffect(() => {
     const storedUser = getUserFromLocalStorage();
     if (storedUser) {
-       dispatch(setUser(storedUser));
+      dispatch(setUser(storedUser));
     }
- }, [dispatch]);
+  }, []);
   // const glassesBrands = [
   //   { _id: 1, name: "Ray-Ban" },
   //   { _id: 2, name: "Oakley" },
@@ -102,7 +107,9 @@ export default function Navbar() {
   //   { _id: 40, name: "Vogue Eyewear" }
   // ];
 
-  const sortedBrands = [...glassesBrands].sort((a, b) => a.name.localeCompare(b.name));
+  const sortedBrands = [...glassesBrands].sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
   // Divide the array into 4 equal parts
   const chunkSize = Math.ceil(sortedBrands.length / 4);
@@ -159,30 +166,73 @@ export default function Navbar() {
           </div>
           <div className="flex items-center justify-end gap-2 flex-1">
             {user ? (
-              <>
-                <Link href="/login" className="flex flex-col items-center">
-                  <Image
-                    className="w-8"
-                    alt="user"
-                    width={20}
-                    height={20}
-                    src="/user.svg"
-                  />
-                  <h2 className="text-xs text-[#763f98]">Account</h2>
-                </Link>
-                <button
-                  onClick={() => {
-                    dispatch(logout());
-                  }}
-                  className="flex flex-col items-center"
-                >
-                  <HiOutlineLogout  className="text-2xl h-8" />
-                  <h2 className="text-xs text-[#763f98]">Logout</h2>
-                </button>
-              </>
+              <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+                    className="flex flex-col items-center"
+                  >
+                    <Image
+                      className="w-8"
+                      alt="user"
+                      width={20}
+                      height={20}
+                      src="/user.svg"
+                    />
+                    <h2 className="text-xs text-[#763f98] capitalize">
+                      {user?.name}
+                    </h2>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-48 p-0 left-0">
+                  <div className="grid">
+                    <div className=" p-2 py-2">
+                      <h4 className="font-[800]">
+                        Hi {user?.name}!
+                      </h4>
+                    </div>
+                    <Separator />
+                    <div className="grid">
+                      <Link
+                        href="/profile"
+                        className="p-2 hover:bg-gray-100"
+                        variant="outline"
+                      >
+                        Profile
+                      </Link>
+                      <Link
+                        href="/support"
+                        className="p-2 hover:bg-gray-100"
+                        variant="outline"
+                      >
+                        Support
+                      </Link>
+                    </div>
+                    <Separator />
+
+                    <button
+                      className="p-2 rounded-b-sm hover:bg-gray-100 text-start"
+                      onClick={() => {
+                        dispatch(logout());
+                      }}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </PopoverContent>
+              </Popover>
             ) : (
-              <Link href="/login" className="flex flex-col items-center">
-                <BiLogOut className="text-2xl h-8" />
+              <Link
+                href="/login"
+                className="flex flex-col justify-center items-center"
+              >
+                <Image
+                  className="w-8"
+                  alt="user"
+                  width={20}
+                  height={20}
+                  src="/user.svg"
+                />
                 <h2 className="text-xs text-[#763f98]">Login</h2>
               </Link>
             )}
@@ -286,43 +336,125 @@ export default function Navbar() {
                       className="absolute left-0 pt-3 w-screen h-max bg-white shadow-lg p-3 rounded-lg px-32 grid grid-cols-4 gap-4 z-50"
                     >
                       <div>
-                        <h2 className='font-semibold mb-2'>Featured Brands</h2>
-                        <ul className=''>
+                        <h2 className="font-semibold mb-2">Featured Brands</h2>
+                        <ul className="">
                           {sortedBrands.slice(0, 8).map((brand) => (
-                            <li key={brand._id}><Link href={`/collection/${brand.name.toLocaleLowerCase().split(" ").join("-")}`} className="block py-1 text-sm hover:text-[#763f98]">{brand.name}</Link></li>
+                            <li key={brand._id}>
+                              <Link
+                                href={`/collection/${brand.name
+                                  .toLocaleLowerCase()
+                                  .split(" ")
+                                  .join("-")}`}
+                                className="block py-1 text-sm hover:text-[#763f98]"
+                              >
+                                {brand.name}
+                              </Link>
+                            </li>
                           ))}
                         </ul>
                       </div>
                       <div>
-                        <h2 className='font-semibold mb-2'>Shop For</h2>
-                        <ul className=''>
-                          <li><Link href="/ideal-for/men" className="block py-1 hover:text-[#763f98]">Mens</Link></li>
-                          <li><Link href="/ideal-for/women" className="block py-1 hover:text-[#763f98]">Womens</Link></li>
-                          <li><Link href="/ideal-for/kids" className="block py-1 hover:text-[#763f98]">Kids</Link></li>
-                          <li><Link href="/ideal-for/unisex" className="block py-1 hover:text-[#763f98]">Unisex</Link></li>
+                        <h2 className="font-semibold mb-2">Shop For</h2>
+                        <ul className="">
+                          <li>
+                            <Link
+                              href="/ideal-for/men"
+                              className="block py-1 hover:text-[#763f98]"
+                            >
+                              Mens
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/ideal-for/women"
+                              className="block py-1 hover:text-[#763f98]"
+                            >
+                              Womens
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/ideal-for/kids"
+                              className="block py-1 hover:text-[#763f98]"
+                            >
+                              Kids
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/ideal-for/unisex"
+                              className="block py-1 hover:text-[#763f98]"
+                            >
+                              Unisex
+                            </Link>
+                          </li>
                         </ul>
                       </div>
                       <div>
-                        <h2 className='font-semibold mb-2'>By Style</h2>
-                        <ul className=''>
-                          <li><Link href="/style/square" className="block py-1 hover:text-[#763f98]">Square</Link></li>
-                          <li><Link href="/style/round" className="block py-1 hover:text-[#763f98]">Round</Link></li>
-                          <li><Link href="/style/aviator" className="block py-1 hover:text-[#763f98]">Aviator</Link></li>
-                          <li><Link href="/style/wayfarer" className="block py-1 hover:text-[#763f98]">Wayfarer</Link></li>
-                          <li><Link href="/style/rectangle" className="block py-1 hover:text-[#763f98]">Rectangle</Link></li>
+                        <h2 className="font-semibold mb-2">By Style</h2>
+                        <ul className="">
+                          <li>
+                            <Link
+                              href="/style/square"
+                              className="block py-1 hover:text-[#763f98]"
+                            >
+                              Square
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/style/round"
+                              className="block py-1 hover:text-[#763f98]"
+                            >
+                              Round
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/style/aviator"
+                              className="block py-1 hover:text-[#763f98]"
+                            >
+                              Aviator
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/style/wayfarer"
+                              className="block py-1 hover:text-[#763f98]"
+                            >
+                              Wayfarer
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/style/rectangle"
+                              className="block py-1 hover:text-[#763f98]"
+                            >
+                              Rectangle
+                            </Link>
+                          </li>
                         </ul>
                       </div>
-
                     </motion.div>
                   )}
                 </AnimatePresence>
               </li>
 
               <li>
-                <Link href="/opticals" className="hover:text-[#763f98] font-semibold">Opticals</Link>
+                <Link
+                  href="/opticals"
+                  className="hover:text-[#763f98] font-semibold"
+                >
+                  Opticals
+                </Link>
               </li>
               <li>
-                <Link href="/sunglasses" className="hover:text-[#763f98] font-semibold">Sunglasses</Link>
+                <Link
+                  href="/sunglasses"
+                  className="hover:text-[#763f98] font-semibold"
+                >
+                  Sunglasses
+                </Link>
               </li>
               <li>
                 <Link href="#" className="hover:text-[#763f98] font-semibold">
