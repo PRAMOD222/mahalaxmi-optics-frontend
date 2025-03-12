@@ -5,7 +5,6 @@ import Image from "next/image";
 const logos = [
     "/logo1.png",
     "/logo2.png",
-    "/logo3.png",
     "/logo4.png",
     "/logo5.png",
 ];

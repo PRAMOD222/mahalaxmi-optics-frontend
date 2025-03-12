@@ -13,6 +13,7 @@ import HomeCaroucel from "@/components/HomeCaroucel";
 import HomeCategories from "@/components/HomeCategories";
 import Styles from '@/css/home.module.css'
 import LogosScroller from "@/components/HomeLogoScroller";
+import Footer from "@/components/Footer";
 
 
 const banners = ["1.png", "2.png", "3.png", "4.png"]
@@ -120,6 +121,8 @@ export default function Home() {
         
 
       </section>
+
+      <Footer />
 
       
 

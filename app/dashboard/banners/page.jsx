@@ -28,9 +28,9 @@ const BannerForm = () => {
     const [banners, setBanners] = useState([]);
     const [token, setToken] = useState([])
 
-    useEffect(()=>{
+    useEffect(() => {
         setToken(localStorage.getItem('token'))
-    },[])
+    }, [])
 
     const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -55,7 +55,7 @@ const BannerForm = () => {
 
     const handleEdit = (banner) => {
         setBanner({
-            _id : banner._id,
+            _id: banner._id,
             title: banner.title,
             link: banner.link,
             linkText: banner.linkText,
@@ -79,23 +79,37 @@ const BannerForm = () => {
         console.log("FormData:", ...formData);  // Debugging
 
         try {
-            const response = await fetch(`${baseApi}/banners/`, {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    // ❌ REMOVE 'Content-Type': 'multipart/form-data'
-                    // ✅ Let the browser set it automatically
-                },
-                body: formData,
-            });
 
-            if (response.ok) {
-                const data = await response.json();
-                alert(data.message || 'Banner added successfully!');
+            if (isEditMode) {
+                await fetch(`${baseApi}/banners/${banner._id}`, {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: formData,
+                });
+                alert('Banner updated successfully!');
+                fetchBanners()
+                setAddBannerOpen(false)
             } else {
-                const error = await response.json();
-                alert(error.message || 'Failed to add banner.');
+                const response = await fetch(`${baseApi}/banners/`, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: formData,
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    alert(data.message || 'Banner added successfully!');
+                    fetchBanners()
+                    setAddBannerOpen(false)
+                } else {
+                    const error = await response.json();
+                    alert(error.message || 'Failed to add banner.');
+                }
             }
+
         } catch (err) {
             console.error('Error adding banner:', err);
             alert('An error occurred. Please try again.');
@@ -116,17 +130,17 @@ const BannerForm = () => {
     const handleDelete = async (brandId) => {
         if (!confirm("Are you sure you want to delete this brand?")) return;
         try {
-            await fetch(`${baseApi}/brands/${brandId}`, {
+            await fetch(`${baseApi}/banners/${brandId}`, {
                 method: "DELETE",
                 headers: {
-                    "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`,
                 },
             });
-            toast.success("Brand deleted!");
+            
+            alert("Benner deleted!");
             fetchBrands();
         } catch (error) {
-            toast.error("Error deleting brand");
+            alert("Error deleting banner");
         }
     };
 
@@ -136,11 +150,12 @@ const BannerForm = () => {
 
     return (
         <div>
+            <Button onClick={() => setAddBannerOpen(true)} className="bg-blue-500 text-white">
+                Add Banner
+            </Button>
 
-            <Dialog>
-                <DialogTrigger asChild>
-                    <Button variant="contained">Add Banner</Button>
-                </DialogTrigger>
+            <Dialog open={addBannerOpen} onOpenChange={setAddBannerOpen}>
+
                 <DialogContent className="sm:max-w-xl">
                     <DialogHeader>
                         <DialogTitle>Add Banner</DialogTitle>
@@ -212,7 +227,7 @@ const BannerForm = () => {
                                 </button>
                             </div>
 
-                            
+
                         </div>
 
                     </ScrollArea>
