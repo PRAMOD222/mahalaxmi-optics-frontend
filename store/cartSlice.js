@@ -11,6 +11,7 @@ export const getCartFromLocalStorage = () => {
   return [];
 };
 
+
 const saveCartToLocalStorage = (cart) => {
   if (typeof window !== "undefined") {
     localStorage.setItem("cart", JSON.stringify(cart));
