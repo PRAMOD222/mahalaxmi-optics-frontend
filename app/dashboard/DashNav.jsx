@@ -17,11 +17,11 @@ const DashNav = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("token");
     }
-    
+
     window.location.href = "/";
   };
 
-  
+
   return (
     <div className="w-[20vw]">
       <div className="fixed  bg-[#763f98] shadow-lg min-h-screen h-full p-8 w-[20vw]">
@@ -38,11 +38,10 @@ const DashNav = () => {
         <div className="links my-2 flex flex-col gap-2">
           <Link href={"/dashboard"}>
             <h2
-              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${
-                pathname === "/dashboard"
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${pathname === "/dashboard"
                   ? "bg-white text-[#763f98]"
                   : "hover:bg-white text-white hover:text-[#763f98] bg-[#53286e]"
-              }`}
+                }`}
             >
               {" "}
               <RxDashboard className="inline text-xl" /> Dashboard
@@ -51,11 +50,10 @@ const DashNav = () => {
 
           <Link href={"/dashboard/categories"}>
             <h2
-              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${
-                pathname === "/dashboard/categories"
-                   ? "bg-white text-[#763f98]"
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${pathname === "/dashboard/categories"
+                  ? "bg-white text-[#763f98]"
                   : "hover:bg-white text-white hover:text-[#763f98] bg-[#53286e]"
-              }`}
+                }`}
             >
               {" "}
               <RxDashboard className="inline text-xl" /> Categories
@@ -64,11 +62,10 @@ const DashNav = () => {
 
           <Link href={"/dashboard/brands"}>
             <h2
-              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${
-                pathname === "/dashboard/brands"
-                   ? "bg-white text-[#763f98]"
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${pathname === "/dashboard/brands"
+                  ? "bg-white text-[#763f98]"
                   : "hover:bg-white text-white hover:text-[#763f98] bg-[#53286e]"
-              }`}
+                }`}
             >
               {" "}
               <RxDashboard className="inline text-xl" /> Brands
@@ -76,11 +73,10 @@ const DashNav = () => {
           </Link>
           <Link href={"/dashboard/products"}>
             <h2
-              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${
-                pathname.startsWith("/dashboard/products")
-                   ? "bg-white text-[#763f98]"
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${pathname.startsWith("/dashboard/products")
+                  ? "bg-white text-[#763f98]"
                   : "hover:bg-white text-white hover:text-[#763f98] bg-[#53286e]"
-              }`}
+                }`}
             >
               <AiFillProduct className="inline text-xl" />
               Products
@@ -88,23 +84,33 @@ const DashNav = () => {
           </Link>
           <Link href={"/dashboard/banners"}>
             <h2
-              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${
-                pathname.startsWith("/dashboard/banners")
-                   ? "bg-white text-[#763f98]"
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${pathname.startsWith("/dashboard/banners")
+                  ? "bg-white text-[#763f98]"
                   : "hover:bg-white text-white hover:text-[#763f98] bg-[#53286e]"
-              }`}
+                }`}
             >
               <RiAdvertisementFill className="inline text-xl" />
               Banners
             </h2>
           </Link>
-          
+          <Link href={"/dashboard/testimonial"}>
+            <h2
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${pathname.startsWith("/dashboard/testimonial")
+                  ? "bg-white text-[#763f98]"
+                  : "hover:bg-white text-white hover:text-[#763f98] bg-[#53286e]"
+                }`}
+            >
+              <RiAdvertisementFill className="inline text-xl" />
+              Testimonial
+            </h2>
+          </Link>
+
         </div>
 
         <Button className="bg-white hover:bg-white border-2 text-black" onClick={handleLogout} >Logout</Button>
       </div>
-      
-      
+
+
     </div>
   );
 };

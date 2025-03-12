@@ -8,7 +8,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogTitle } from 
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Input } from '@/components/ui/input';
 import ImageCropper from '@/components/cropper/ImageCropper';
-import { Button } from '@/components/ui/button';
 
 
 const BannerForm = () => {
@@ -64,7 +63,7 @@ const BannerForm = () => {
             logo: banner.logo
         });
         setIsEditMode(true);
-        setAddBrandOpen(true);
+        setAddBannerOpen(true);
     };
 
     const handleSubmit = async (e) => {
@@ -213,35 +212,7 @@ const BannerForm = () => {
                                 </button>
                             </div>
 
-                            {showCropper && (
-                                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                                    <div className="bg-white p-4 rounded shadow-md w-full max-w-2xl">
-                                        <div className="relative w-full h-64">
-                                            <Cropper
-                                                image={banner_image}
-                                                crop={crop}
-                                                zoom={zoom}
-                                                aspect={16 / 9} // Aspect ratio for the banner
-                                                onCropChange={setCrop}
-                                                onZoomChange={setZoom}
-                                                onCropComplete={onCropComplete}
-                                            />
-                                        </div>
-                                        <div className="flex justify-between items-center mt-4">
-                                            <Slider
-                                                value={zoom}
-                                                min={1}
-                                                max={3}
-                                                step={0.1}
-                                                onChange={(e, zoom) => setZoom(zoom)}
-                                            />
-                                            <Button variant="contained" color="primary" onClick={handleCropSave}>
-                                                Save Crop
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
+                            
                         </div>
 
                     </ScrollArea>
