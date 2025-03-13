@@ -149,10 +149,10 @@ const BannerForm = () => {
     }, []);
 
     return (
-        <div>
-            <Button onClick={() => setAddBannerOpen(true)} className="bg-blue-500 text-white">
+        <div className="p-4">
+            <button onClick={() => setAddBannerOpen(true)} className="bg-blue-500 text-white px-4 py-2 rounded-md">
                 Add Banner
-            </Button>
+            </button>
 
             <Dialog open={addBannerOpen} onOpenChange={setAddBannerOpen}>
 

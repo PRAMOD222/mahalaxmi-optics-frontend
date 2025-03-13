@@ -457,7 +457,7 @@ export default function Navbar() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-[#763f98] font-semibold">
+                <Link href="/about" className="hover:text-[#763f98] font-semibold">
                   About Us
                 </Link>
               </li>
