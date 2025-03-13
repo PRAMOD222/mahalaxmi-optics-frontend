@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import Topbar from "@/components/Topbar";
+import TopBar from "@/components/TopBar";
 // import Header from "@/components/Header";
 import Image from "next/image";
 // import { BreadcrumbWithCustomSeparator } from "@/components/BreadcrumbWithCustomSeparator";
@@ -50,7 +50,7 @@ export default function Home() {
 
     return (
         <>
-            <Topbar />
+            <TopBar />
             <div className="sticky top-0 z-50">
                 <Navbar />
             </div>

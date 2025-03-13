@@ -1,7 +1,7 @@
 import React from 'react'
 import Footer from "@/components/Footer";
 // import Navbar from "@/components/Navbar";
-import Topbar from "@/components/Topbar";
+import TopBar from "@/components/TopBar";
 // import Header from "@/components/Header";
 import Image from "next/image";
 import { PiClockCountdownFill } from "react-icons/pi";
@@ -58,7 +58,7 @@ async function Page() {
 
     return (
         <div>
-            <Topbar />
+            <TopBar />
             <div className="sticky top-0 z-50">
                 {/* <Navbar /> */}
                 <Navbar />

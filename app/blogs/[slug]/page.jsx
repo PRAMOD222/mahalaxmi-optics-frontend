@@ -1,7 +1,7 @@
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import Topbar from "@/components/Topbar";
+import TopBar from "@/components/TopBar";
 // import Header from "@/components/Header";
 import Image from "next/image";
 import { CiCalendar } from "react-icons/ci";
@@ -72,7 +72,7 @@ const Page = async ({ params }) => {
 
     return (
         <div className="relative">
-            <Topbar />
+            <TopBar />
             <div className="sticky top-0 z-50">
                 <Navbar />
                 {/* <Header /> */}
