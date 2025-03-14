@@ -41,11 +41,11 @@ const BannerSection = () => {
                                         <div className="absolute right-20 top-1/2 -translate-y-1/2 text-white w-1/2 md:w-1/4 space-y-4">
                                             {banner.logo && <Image src={`${baseApi}${banner.logo}`} alt="logo" width={100} height={100} className="mx-auto" />}
                                             <h3 className="font-semibold text-lg md:text-3xl text-center capitalize">{banner.title}</h3>
-                                            <Link href={banner.link} className="block border-2 text-center uppercase font-semibold py-2 px-4">{banner.linkText}</Link>
+                                            <Link href={banner.link} className="block border-2 text-center uppercase font-semibold py-2 px-4 hover:scale-105 transition-all duration-200">{banner.linkText}</Link>
                                         </div>
 
                                         <Image width={1000} height={1000} src={`${baseApi}${banner.banner_image}`} alt={banner.title} className="w-full h-auto" />
-                                        
+
                                     </div>
                                 </CarouselItem>
                             ))
@@ -62,14 +62,23 @@ const BannerSection = () => {
             </div>
 
             <div className="w-full lg:w-1/3 grid grid-cols-2 gap-2  h-full p-2 md:p-0">
-                <Link href='/' className="relative flex items-center justify-center rounded-lg col-span-2 h-full">
+                <Link href='/' className="relative flex items-center justify-center  col-span-2 h-full">
                     <Image width={600} height={600} src='/bestseller.png' alt="banner text" className="object-cover w-full h-full" />
+                    <div className="absolute border w-[94%] h-[90%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-white">
+                    </div>
+
+                    <div className="absolute right-20 top-1/2 -translate-y-1/2 text-black w-1/2 md:w-1/4 space-y-4">
+                        <h3 className="font-semibold text-lg md:text-2xl text-center capitalize">EXCLUSIVE TRAVEL COLLECTION</h3>
+                        <Link href="/" className="w-full absolute block border text-center uppercase font-semibold py-2 px-4 hover:scale-105 transition-all duration-200 text-black border-black">SHOP NOW</Link>
+                    </div>
                 </Link>
-                <Link href='/' className="relative flex items-center justify-center rounded-lg h-full">
-                    <Image width={600} height={600} src='/men.png' alt="banner text" className="object-cover w-full h-full" />
+                <Link href='/' className="relative flex items-center justify-center  h-full uppercase overflow-hidden group">
+                    <h2 className="absolute top-[10%] left-[10%] w-1/3 text-lg md:text-2xl font-semibold z-40 " >Shop for Men</h2>
+                    <Image width={600} height={600} src='/men.png' alt="banner text" className="object-cover transition-all duration-200 w-full h-full group-hover:scale-105" />
                 </Link>
-                <Link href='/' className="relative flex items-center justify-center rounded-lg h-full">
-                    <Image width={600} height={600} src='/women.png' alt="banner text" className="object-cover w-full h-full" />
+                <Link href='/' className="relative flex items-center justify-center  h-full uppercase overflow-hidden group">
+                    <h2 className="absolute top-[10%] left-[10%] w-1/3 text-lg md:text-2xl font-semibold z-40 " >Shop for Women</h2>
+                    <Image width={600} height={600} src='/women.png' alt="banner text" className="object-cover transition-all duration-200 w-full h-full group-hover:scale-105" />
                 </Link>
             </div>
         </div>
