@@ -1,25 +1,59 @@
 "use client"
+import { useState, useEffect } from "react"
 import Link from "next/link";
 import Image from "next/image";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, } from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
 
+const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
 const BannerSection = () => {
+
+    const [banners, setBanners] = useState([]);
+
+    const fetchBanners = async () => {
+        try {
+            const response = await fetch(`${baseApi}/banners/`); // Replace with your API endpoint
+            const data = await response.json();
+            setBanners(data);
+            // console.log("Banners fetched:", data);
+
+        } catch (error) {
+            console.error('Error fetching banners:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchBanners();
+    }, [])
+
     return (
         <div className="flex flex-col lg:flex-row items-stretch w-full lg:aspect-[3/1]  ">
 
             <div className="w-full lg:w-2/3 h-full">
-                <Carousel className="relative h-full">
+                <Carousel plugins={[Autoplay({ delay: 4000, }),]} className="relative h-full">
                     <CarouselContent className="h-full">
-                        <CarouselItem className="">
+
+                        {
+                            banners.map((banner, index) => (
+                                <CarouselItem className="" key={index}>
+                                    <div className=" relative">
+                                        <div className="absolute right-20 top-1/2 -translate-y-1/2 text-white w-1/2 md:w-1/4 space-y-4">
+                                            {banner.logo && <Image src={`${baseApi}${banner.logo}`} alt="logo" width={100} height={100} className="mx-auto" />}
+                                            <h3 className="font-semibold text-lg md:text-3xl text-center capitalize">{banner.title}</h3>
+                                            <Link href={banner.link} className="block border-2 text-center uppercase font-semibold py-2 px-4">{banner.linkText}</Link>
+                                        </div>
+
+                                        <Image width={1000} height={1000} src={`${baseApi}${banner.banner_image}`} alt={banner.title} className="w-full h-auto" />
+                                        
+                                    </div>
+                                </CarouselItem>
+                            ))
+                        }
+                        {/* <CarouselItem className="">
                             <Image width={1000} height={1000} src="/homebanner.png" alt="Slide 1" className="w-full h-full object-cover" />
-                        </CarouselItem>
-                        <CarouselItem>
-                            <Image width={1000} height={1000} src="/homebanner.png" alt="Slide 1" className="w-full h-full object-cover" />
-                        </CarouselItem>
-                        <CarouselItem>
-                            <Image width={1000} height={1000} src="/homebanner.png" alt="Slide 1" className="w-full h-full object-cover" />
-                        </CarouselItem>
+                        </CarouselItem> */}
+
                     </CarouselContent>
                     <CarouselPrevious className="absolute top-1/2 -translate-y-1/2 left-10" />
                     <CarouselNext className="absolute top-1/2 -translate-y-1/2 right-10" />

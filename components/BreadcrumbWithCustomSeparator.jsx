@@ -1,6 +1,6 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import Image from "next/image";
-import { RiArrowRightWideLine } from "react-icons/ri";
+import { FaChevronRight } from "react-icons/fa6";
 
 export function BreadcrumbWithCustomSeparator({ paths, imageSrc }) {
   return (
@@ -16,7 +16,7 @@ export function BreadcrumbWithCustomSeparator({ paths, imageSrc }) {
         <BreadcrumbList>
           {paths?.map((path, index) => {
             return (
-              <div key={index} className="flex h-fit w-fit items-center">
+              <div key={index} className="flex h-fit w-fit items-center ">
                 <BreadcrumbItem>
                   {path.href ? (
                     <BreadcrumbLink
@@ -32,8 +32,8 @@ export function BreadcrumbWithCustomSeparator({ paths, imageSrc }) {
                   )}
                 </BreadcrumbItem>
                 {index < paths.length - 1 && (
-                  <BreadcrumbSeparator className="text-[#763f98] text-3xl pl-0 ml-0 flex py-0 my-0">
-                    <RiArrowRightWideLine className="" /> {/* Adjust size here */}
+                  <BreadcrumbSeparator className="text-[#763f98] flex ">
+                    <FaChevronRight className="text-lg" /> {/* Adjust size here */}
                   </BreadcrumbSeparator>
                 )}
               </div>
