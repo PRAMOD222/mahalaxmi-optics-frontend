@@ -6,6 +6,7 @@ import { IoMdClose } from "react-icons/io";
 import Link from "next/link";
 import Image from "next/image";
 import { addToCart, getCart, removeFromCart } from "@/store/cartSlice";
+import Navbar from "@/components/Navbar";
 
 const Page = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,9 @@ const Page = () => {
   };
 
   return (
+    <>
+    <Navbar/>
+
     <div className="mx-4 md:mx-32">
       <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
       {cartItems.length === 0 ? (
@@ -113,6 +117,7 @@ const Page = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

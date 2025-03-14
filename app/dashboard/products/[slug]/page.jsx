@@ -62,7 +62,7 @@ export default function ProductPage() {
 
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
-  const idealForOptions = ["Men", "Women", "Unisex"];
+  const idealForOptions = ["Men", "Women", "Unisex", "Kids"];
   const [isDiscountEnabled, setIsDiscountEnabled] = useState(false);
 
   const colorInputRef = useRef(null);

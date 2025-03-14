@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearCart } from "@/store/cartSlice";
 import Link from "next/link";
 import Image from "next/image";
+import Navbar from "@/components/Navbar";
 
 const CheckoutPage = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,11 @@ const CheckoutPage = () => {
   };
 
   return (
+    <>
+    <Navbar/>
+
     <div className="mx-4 md:mx-32">
+      
       <h1 className="text-2xl font-bold mb-4">Checkout</h1>
       {cartItems.length === 0 ? (
         <p className="text-gray-500">Your cart is empty. Please add items before proceeding.</p>
@@ -80,6 +85,7 @@ const CheckoutPage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

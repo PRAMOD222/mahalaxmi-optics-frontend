@@ -1,15 +1,25 @@
+"use client"
 import Link from "next/link";
 import products from "@/app/products";
 import Image from "next/image";
-const CheckoutPage = async ({ params }) => {
-  const productId = parseInt(params.slug); 
-  let selectedProduct = null;
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
-  for (const category in products) {
-    selectedProduct = products[category].find((product) => product.id === productId);
-    if (selectedProduct) break;
+const baseApi = process.env.NEXT_PUBLIC_BASE_API;
+const CheckoutPage =  () => {
+  const productId = useParams().slug; 
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+
+
+  const fetchSingleProduct = async()=>{
+    const response = await fetch(`${baseApi}/products/${productId}`)
+    setSelectedProduct(await response.json())
   }
 
+  useEffect(()=>{
+    fetchSingleProduct()
+  },[])
 
   if (!selectedProduct) {
     return (
