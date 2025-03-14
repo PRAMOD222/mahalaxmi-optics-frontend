@@ -4,6 +4,7 @@ import products from "@/app/products";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Navbar from "@/components/Navbar";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 const CheckoutPage =  () => {
@@ -37,6 +38,9 @@ const CheckoutPage =  () => {
   }
 
   return (
+    <>
+    <Navbar/>
+
     <div className="mx-4 md:mx-32">
       <h1 className="text-2xl font-bold mb-4">Checkout</h1>
       <div className="flex flex-col">
@@ -54,7 +58,7 @@ const CheckoutPage =  () => {
               <td className="px-4 py-4 flex items-center">
                 {selectedProduct.image && (
                   <Image height={1000} width={1000}
-                    src={selectedProduct.image}
+                    src={`${baseApi}${selectedProduct.product.images[selectedProduct.product.colors[0].color_name][0]}`}
                     alt={selectedProduct.name}
                     className="w-16 h-16 object-cover mr-4"
                   />
@@ -102,6 +106,7 @@ const CheckoutPage =  () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
