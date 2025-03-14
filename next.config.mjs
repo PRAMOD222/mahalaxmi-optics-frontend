@@ -8,7 +8,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:3001/api/:path*', // Adjust to match your Express server URL
+        destination: 'https://backend.opticalhut.in/api/:path*', // Adjust to match your Express server URL
       },
     ];
   },
