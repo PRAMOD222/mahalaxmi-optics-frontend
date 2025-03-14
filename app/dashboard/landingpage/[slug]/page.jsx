@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "react-hot-toast"; // For success/error messages
 import { Checkbox2 } from "@/components/ui/checkbox2";
+import { ArrowLeft, CrossIcon } from "lucide-react";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -135,6 +136,9 @@ const AddUpdateLandingPage = () => {
 
   return (
     <div className="container mx-auto p-6">
+      <Button variant="outline" onClick={() => router.back()} className="mb-6">
+        <ArrowLeft className="w-4 h-4 mr-2" /> Back
+      </Button>
       <h1 className="text-2xl font-semibold mb-6">
         {isUpdate ? "Update" : "Add"} Landing Page
       </h1>
@@ -218,7 +222,7 @@ const AddUpdateLandingPage = () => {
           />
         </div>
 
-        <div className=" shadow-sm inset-shadow-sm p-2">
+        <div className=" shadow-sm inset-shadow-xl p-2">
           <Label className="text-2xl">Select Products</Label>
           <div className="grid grid-cols-2 gap-4 mt-2 p-2">
             {products.map((product) => {
@@ -250,7 +254,7 @@ const AddUpdateLandingPage = () => {
 
         <Button
           type="submit"
-          className="bg-blue-600 text-white w-full sm:w-auto"
+          className="w-full max-w-xs bg-[#763f98] hover:bg-[#a373c1]"
           disabled={isLoading}
         >
           {isLoading
