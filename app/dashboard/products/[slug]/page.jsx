@@ -183,6 +183,11 @@ export default function ProductPage() {
       newImages[colorName].splice(imageIndex, 1);
       setProduct({ ...product, images: newImages });
     }
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = null; 
+    }
+
   };
 
   const handleAddColor = () => {
@@ -538,7 +543,7 @@ export default function ProductPage() {
                   <Label className="text-lg font-semibold">
                     Images for {selectedColor.color_name}
                   </Label>
-                  <ImageCropper handleImageChange={handleImageChange} />
+                  <ImageCropper fileInputRef={fileInputRef} handleImageChange={handleImageChange} />
                 </div>
 
                 {/* <Input

@@ -527,7 +527,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }} // Slide back up when exiting
             transition={{ duration: 0.4, ease: "easeInOut" }} // Slower and smoother transition
-            className="absolute top-full left-0 w-full bg-white shadow-lg px-5 py-2 z-40 h-screen"
+            className="absolute top-full left-0 w-full bg-white shadow-lg px-5 py-2 z-50 h-screen"
           >
             <nav className="">
               <ul className="flex flex-col text-lg font-semibold">
