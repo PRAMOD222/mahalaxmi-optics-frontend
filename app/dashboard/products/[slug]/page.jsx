@@ -67,11 +67,10 @@ export default function ProductPage() {
 
   const colorInputRef = useRef(null);
   const [token, setToken] = useState();
-  
 
-  useEffect(()=>{
-    setToken(localStorage.getItem("token"))
-  },[])
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
 
   const shapes = [
     "angular",
@@ -166,6 +165,7 @@ export default function ProductPage() {
 
   const handleImageChange = (e) => {
     if (selectedColor) {
+      console.log("selectedColor", selectedColor);
       const newImages = { ...product.images };
       if (!newImages[selectedColor.color_name]) {
         newImages[selectedColor.color_name] = [];
@@ -185,9 +185,8 @@ export default function ProductPage() {
     }
 
     if (fileInputRef.current) {
-      fileInputRef.current.value = null; 
+      fileInputRef.current.value = null;
     }
-
   };
 
   const handleAddColor = () => {
@@ -240,21 +239,21 @@ export default function ProductPage() {
     try {
       const response = isNew
         ? await fetch(`${baseApi}/products`, {
-          method: "POST",
-          headers: {
-            // "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        })
+            method: "POST",
+            headers: {
+              // "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          })
         : await fetch(`${baseApi}/products/${slug}`, {
-          method: "PUT",
-          headers: {
-            // "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        });
+            method: "PUT",
+            headers: {
+              // "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          });
 
       const data = await response.json();
       if (response.ok) {
@@ -467,11 +466,59 @@ export default function ProductPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="col-span-2">
-              <Label>Colors</Label>
+            {/* Colors and images */}
+            <div className="col-span-1 w-1/2">
+              <Label className="text-lg font-semibold pb-8">Add Color and Images</Label>
+              <Card className="pl-0">
+                <CardContent className="flex flex-col gap-2 p-2">
+                  <div className="flex gap-2 items-center">
+                    <Label className="w-1/2">Color</Label>
+                    <div className="relative flex items-center w-full">
+                      <div className="flex items-center gap-2 w-fit h-fit border-2 border-gray-200 rounded-md cursor-pointer relative p-1">
+                        <div
+                          className="flex items-center justify-center w-8 h-8 rounded"
+                          style={{ backgroundColor: newColor.color_code }}
+                          onClick={() => colorInputRef.current.click()}
+                        >
+                          
+                        </div>
+                        <CgColorPicker className="text-black text-xl" />
+                      </div>
+                      
+                      <input
+                        type="color"
+                        ref={colorInputRef}
+                        value={newColor.color_code}
+                        onChange={(e) =>
+                          setNewColor({
+                            ...newColor,
+                            color_code: e.target.value,
+                          })
+                        }
+                        className="absolute w-1/2 top-0 left-0 opacity-0 cursor-pointer"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 items-center">
+                    <Label className="w-1/2">Color Name</Label>
+                    <Input
+                      type="text"
+                      placeholder="Color Name"
+                      value={newColor.color_name}
+                      onChange={(e) =>
+                        setNewColor({ ...newColor, color_name: e.target.value })
+                      }
+                      className="w-full"
+                    />
+                  </div>
+                  <Button onClick={handleAddColor}>Add +</Button>
+                </CardContent>
+              </Card>
+
               <div className="flex flex-col flex-wrap gap-2">
                 <div className="flex h-fit gap-2">
-                  <Input
+                  {/* <Input
                     type="text"
                     placeholder="Color Name"
                     value={newColor.color_name}
@@ -479,17 +526,9 @@ export default function ProductPage() {
                       setNewColor({ ...newColor, color_name: e.target.value })
                     }
                     className="w-fit"
-                  />
-                  {/* <Input
-                    type="color"
-                    value={newColor.color_code}
-                    onChange={(e) =>
-                      setNewColor({ ...newColor, color_code: e.target.value })
-                    }
-                    className="w-16 h-10 rounded-md border-none p-0 cursor-pointer bg-transparent outline-none overflow-hidden"
                   /> */}
 
-                  <div className="relative">
+                  {/* <div className="relative">
                     <div className="w-16 h-full border-2 border-gray-200 rounded-md cursor-pointer relative p-1">
                       <div
                         className="flex items-center justify-center w-full h-full rounded"
@@ -509,9 +548,9 @@ export default function ProductPage() {
                       }
                       className="absolute top-0 left-0 opacity-0 cursor-pointer"
                     />
-                  </div>
+                  </div> */}
                 </div>
-                <div className="flex flex-wrap gap-2">
+                {/* <div className="flex flex-wrap gap-2">
                   {product.colors.map((color) => (
                     <div
                       key={color.color_name + color.color_code}
@@ -519,10 +558,11 @@ export default function ProductPage() {
                       onClick={() => setSelectedColor(color)}
                     >
                       <div
-                        className={`w-8 h-8 rounded-full border-2  ${selectedColor?.color_code == color.color_code
+                        className={`w-8 h-8 rounded-full border-2  ${
+                          selectedColor?.color_code == color.color_code
                             ? " border-black "
                             : "border-gray-300"
-                          }`}
+                        }`}
                         style={{ backgroundColor: color.color_code }}
                       />
                       <span className="text-sm">{color.color_name}</span>
@@ -534,40 +574,83 @@ export default function ProductPage() {
                   >
                     +
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
+            <div className="col-span-2 w-full">
+            <div className="grid grid-cols-3 py-2 gap-2">
+                {product.colors.map((color, index) => (
+                  <Card key={index} className="w-full">
+                    <CardContent className="p-2">
+                      <div
+                        key={color.color_name + color.color_code}
+                        className="flex items-center space-x-2 cursor-pointer"
+                      >
+                        <div
+                          className={`w-8 h-8 rounded-full border-2 border-black `}
+                          style={{ backgroundColor: color.color_code }}
+                        />
+                        <span className="text-sm text-center capitalize font-[800]">{color.color_name}</span>
+                      </div>
+                      
+                      <ImageCropper
+                        fileInputRef={fileInputRef}
+                        handleImageChange={handleImageChange}
+                        color={color}
+                        setSelectedColor={setSelectedColor}
+                      />
+
+                      <div className="grid grid-cols-3 gap-2 mt-2 p-2">
+                        {product.images[color.color_name]?.map(
+                          (image, index) => {
+                            const imageUrl =
+                              typeof image === "string"
+                                ? `${baseApi}${image}`
+                                : URL.createObjectURL(image);
+                            return (
+                              <div
+                                key={imageUrl + Date.now()}
+                                className="relative"
+                              >
+                                <Image
+                                  key={index}
+                                  src={imageUrl}
+                                  width={400}
+                                  height={400}
+                                  alt={`Product Preview ${index}`}
+                                  className="rounded-md shadow-md w-24 h-24 object-cover"
+                                />
+                                <button
+                                  className="absolute top-0 right-0 text-2xl"
+                                  onClick={() =>
+                                    handleRemoveImage(color.color_name, index)
+                                  }
+                                >
+                                  <MdCancel />
+                                </button>
+                              </div>
+                            );
+                          }
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+            
             {selectedColor && (
               <div className="col-span-2 ">
                 <div className="flex items-center">
-                  <Label className="text-lg font-semibold">
+                  {/* <Label className="text-lg font-semibold">
                     Images for {selectedColor.color_name}
                   </Label>
-                  <ImageCropper fileInputRef={fileInputRef} handleImageChange={handleImageChange} />
+                  <ImageCropper
+                    fileInputRef={fileInputRef}
+                    handleImageChange={handleImageChange}
+                  /> */}
                 </div>
-
-                {/* <Input
-                  type="file"
-                  multiple
-                  onChange={handleImageChange}
-                  className="w-full"
-                /> */}
-                {/* <button
-                  type="button"
-                  onClick={handleButtonClick}
-                  className="px-3 mx-2 py-1 my-4 bg-[#763f98] text-white rounded-md"
-                >
-                  Add Images
-                </button> */}
-                {/* <input
-                  type="file"
-                  multiple
-                  ref={fileInputRef}
-                  onChange={handleImageChange}
-                  className="hidden"
-                /> */}
-
-                <div className="flex flex-wrap gap-2 mt-2 p-2">
+                {/* <div className="flex flex-wrap gap-2 mt-2 p-2">
                   {product.images[selectedColor.color_name]?.map(
                     (image, index) => {
                       const imageUrl =
@@ -575,7 +658,7 @@ export default function ProductPage() {
                           ? `${baseApi}${image}`
                           : URL.createObjectURL(image);
                       return (
-                        <div key={imageUrl+Date.now()} className="relative">
+                        <div key={imageUrl + Date.now()} className="relative">
                           <Image
                             key={index}
                             src={imageUrl}
@@ -596,7 +679,7 @@ export default function ProductPage() {
                       );
                     }
                   )}
-                </div>
+                </div> */}
               </div>
             )}
             <div className="col-span-2 bg-black h-[1px] w-full"></div>
