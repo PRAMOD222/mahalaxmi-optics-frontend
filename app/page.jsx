@@ -58,22 +58,22 @@ export default function Home() {
       <section className={`${Styles.homebg}`}>
         <div className="mx-6 md:mx-32 py-8">
           <h2 className="text-xl md:text-4xl mb-8 text-white font-semibold">CHANGING THE WAY PEOPLE BUY GLASSES</h2>
-          <div className="grid grid-cols-5 gap-6 ">
-            <div className="flex flex-col items-center text-white p-6 gap-4">
-              <Image className="w-1/2 " width={400} height={400} alt="icons" src={'/delivery-man.svg'} />
-              <h2 className="text-xl font-semibold text-center">Pan India <br /> Delivery</h2>
+          <div className="grid grid-cols-4 md:grid-cols-5 gap-2 md:gap-6 ">
+            <div className="flex flex-col items-center text-white md:p-6 gap-2 md:gap-4 ">
+              <Image className="w-2/3 md:w-1/2 " width={400} height={400} alt="icons" src={'/delivery-man.svg'} />
+              <h2 className="text-xs md:text-xl font-semibold text-center">Pan India <br /> Delivery</h2>
             </div>
-            <div className="flex flex-col items-center text-white p-6 gap-4">
-              <Image className="w-1/2 " width={400} height={400} alt="icons" src={'/original.svg'} />
-              <h2 className="text-xl font-semibold text-center">100% <br /> Authentic</h2>
+            <div className="flex flex-col items-center text-white md:p-6 gap-2 md:gap-4 ">
+              <Image className="w-2/3 md:w-1/2 " width={400} height={400} alt="icons" src={'/original.svg'} />
+              <h2 className="text-xs md:text-xl font-semibold text-center">100% <br /> Authentic</h2>
             </div>
-            <div className="flex flex-col items-center text-white p-6 gap-4">
-              <Image className="w-1/2 " width={400} height={400} alt="icons" src={'/rating.svg'} />
-              <h2 className="text-xl font-semibold text-center">After <br /> Sales Service</h2>
+            <div className="flex flex-col items-center text-white md:p-6 gap-2 md:gap-4 ">
+              <Image className="w-2/3 md:w-1/2 " width={400} height={400} alt="icons" src={'/rating.svg'} />
+              <h2 className="text-xs md:text-xl font-semibold text-center">After <br /> Sales Service</h2>
             </div>
-            <div className="flex flex-col items-center text-white p-6 gap-4">
-              <Image className="w-1/2 " width={400} height={400} alt="icons" src={'/payment.svg'} />
-              <h2 className="text-xl font-semibold text-center">After <br /> Sales Service</h2>
+            <div className="flex flex-col items-center text-white md:p-6 gap-2 md:gap-4 ">
+              <Image className="w-2/3 md:w-1/2 " width={400} height={400} alt="icons" src={'/payment.svg'} />
+              <h2 className="text-xs md:text-xl font-semibold text-center">After <br /> Sales Service</h2>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function Home() {
           <h2 className="font-semibold">SUNGLASSES | OPTICALS</h2>
           <h2 className=" text-2xl md:text-4xl font-semibold text-[#763f98]">State-of-Art Optical Solutions</h2>
         </div>
-        <div className="grid grid-cols-2 gap-10 md:gap-20 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 mt-10">
           <div className=" aspect-square relative">
             <Image src={'/his.png'} width={500} height={500} alt="His collection" className="w-3/4 h-3/4" />
             <div className="absolute  aspect-square w-1/2 bottom-0 right-0 flex flex-col gap-4 ">

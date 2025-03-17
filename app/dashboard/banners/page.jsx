@@ -122,6 +122,8 @@ const BannerForm = () => {
             const response = await fetch(`${baseApi}/banners/`); // Replace with your API endpoint
             const data = await response.json();
             setBanners(data);
+            console.log("Banners fetched:", data);
+            
         } catch (error) {
             console.error('Error fetching banners:', error);
         }
@@ -138,7 +140,7 @@ const BannerForm = () => {
             });
             
             alert("Benner deleted!");
-            fetchBrands();
+            fetchBanners();
         } catch (error) {
             alert("Error deleting banner");
         }

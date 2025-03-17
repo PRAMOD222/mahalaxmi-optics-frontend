@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 
 const About = () => {
   return (
-    <div className="container">
+    <div className="">
       <Navbar />
 
       {/* Hero Section */}
@@ -20,7 +20,7 @@ const About = () => {
           className="z-0"
         />
         <div className="text-center z-20 ">
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6 animate-fade-in">
+          <h1 className="text-3xl md:text-6xl font-extrabold leading-tight mb-6 animate-fade-in">
             Welcome to Mahalaxmi Optics
           </h1>
           <p className="text-base md:text-xl mb-8 animate-fade-in delay-100">
