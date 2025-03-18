@@ -62,7 +62,7 @@ export default function ProductPage() {
 
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
-  const idealForOptions = ["Men", "Women", "Unisex"];
+  const idealForOptions = ["Men", "Women", "Unisex", "Kids"];
   const [isDiscountEnabled, setIsDiscountEnabled] = useState(false);
 
   const colorInputRef = useRef(null);
@@ -254,7 +254,7 @@ export default function ProductPage() {
       const data = await response.json();
       if (response.ok) {
         alert(data.message);
-        // router.back();
+        router.back();
       } else {
         console.error("Backend Error:", data); // Log the error details
         alert("Error: " + (data.error || "Unknown error"));

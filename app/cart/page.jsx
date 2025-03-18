@@ -6,7 +6,10 @@ import { IoMdClose } from "react-icons/io";
 import Link from "next/link";
 import Image from "next/image";
 import { addToCart, getCart, removeFromCart } from "@/store/cartSlice";
+import Navbar from "@/components/Navbar";
 
+
+const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 const Page = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
@@ -38,6 +41,9 @@ const Page = () => {
   };
 
   return (
+    <>
+    <Navbar/>
+
     <div className="mx-4 md:mx-32">
       <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
       {cartItems.length === 0 ? (
@@ -61,7 +67,7 @@ const Page = () => {
                       <Image
                         height={1000}
                         width={1000}
-                        src={item.product.images[item.product.colors[0].color_name][0]}
+                        src={`${baseApi}${item.product.images[item.product.colors[0].color_name][0]}`}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover mr-4"
                       />
@@ -113,6 +119,7 @@ const Page = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

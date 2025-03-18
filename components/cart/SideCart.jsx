@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, getCart, removeFromCart, toggleSlider } from "@/store/cartSlice";
 import { ImCancelCircle } from "react-icons/im";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
 export default function SideCart() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const cartItems = useSelector((state) => state.cart.items);
   const isSliderOpen = useSelector((state) => state.cart.isSliderOpen);
 
@@ -154,7 +156,7 @@ export default function SideCart() {
               <p className="text-lg font-semibold">Total:</p>
               <p className="text-lg font-semibold">₹{calculateTotal().toFixed(2)}</p>
             </div>
-            <button className="w-full bg-[#763f98] text-white py-3 rounded-md hover:bg-[#985ebc] transition-colors">
+            <button onClick={()=>{router.push("/checkout")}} className="w-full bg-[#763f98] text-white py-3 rounded-md hover:bg-[#985ebc] transition-colors">
               Checkout
             </button>
           </div>
