@@ -104,6 +104,17 @@ const DashNav = () => {
               Testimonial
             </h2>
           </Link>
+          <Link href={"/dashboard/landingpage"}>
+            <h2
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition-all duration-300 ${pathname.startsWith("/dashboard/landingpage")
+                  ? "bg-white text-[#763f98]"
+                  : "hover:bg-white text-white hover:text-[#763f98] bg-[#53286e]"
+                }`}
+            >
+              <RiAdvertisementFill className="inline text-xl" />
+              Landing Page
+            </h2>
+          </Link>
 
         </div>
         

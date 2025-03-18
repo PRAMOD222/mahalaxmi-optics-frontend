@@ -1,16 +1,20 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import Cropper from "react-easy-crop";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Slider } from "@/components/ui/slider";
 
-const ImageCropper = ({ handleImageChange, ratio }) => {
+const ImageCropper = ({ handleImageChange, ratio, fileInputRef ,color, setSelectedColor}) => {
   const [imageSrc, setImageSrc] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const fileInputRef = useRef(null);
+
+
+  useEffect(()=>{
+    setSelectedColor(color);
+  }, [])
 
   const onCropComplete = useCallback((_, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -54,6 +58,7 @@ const ImageCropper = ({ handleImageChange, ratio }) => {
 
   const cropImage = async () => {
     if (!imageSrc || !croppedAreaPixels) return;
+    
     const image = new Image();
     image.src = imageSrc;
     await new Promise((resolve) => (image.onload = resolve));
