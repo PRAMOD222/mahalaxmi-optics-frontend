@@ -8,6 +8,8 @@ import Navbar from "@/components/Navbar";
 import ReviewStars from "@/components/ReviewStars";
 import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FaHeart } from "react-icons/fa";
+import AddToWishlist from "@/components/products/AddToWishlist";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -46,8 +48,13 @@ const Page = async ({ params }) => {
           </div>
 
           <div className="flex flex-col w-full md:w-1/2 space-y-2">
-            <div>
+            <div className="flex ">
+              <div>
               <ReviewStars rating={4.5} /> 10 Reviews
+              </div>
+              <div className="flex items-center px-2 text-xl">
+                <AddToWishlist productId={product._id}/>
+              </div>
             </div>
 
             <h1 className="text-xl md:text-4xl font-bold text-gray-900">{product.name}</h1>

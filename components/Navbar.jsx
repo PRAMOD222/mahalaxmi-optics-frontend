@@ -165,11 +165,25 @@ export default function Navbar() {
                     <Separator />
                     <div className="grid">
                       <Link
-                        href="/profile"
+                        href="/account"
                         className="p-2 hover:bg-gray-100"
                         variant="outline"
                       >
                         Profile
+                      </Link>
+                      <Link
+                        href="/orders"
+                        className="p-2 hover:bg-gray-100"
+                        variant="outline"
+                      >
+                        Orders
+                      </Link>
+                      <Link
+                        href="/wishlist"
+                        className="p-2 hover:bg-gray-100"
+                        variant="outline"
+                      >
+                        Your Wishlist
                       </Link>
                       <Link
                         href="/support"

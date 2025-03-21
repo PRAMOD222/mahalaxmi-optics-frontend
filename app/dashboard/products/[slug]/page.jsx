@@ -32,7 +32,7 @@ export default function ProductPage() {
     name: "",
     code: "",
     description: "",
-    type: "",
+    // type: "",
     ideal_for: "",
     category: "",
     brand: "",
@@ -46,6 +46,7 @@ export default function ProductPage() {
       nose_bridge_length: "",
       temple_length: "",
       material: "",
+      lens_material: "",
       shape: "",
       country_of_origin: "",
       front_color: "",
@@ -207,7 +208,6 @@ export default function ProductPage() {
 
     const formData = new FormData();
 
-    // Append non-image fields
     Object.keys(product).forEach((key) => {
       if (
         key !== "colors" &&
@@ -216,22 +216,18 @@ export default function ProductPage() {
       ) {
         formData.append(key, product[key]);
       } else if (key === "colors") {
-        // Append colors as JSON
         formData.append(key, JSON.stringify(product[key]));
       } else if (key === "information") {
-        // Append nested information object as JSON
         formData.append(key, JSON.stringify(product[key]));
       }
     });
 
-    // Append images in the required format (images_Blue, images_Green, etc.)
     Object.keys(product.images).forEach((color) => {
       product.images[color].forEach((image, index) => {
         formData.append(`images_${color}`, image);
       });
     });
 
-    // Log FormData for debugging
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
     }
@@ -260,7 +256,7 @@ export default function ProductPage() {
         alert(data.message);
         router.back();
       } else {
-        console.error("Backend Error:", data); // Log the error details
+        console.error("Backend Error:", data); 
         alert("Error: " + (data.error || "Unknown error"));
       }
     } catch (error) {
@@ -328,7 +324,7 @@ export default function ProductPage() {
                 className="w-full"
               />
             </div>
-            <div className="col-span-1">
+            {/* <div className="col-span-1">
               <Label>Type</Label>
               <Input
                 name="type"
@@ -336,7 +332,7 @@ export default function ProductPage() {
                 onChange={handleChange}
                 className="w-full"
               />
-            </div>
+            </div> */}
             <div className="col-span-1">
               <Label>Ideal For</Label>
               {/* <Input
@@ -375,32 +371,28 @@ export default function ProductPage() {
                 ))}
               </select>
             </div>
-            <div className="col-span-1">
+            <div className="col-span-2">
               <Label>Brand</Label>
-              <input
-                type="text"
-                list="brand-options"
-                name="brand"
-                value={product?.brand?.name || searchValue} // Allows free typing
-                onChange={(e) => {
-                  setSearchValue(e.target.value); // Update UI immediately
-                  const selectedBrand = brands.find(
-                    (brand) => brand.name === e.target.value
-                  );
-                  if (selectedBrand) {
-                    handleChange({
-                      target: { name: "brand", value: selectedBrand._id },
-                    });
-                  }
-                }}
-                className="w-full p-2 border rounded"
-                placeholder="Search Brand..."
-              />
-              <datalist id="brand-options">
-                {brands.map((brand) => (
-                  <option key={brand._id} value={brand.name} />
-                ))}
-              </datalist>
+              <Select
+                value={product?.brand || ""} // Ensure value is the brand ID
+                onValueChange={(value) =>
+                  handleChange({ target: { name: "brand", value } })
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a brand">
+                    {brands.find((brand) => brand._id === product?.brand)
+                      ?.name || "Select a brand"}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {brands.map((brand) => (
+                    <SelectItem key={brand._id} value={brand._id}>
+                      {brand.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="col-span-1">
@@ -468,7 +460,9 @@ export default function ProductPage() {
             </div>
             {/* Colors and images */}
             <div className="col-span-1 w-1/2">
-              <Label className="text-lg font-semibold pb-8">Add Color and Images</Label>
+              <Label className="text-lg font-semibold pb-8">
+                Add Color and Images
+              </Label>
               <Card className="pl-0">
                 <CardContent className="flex flex-col gap-2 p-2">
                   <div className="flex gap-2 items-center">
@@ -479,12 +473,10 @@ export default function ProductPage() {
                           className="flex items-center justify-center w-8 h-8 rounded"
                           style={{ backgroundColor: newColor.color_code }}
                           onClick={() => colorInputRef.current.click()}
-                        >
-                          
-                        </div>
+                        ></div>
                         <CgColorPicker className="text-black text-xl" />
                       </div>
-                      
+
                       <input
                         type="color"
                         ref={colorInputRef}
@@ -578,7 +570,7 @@ export default function ProductPage() {
               </div>
             </div>
             <div className="col-span-2 w-full">
-            <div className="grid grid-cols-3 py-2 gap-2">
+              <div className="grid grid-cols-3 py-2 gap-2">
                 {product.colors.map((color, index) => (
                   <Card key={index} className="w-full">
                     <CardContent className="p-2">
@@ -590,9 +582,11 @@ export default function ProductPage() {
                           className={`w-8 h-8 rounded-full border-2 border-black `}
                           style={{ backgroundColor: color.color_code }}
                         />
-                        <span className="text-sm text-center capitalize font-[800]">{color.color_name}</span>
+                        <span className="text-sm text-center capitalize font-[800]">
+                          {color.color_name}
+                        </span>
                       </div>
-                      
+
                       <ImageCropper
                         fileInputRef={fileInputRef}
                         handleImageChange={handleImageChange}
@@ -638,7 +632,7 @@ export default function ProductPage() {
                 ))}
               </div>
             </div>
-            
+
             {selectedColor && (
               <div className="col-span-2 ">
                 <div className="flex items-center">
@@ -753,6 +747,24 @@ export default function ProductPage() {
                         information: {
                           ...product.information,
                           material: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <Label>Lens Material</Label>
+                  <Input
+                    name="lens_material"
+                    value={product.information.lens_material}
+                    onChange={(e) =>
+                      setProduct({
+                        ...product,
+                        information: {
+                          ...product.information,
+                          lens_material: e.target.value,
                         },
                       })
                     }
