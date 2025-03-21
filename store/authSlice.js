@@ -23,7 +23,7 @@ export const signupUser = createAsyncThunk(
       if (typeof window !== "undefined") {
         localStorage.setItem("token", data.token);
         localStorage.setItem("isAdmin", data.isAdmin || "user");
-        localStorage.setItem("user", data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
       }
 
       dispatch(updateCart());

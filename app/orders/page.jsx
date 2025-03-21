@@ -1,4 +1,5 @@
 "use client";
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -126,6 +127,7 @@ const OrdersPage = () => {
           <p className="text-center text-gray-600">No orders found.</p>
         )}
       </div>
+      <Footer/>
     </div>
   );
 };
