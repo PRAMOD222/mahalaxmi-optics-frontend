@@ -461,7 +461,7 @@ export default function ProductPage() {
             {/* Colors and images */}
             <div className="col-span-1 w-1/2">
               <Label className="text-lg font-semibold pb-8">
-                Add Color and Images
+                Add Colors and Images
               </Label>
               <Card className="pl-0">
                 <CardContent className="flex flex-col gap-2 p-2">
