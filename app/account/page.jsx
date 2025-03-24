@@ -17,7 +17,12 @@ const AccountPage = () => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const [addresses, setAddresses] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
   const [address, setAddress] = useState({
     fullName: "",
     address: "",
