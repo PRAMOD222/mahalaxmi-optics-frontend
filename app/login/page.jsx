@@ -61,7 +61,7 @@ export default function LoginPage() {
           {isLoading ? "Logging in..." : "Login"}
         </button>
         <Link href="/signup" className="text-sm font-[800] flex justify-center text-center  mt-4 hover:underline">
-          Don't have an account? Sign up
+          Don&apos;t have an account? Sign up
         </Link>
         {error && <p className="text-red-500 mt-2">{error}</p>}
       </form>
