@@ -28,6 +28,7 @@ const Blogs = () => {
     image: null,
     content: [],
   });
+
   const [defaultContent, setDefaultContent] = useState({
     title: "",
     description: "",
@@ -41,6 +42,13 @@ const Blogs = () => {
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteId, setDeleteId] = useState(null); // Track which testimonial to delete
+
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setToken(token);
+  }, []);
 
   const addContent = () => {
     if (defaultContent.title.trim()) {
@@ -126,13 +134,12 @@ const Blogs = () => {
     formData.append("description", blog.description);
     formData.append("date", blog.date);
     formData.append("content", JSON.stringify(blog.content));
+    if (blog.image) formData.append("image", blog.image);
 
-    // Append image to form data only if new image(s) have been selected
-    if (blog.image && blog.image instanceof FileList && blog.image.length > 0) {
-      for (let i = 0; i < blog.image.length; i++) {
-        formData.append("image", blog.image[i]);
-      }
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
     }
+
 
     // Send the form data to the backend
     try {
@@ -140,6 +147,9 @@ const Blogs = () => {
         const response = await fetch(`${baseApi}/blogs/${blog._id}`, {
           method: "PUT",
           body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`, // Send the token along with the request
+          },
         });
 
         if (response.ok) {
@@ -156,7 +166,7 @@ const Blogs = () => {
       } else {
         // Create a new blog
         const res = await axios.post(`${baseApi}/blogs/`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { Authorization: `Bearer ${token}` },
         });
         alert("Blog added successfully!");
         console.log(res.data);
@@ -166,7 +176,7 @@ const Blogs = () => {
 
       setIsEditMode(false);
       setAddBlogOpen(false);
-      clearAllFields();
+      // clearAllFields();
     } catch (error) {
       console.error("Error adding blog:", error);
       alert("Failed to add blog.");
@@ -207,19 +217,17 @@ const Blogs = () => {
       <div className="w-fit mb-8 bg-gray-100 p-1 flex space-x-2 rounded-sm shadow-md mx-auto">
         <Button
           onClick={() => setCurrentTab("blogs")}
-          className={`w-full py-0 border-none shadow-none text-md text-black bg-white hover:bg-white  ${
-            currentTab === "blogs" &&
+          className={`w-full py-0 border-none shadow-none text-md text-black bg-white hover:bg-white  ${currentTab === "blogs" &&
             "text-white hover:bg-[#00a651] bg-[#00a651]"
-          }  `}
+            }  `}
         >
           Blogs
         </Button>
         <Button
           onClick={() => setCurrentTab("blogsSequence")}
-          className={`w-full py-0 border-none shadow-none text-md text-black bg-white hover:bg-white  ${
-            currentTab === "blogsSequence" &&
+          className={`w-full py-0 border-none shadow-none text-md text-black bg-white hover:bg-white  ${currentTab === "blogsSequence" &&
             "text-white hover:bg-[#00a651] bg-[#00a651]"
-          }  `}
+            }  `}
         >
           Blogs Sequence
         </Button>
