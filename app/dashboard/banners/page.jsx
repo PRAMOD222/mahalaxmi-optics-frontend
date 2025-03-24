@@ -1,9 +1,6 @@
 "use client";
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
-import Cropper from 'react-easy-crop';
-import { Slider, Button } from '@mui/material';
-import getCroppedImg from '@/utils/cropImage';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Input } from '@/components/ui/input';
@@ -12,6 +9,7 @@ import ImageCropper from '@/components/cropper/ImageCropper';
 
 const BannerForm = () => {
 
+    const fileInputRef = useRef(null);
 
     const [banner, setBanner] = useState({
         title: '',
@@ -217,7 +215,12 @@ const BannerForm = () => {
                                 </div>
 
 
-                                <ImageCropper ratio={16 / 9} handleImageChange={handleBannerChange} />
+                                <ImageCropper 
+                                fileInputRef={fileInputRef} 
+                                ratio={16 / 9} 
+                                handleImageChange={handleBannerChange} 
+                                
+                                />
 
 
 

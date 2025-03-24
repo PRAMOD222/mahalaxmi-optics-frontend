@@ -13,7 +13,9 @@ const ImageCropper = ({ handleImageChange, ratio, fileInputRef ,color, setSelect
 
 
   useEffect(()=>{
-    setSelectedColor(color);
+    if(color){
+      setSelectedColor(color);
+    }
   }, [])
 
   const onCropComplete = useCallback((_, croppedAreaPixels) => {
