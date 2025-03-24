@@ -2,16 +2,21 @@
 const nextConfig = {
 
   images: {
-    domains: ['localhost','backend.opticalhut.in'],
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3001", 
+        pathname: "/api/**",
+      },
+      {
+        protocol: "https",
+        hostname: "backend.opticalhut.in",
+        pathname: "/api/**",
+      },
+    ],
   },
-  async rewrites() {
-    return [
-      // {
-      //   source: '/api/:path*',
-      //   destination: 'http://localhost:3001/api/:path*', // Adjust to match your Express server URL
-      // },
-    ];
-  },
+ 
 };
 
 export default nextConfig;

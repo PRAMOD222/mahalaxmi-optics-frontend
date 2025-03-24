@@ -1,43 +1,23 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import ProductImages from '@/components/products/ProductImages'
+import ReviewStars from '@/components/ReviewStars'
+import ProductColors from '@/components/products/ProductColors'
+import ProductButtons from '@/components/products/ProductButtons'
 
-import TopBar from '@/components/TopBar'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
-import { BreadcrumbWithCustomSeparator } from '@/components/BreadcrumbWithCustomSeparator'
-import ProductsGrid from '@/components/ProductsGrid'
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API
 
-const Page = async ({ params }) => {
-    const { slug } = await params
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch(`${baseApi}/products/getProductsByCategory/${slug}?currentPage=${1}`); // Wait for response
-            const data = await response.json(); // Wait for JSON parsing
-            // console.log("Products fetched:", data);
-            return data;
-        } catch (error) {
-            console.log("Error fetching products:", error);
-        }
-    };
-
-    const data = await fetchData();
+const ProductsGrid = async ({ products }) => {
 
     const formatSlug = (name) => name.toLowerCase().replace(/ /g, '-');
-
     return (
         <div>
 
-            <div className="z-40">
-                <TopBar />
-            </div>
-            <div className="sticky top-0 z-50 bg-white">
-                <Navbar />
-            </div>
-
-            <BreadcrumbWithCustomSeparator paths={[{ label: "Home", href: "/" }, { label: "Category", href: `/category/${slug}` }]} imageSrc={'/5.jpg'} />
-            {/* <div className='mx-6 md:mx-32 grid grid-cols-2 md:grid-cols-4 gap-4 my-10'>
-                {data.products?.map((product) => (
+            <div className=' grid grid-cols-2 md:grid-cols-4 gap-4 my-10'>
+                {products?.map((product) => (
                     <div
                         key={product._id}
                         className=" text-center "
@@ -103,6 +83,7 @@ const Page = async ({ params }) => {
                                             </div>
 
 
+                                            {/*information*/}
                                             <div className="flex flex-wrap gap-3">
                                                 <p className="text-[#763f98] whitespace-nowrap text-sm font-[800] bg-white border border-[#763f98]  rounded-full px-4 py-1 w-fit">
                                                     Material: {product.information.material}
@@ -133,21 +114,14 @@ const Page = async ({ params }) => {
                         <p className="text-xl font-bold">Rs {product.price} /-</p>
                         <p className="text-sm text-[#763f98]">AVAILABLE IN <br /> {product.colors.length} COLORS</p>
                         <Link href={`/product/${formatSlug(product.name)}`} className="mt-3 bg-[#763f98] text-white px-4 py-2  text-sm md:text-base xl:text-xl font-semibold block">
-                            GRAB NOW!
+                            Add To Cart
                         </Link>
                     </div>
                 ))}
-            </div> */}
-
-            <section className="products mx-6 md:mx-32">
-
-                <ProductsGrid products={data.products} />
-            </section>
-
-            <Footer />
+            </div>
 
         </div>
     )
 }
 
-export default Page
+export default ProductsGrid
