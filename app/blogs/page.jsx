@@ -59,7 +59,7 @@ async function Page() {
     return (
         <div>
             <TopBar />
-            <div className="sticky top-0 z-50">
+            <div className="sticky top-0 z-50 bg-white">
                 {/* <Navbar /> */}
                 <Navbar />
             </div>

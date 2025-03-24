@@ -295,7 +295,7 @@ export default function HomeCategories() {
                 {productsInfo.products?.map((product) => (
                     <div
                         key={product._id}
-                        className=" text-center "
+                        className=" text-center flex flex-col justify-between"
                     >
                         <div className=" border border-[#763f98] flex flex-col justify-between">
                             <Link href={`/product/${formatSlug(product.name)}`} className="flex-1 w-full aspect-[5/4] flex items-center justify-center overflow-hidden">
