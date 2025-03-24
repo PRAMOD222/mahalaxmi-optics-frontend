@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { addToCart, getCart, removeFromCart } from "@/store/cartSlice";
 import Navbar from "@/components/Navbar";
+import TopBar from "@/components/TopBar";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 

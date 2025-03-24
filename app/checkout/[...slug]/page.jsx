@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import TopBar from "@/components/TopBar";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
