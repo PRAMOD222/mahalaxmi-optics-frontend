@@ -42,11 +42,13 @@ const Page = () => {
 
   return (
     <>
+      <div className="z-40">
+        <TopBar />
+      </div>
+      <div className="sticky top-0 z-50 bg-white">
+        <Navbar />
+      </div>
 
-            <div className="sticky top-0 z-50 bg-white">
-              <Navbar />
-            </div>
-      
       <div className="mx-4 md:mx-32">
         <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
         {cartItems.length === 0 ? (
@@ -62,14 +64,22 @@ const Page = () => {
                       <Image
                         height={100}
                         width={100}
-                        src={`${baseApi}${item.product.images[item.product.colors[0].color_name][0]}`}
+                        src={`${baseApi}${
+                          item.product.images[
+                            item.product.colors[0].color_name
+                          ][0]
+                        }`}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover mr-4"
                       />
                     )}
                     <div className="flex-1">
-                      <span className="font-medium text-lg">{item.product.name}</span>
-                      <p className="text-gray-600">₹{item.product.discounted_price || item.product.price}</p>
+                      <span className="font-medium text-lg">
+                        {item.product.name}
+                      </span>
+                      <p className="text-gray-600">
+                        ₹{item.product.discounted_price || item.product.price}
+                      </p>
                       <div className="flex items-center mt-2">
                         <div className="space-x-2 border-2 rounded-md border-black w-fit">
                           <button
@@ -87,14 +97,20 @@ const Page = () => {
                           </button>
                         </div>
                         <button
-                          onClick={() => removeAnItem(item.product, item.quantity)}
+                          onClick={() =>
+                            removeAnItem(item.product, item.quantity)
+                          }
                           className="bg-gray-200 text-xs mx-2 text-gray-500 px-1 rounded-full py-1 hover:bg-gray-300"
                         >
                           <IoMdClose />
                         </button>
                       </div>
                       <p className="font-[500] mt-2">
-                        Total: ₹{((item.product.discounted_price || item.product.price) * item.quantity).toFixed(2)}
+                        Total: ₹
+                        {(
+                          (item.product.discounted_price ||
+                            item.product.price) * item.quantity
+                        ).toFixed(2)}
                       </p>
                     </div>
                   </div>
@@ -116,18 +132,28 @@ const Page = () => {
                 {cartItems.map((item) => (
                   <tr key={item._id} className="border-b">
                     <td className="px-4 flex items-center py-4">
-                      {item.product.images[item.product.colors[0].color_name] && (
+                      {item.product.images[
+                        item.product.colors[0].color_name
+                      ] && (
                         <Image
                           height={1000}
                           width={1000}
-                          src={`${baseApi}${item.product.images[item.product.colors[0].color_name][0]}`}
+                          src={`${baseApi}${
+                            item.product.images[
+                              item.product.colors[0].color_name
+                            ][0]
+                          }`}
                           alt={item.product.name}
                           className="w-16 h-16 object-cover mr-4"
                         />
                       )}
-                      <span className="font-medium text-lg">{item.product.name}</span>
+                      <span className="font-medium text-lg">
+                        {item.product.name}
+                      </span>
                     </td>
-                    <td className="py-2 px-4">₹{item.product.discounted_price || item.product.price}</td>
+                    <td className="py-2 px-4">
+                      ₹{item.product.discounted_price || item.product.price}
+                    </td>
                     <td className="py-2 px-4">
                       <div className="space-x-2 border-2 rounded-md border-black w-fit">
                         <button
@@ -146,9 +172,17 @@ const Page = () => {
                       </div>
                     </td>
                     <td className="py-2 px-4 flex justify-end">
-                      <p className="font-[500]">₹{((item.product.discounted_price || item.product.price) * item.quantity).toFixed(2)}</p>
+                      <p className="font-[500]">
+                        ₹
+                        {(
+                          (item.product.discounted_price ||
+                            item.product.price) * item.quantity
+                        ).toFixed(2)}
+                      </p>
                       <button
-                        onClick={() => removeAnItem(item.product, item.quantity)}
+                        onClick={() =>
+                          removeAnItem(item.product, item.quantity)
+                        }
                         className="bg-gray-200 text-xs mx-2 text-gray-500 px-1 rounded-full py-1 hover:bg-gray-300"
                       >
                         <IoMdClose />
@@ -162,7 +196,10 @@ const Page = () => {
             {/* Grand Total and Checkout Button */}
             <div className="mt-6 w-full flex flex-col md:w-[40%] ml-auto">
               <h2 className="flex justify-between text-xl font-semibold">
-                Grand Total: <span className="text-green-600">₹{calculateTotal().toFixed(2)}</span>
+                Grand Total:{" "}
+                <span className="text-green-600">
+                  ₹{calculateTotal().toFixed(2)}
+                </span>
               </h2>
               <Link
                 href="/checkout"

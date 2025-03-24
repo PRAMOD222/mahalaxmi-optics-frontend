@@ -40,9 +40,12 @@ const CheckoutPage = () => {
 
   return (
     <>
-                  <div className="sticky top-0 z-50 bg-white">
-                    <Navbar />
-                  </div>
+      <div className="z-40">
+        <TopBar />
+      </div>
+      <div className="sticky top-0 z-50 bg-white">
+        <Navbar />
+      </div>
 
       <div className="mx-4 md:mx-32">
         <h1 className="text-2xl font-bold mb-4">Checkout</h1>
@@ -51,12 +54,16 @@ const CheckoutPage = () => {
           <div className="md:hidden">
             <div className="border-b py-4">
               <div className="flex items-center">
-                {selectedProduct.images[selectedProduct.colors[0].color_name] && (
+                {selectedProduct.images[
+                  selectedProduct.colors[0].color_name
+                ] && (
                   <Image
                     height={100}
                     width={100}
                     src={`${baseApi}${
-                      selectedProduct.images[selectedProduct.colors[0].color_name][0]
+                      selectedProduct.images[
+                        selectedProduct.colors[0].color_name
+                      ][0]
                     }`}
                     alt={selectedProduct.name}
                     className="w-16 h-16 object-cover mr-4"
@@ -89,12 +96,16 @@ const CheckoutPage = () => {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-4 flex items-center">
-                  {selectedProduct.images[selectedProduct.colors[0].color_name] && (
+                  {selectedProduct.images[
+                    selectedProduct.colors[0].color_name
+                  ] && (
                     <Image
                       height={1000}
                       width={1000}
                       src={`${baseApi}${
-                        selectedProduct.images[selectedProduct.colors[0].color_name][0]
+                        selectedProduct.images[
+                          selectedProduct.colors[0].color_name
+                        ][0]
                       }`}
                       alt={selectedProduct.name}
                       className="w-16 h-16 object-cover mr-4"
