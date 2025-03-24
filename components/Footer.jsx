@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#F9FAFB] text-gray-800">
 
-      <div className="container mx-auto px-8 md:px-36 py-12">
+      <div className="container mx-6 md:mx-32 xl:mx-44 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 
           <div className="flex flex-col space-y-6">
@@ -90,13 +90,13 @@ export default function Footer() {
       </div>
 
       
-      <div className="bg-[#E1BEE7] py-4">
+      <div className="bg-[#6A1B9A] py-4 text-white">
         <div className="container mx-auto px-8 md:px-16 text-center">
-          <p className="text-sm text-gray-700">
-            © 2025 Mahalaxmi Optics. All Rights Reserved. | Designed by{" "}
+          <p className="text-sm ">
+            © 2025 Mahalaxmi Optical Traders. All Rights Reserved. | Designed by{" "}
             <a
-              href="https://pramodkesarkar.tech"
-              className="text-[#6A1B9A] hover:text-[#4A148C] transition duration-300 cursor-pointer"
+              href="https://tfstrategies.com/"
+              className="] transition duration-300 cursor-pointer"
             >
               TF Strategies Pvt. Ltd.
             </a>

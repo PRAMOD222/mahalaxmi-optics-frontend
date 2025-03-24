@@ -15,13 +15,13 @@ const ProductImages = ({ product }) => {
   }, [dispatch, product]);
 
   return (
-    <div className="flex w-full flex-col-reverse md:flex-row items-start md:items-start gap-6">
+    <div className="flex w-full flex-row-reverse md:flex-row items-start md:items-start gap-6">
 
-      <div className="flex w-fit md:flex-col gap-3">
+      <div className="flex w-fit flex-col gap-3 border">
         {images[selectedColor]?.map((img, index) => (
           <div
             key={index}
-            className="w-20 h-20 flex items-center justify-center bg-gray-100 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#0071E3] transition-all"
+            className="w-12 h-12 md:w-20 md:h-20 flex items-center justify-center bg-gray-100 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#0071E3] transition-all"
             onClick={() => dispatch(setMainImage(img))}
           >
             <Image

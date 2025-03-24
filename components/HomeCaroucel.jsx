@@ -44,7 +44,7 @@ const BannerSection = () => {
                                             <Link href={banner.link} className="block border-2 text-center uppercase font-semibold py-2 px-4 hover:scale-105 transition-all duration-200">{banner.linkText}</Link>
                                         </div>
 
-                                        <Image width={1000} height={1000} src={`${baseApi}${banner.banner_image}`} alt={banner.title} className="w-full h-auto" />
+                                        <Image width={2000} height={1000} src={`${baseApi}${banner.banner_image}`} alt={banner.title} className="w-full h-auto" />
 
                                     </div>
                                 </CarouselItem>
