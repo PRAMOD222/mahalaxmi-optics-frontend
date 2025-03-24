@@ -88,20 +88,20 @@ export default function Home() {
           <div className=" aspect-square relative">
             <Image src={'/his.png'} width={500} height={500} alt="His collection" className="w-3/4 h-3/4" />
             <div className="absolute  aspect-square w-1/2 bottom-0 right-0 flex flex-col gap-4 ">
-              <h2 className="text-white bg-[#763f98] h-1/4 flex justify-center items-center text-xl font-semibold">HIS COLLECTION</h2>
+              <h2 className="text-white bg-[#763f98] h-1/4 flex justify-center items-center md:text-xl font-semibold">HIS COLLECTION</h2>
               <div className="flex flex-col justify-center p-6 bg-[#763f98] flex-1 gap-2">
-                <h2 className="text-white text-lg ">Handsomeness Comes From A Stylish Face</h2>
-                <Link className="block border-4 px-2 py-1 text-white font-semibold w-max" href={'/'} >View Collection</Link>
+                <h2 className="text-white md:text-lg ">Handsomeness Comes From A Stylish Face</h2>
+                <Link className="block border-2 md:border-4 px-2 py-1 text-white font-semibold w-max" href={'/'} >View Collection</Link>
               </div>
             </div>
           </div>
           <div className=" aspect-square relative">
             <Image src={'/her.png'} width={500} height={500} alt="Her collection" className="w-3/4 h-3/4" />
             <div className="absolute  aspect-square w-1/2 bottom-0 right-0 flex flex-col gap-4 ">
-              <h2 className="text-white bg-[#763f98] h-1/4 flex justify-center items-center text-xl font-semibold">HER COLLECTION</h2>
+              <h2 className="text-white bg-[#763f98] h-1/4 flex justify-center items-center md:text-xl font-semibold">HER COLLECTION</h2>
               <div className="flex flex-col justify-center p-6 bg-[#763f98] flex-1 gap-2">
-                <h2 className="text-white text-lg ">Beautify Your Day By Beautiful Glasses</h2>
-                <Link className="block border-4 px-2 py-1 text-white font-semibold w-max" href={'/'} >View Collection</Link>
+                <h2 className="text-white md:text-lg ">Beautify Your Day By Beautiful Glasses</h2>
+                <Link className="block border-2 md:border-4 px-2 py-1 text-white font-semibold w-max" href={'/'} >View Collection</Link>
               </div>
             </div>
           </div>

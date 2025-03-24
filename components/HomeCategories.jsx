@@ -326,7 +326,7 @@ export default function HomeCategories() {
                                                 <ReviewStars rating={4.5} /> 10 Reviews
                                             </div>
 
-                                            <h1 className="text-4xl font-bold text-gray-900">{product.name}</h1>
+                                            <h1 className="text-xl md:text-4xl font-bold text-gray-900">{product.name}</h1>
                                             <p className="text-gray-500 text-sm">Code: {product.code}</p>
 
                                             <div className="flex items-center gap-4">

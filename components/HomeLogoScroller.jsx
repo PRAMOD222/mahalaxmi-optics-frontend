@@ -37,7 +37,7 @@ const LogosScroller = () => {
                     {logos.map((logo, index) => (
                         <li key={index}>
                             <Image
-                                className="w-[16vw]"
+                                className="w-[28vw] md:w-[16vw]"
                                 src={logo}
                                 alt={`Logo ${index + 1}`}
                                 width={100}
@@ -57,7 +57,7 @@ const LogosScroller = () => {
                     {logos.map((logo, index) => (
                         <li key={index}>
                             <Image
-                                className="w-[20vw]"
+                                className="w-[28vw] md:w-[16vw]"
                                 src={logo}
                                 alt={`Logo ${index + 1}`}
                                 width={100}

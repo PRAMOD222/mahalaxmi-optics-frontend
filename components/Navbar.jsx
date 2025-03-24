@@ -94,6 +94,7 @@ export default function Navbar() {
   }, []);
 
   const handleMenuClicke = () => {
+    setIsSearchOpen(false);
     if (isOpen) {
       setIsOpen(false);
       setIsMobileBrandOpen(false);
@@ -472,7 +473,17 @@ export default function Navbar() {
           >
             <Image src="/glassess.svg" width={40} height={40} alt="Glassess" className="" />
           </motion.button>
-          <h2 onClick={handleMenuClicke} className="-mt-2 text-sm">MENU</h2>
+          <motion.h2
+            key={isOpen} // Forces re-render when text changes
+            initial={{ scale: 0.8, opacity: 0, letterSpacing: "-0.05em", skewX: -10 }}
+            animate={{ scale: 1, opacity: 1, letterSpacing: "0em", skewX: 0 }}
+            exit={{ scale: 1.2, opacity: 0, letterSpacing: "0.05em", skewX: 10 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            onClick={handleMenuClicke}
+            className="-mt-2 text-sm font-semibold"
+          >
+            {isOpen ? "CLOSE" : "MENU"}
+          </motion.h2>
         </div>
 
         <Link href="/">
@@ -500,7 +511,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: "-100%" }} // Slide back up when exiting
                 transition={{ duration: 0.4, ease: "easeInOut" }} // Slower and smoother transition
-                className="absolute top-full left-0 w-full bg-gray-100  py-3 z-40 h-max  flex justify-between items-center px-5 gap-4 "
+                className="absolute top-full left-0 w-full bg-gray-100  py-3 z-50 h-max  flex justify-between items-center px-5 gap-4 "
               >
                 <Image
                   alt="serach icon"
@@ -517,6 +528,7 @@ export default function Navbar() {
                   onClick={() => setIsSearchOpen(false)}
                   className="text-2xl font-thin"
                 />
+
               </motion.div>
             )}
           </AnimatePresence>
@@ -713,6 +725,24 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+
+      <AnimatePresence>
+        {isSearchOpen && (
+          <motion.div
+            initial={{ opacity: 0 }} // Start higher up for a better sliding effect
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }} // Slide back up when exiting
+            transition={{ duration: 0.4, ease: "easeInOut" }} // Slower and smoother transition
+            className="absolute backdrop-blur-xl top-0 left-0 h-[100vh] w-[100vw] shadow-lg px-5 py-2 z-40 "
+          >
+            <div className="absolute    z-30">
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
 
       <SideCart isOpen={isSidecardOpen} setIsOpen={setIsSidecartOpen} />
     </>
