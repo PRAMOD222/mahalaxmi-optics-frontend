@@ -58,7 +58,7 @@ export default function ProductPage() {
     isOptical: false,
   });
   const [selectedColor, setSelectedColor] = useState(null);
-  const [newColor, setNewColor] = useState({ color_name: "", color_code: "" });
+  const [newColor, setNewColor] = useState({ color_name: "black", color_code: "#000000" });
   const [searchValue, setSearchValue] = useState("");
 
   const [categories, setCategories] = useState([]);

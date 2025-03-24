@@ -83,7 +83,6 @@ const Brands = () => {
         await fetch(`${baseApi}/brands/${brand._id}`, {
           method: "PUT",
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
           body: formData,
