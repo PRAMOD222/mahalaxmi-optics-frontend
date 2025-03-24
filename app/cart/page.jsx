@@ -8,6 +8,7 @@ import Image from "next/image";
 import { addToCart, getCart, removeFromCart } from "@/store/cartSlice";
 import Navbar from "@/components/Navbar";
 import TopBar from "@/components/TopBar";
+import Footer from "@/components/Footer";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -212,8 +213,10 @@ const Page = () => {
           </div>
         )}
       </div>
+      <Footer/>
     </>
   );
 };
 
 export default Page;
+ 

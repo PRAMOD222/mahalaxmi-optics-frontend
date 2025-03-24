@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import TopBar from "@/components/TopBar";
+import Footer from "@/components/Footer";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
@@ -146,6 +147,7 @@ const CheckoutPage = () => {
           </div>
         )}
       </div>
+      <Footer/>
     </>
   );
 };
