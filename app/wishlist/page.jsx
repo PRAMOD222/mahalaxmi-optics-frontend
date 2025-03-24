@@ -1,4 +1,5 @@
 "use client";
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -101,6 +102,7 @@ const WishlistPage = () => {
           <p className="text-center text-gray-600">Your wishlist is empty.</p>
         )}
       </div>
+      <Footer/>
     </div>
   );
 };

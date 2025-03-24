@@ -42,7 +42,11 @@ const Page = () => {
 
   return (
     <>
-      <Navbar />
+
+            <div className="sticky top-0 z-50 bg-white">
+              <Navbar />
+            </div>
+      
       <div className="mx-4 md:mx-32">
         <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
         {cartItems.length === 0 ? (

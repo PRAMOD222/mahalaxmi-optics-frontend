@@ -156,7 +156,8 @@ export default function SideCart() {
               <p className="text-lg font-semibold">Total:</p>
               <p className="text-lg font-semibold">₹{calculateTotal().toFixed(2)}</p>
             </div>
-            <button onClick={()=>{router.push("/checkout")}} className="w-full bg-[#763f98] text-white py-3 rounded-md hover:bg-[#985ebc] transition-colors">
+            <button onClick={()=>{
+              dispatch(toggleSlider(false));router.push("/checkout")}} className="w-full bg-[#763f98] text-white py-3 rounded-md hover:bg-[#985ebc] transition-colors">
               Checkout
             </button>
           </div>
