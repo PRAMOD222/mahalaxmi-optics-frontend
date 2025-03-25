@@ -45,8 +45,8 @@ export default function SideCart() {
   // Calculate the total price of the cart
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => {
-      const price = item.product?.discounted_price || item.product.price;
-      return total + price * item.quantity;
+      const price = item?.product?.discounted_price || item?.product?.price;
+      return total + price * item?.quantity;
     }, 0);
   };
 
@@ -88,9 +88,9 @@ export default function SideCart() {
         {/* Cart Items */}
         <div className="flex-1 overflow-y-auto p-6">
           {cartItems.length > 0 ? (
-            cartItems.map((item) => {
-              const price = item.product?.discounted_price || item.product?.price;
-              const totalPrice = price * item.quantity;
+            cartItems?.map((item) => {
+              const price = item?.product?.discounted_price || item?.product?.price;
+              const totalPrice = price * item?.quantity;
 
               return (
                 <div
@@ -121,7 +121,7 @@ export default function SideCart() {
                       >
                         -
                       </button>
-                      <span>{item.quantity}</span>
+                      <span>{item?.quantity}</span>
                       <button
                         onClick={() => handleIncreaseQuantity(item?.product)}
                         className="px-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
@@ -130,7 +130,7 @@ export default function SideCart() {
                       </button>
                     </div>
                     <p className="text-sm text-gray-600 mt-2">
-                      Price: ₹{price?.toFixed(2)} x {item.quantity} = ₹{totalPrice.toFixed(2)}
+                      Price: ₹{price?.toFixed(2)} x {item?.quantity} = ₹{totalPrice.toFixed(2)}
                     </p>
                   </div>
 
