@@ -96,6 +96,11 @@ const Brands = () => {
       }
       fetchBrands();
       setAddBrandOpen(false);
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/" }),
+    });
     } catch (error) {
       toast.error("Error saving brand");
     }
@@ -113,6 +118,11 @@ const Brands = () => {
       });
       toast.success("Brand deleted!");
       fetchBrands();
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/" }),
+    });
     } catch (error) {
       toast.error("Error deleting brand");
     }

@@ -126,6 +126,11 @@ const AddUpdateLandingPage = () => {
         `Landing page ${isUpdate ? "updated" : "added"} successfully!`
       );
       router.push("/dashboard/landingpage");
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/" }),
+    });
     } catch (error) {
       console.error("Error saving landing page:", error);
       toast.error("Failed to save landing page");

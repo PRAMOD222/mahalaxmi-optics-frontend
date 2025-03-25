@@ -19,10 +19,7 @@ const AccountPage = () => {
   const [addresses, setAddresses] = useState([]);
   const [token, setToken] = useState(null);
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken);
-  }, []);
+
   const [address, setAddress] = useState({
     fullName: "",
     address: "",
@@ -35,6 +32,11 @@ const AccountPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addressToDelete, setAddressToDelete] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
 
   const fetchAddresses = async () => {
     try {
@@ -54,7 +56,7 @@ const AccountPage = () => {
 
   useEffect(() => {
     fetchAddresses();
-  }, []);
+  }, [token]);
 
   const handleAddAddress = () => {
     try {
@@ -177,7 +179,7 @@ const AccountPage = () => {
           Add New Address
         </Button>
         <div className="space-y-4 mt-4">
-          {addresses.map((addr) => (
+          {addresses?.map((addr) => (
             <div
               key={addr._id}
               className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm"

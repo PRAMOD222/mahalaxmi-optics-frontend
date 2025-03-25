@@ -66,6 +66,11 @@ const App = () => {
 
       const data = await response.json();
       fetchTestimonials();
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/" }),
+    });
 
       setFormData({ name: "", message: "", rating: 0 });
       setEditId(null);

@@ -59,15 +59,15 @@ const WishlistPage = () => {
       <Navbar />
       <div className="container mx-auto py-4 px-4 md:px-36">
         <h1 className="text-2xl font-bold mb-6 text-center">Your Wishlist</h1>
-        {wishlist.length > 0 ? (
+        {Array.isArray(wishlist) && wishlist.length > 0 ? (
           <div className="space-y-4">
-            {wishlist.map((item) => (
+            { wishlist.map((item) => (
               <div key={item._id} className="bg-white p-4 rounded-lg shadow-md">
                 <div className="flex items-center space-x-4">
                   {/* Product Image */}
                   <div className="flex-shrink-0">
                     <img
-                      src={`${baseApi}${item.images.Black[0]}`}
+                      src={`${baseApi}${item.thumbnail}`}
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded"
                     />

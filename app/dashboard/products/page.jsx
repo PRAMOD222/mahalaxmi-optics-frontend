@@ -55,6 +55,11 @@ const Products = () => {
         setProducts((prevProducts) =>
           prevProducts.filter((product) => product._id !== deleteProductId)
         );
+        await fetch("/api/revalidate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: "/" }),
+      });
       } else {
         console.error("Failed to delete product");
       }
