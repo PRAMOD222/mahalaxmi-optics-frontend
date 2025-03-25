@@ -27,6 +27,16 @@ const BannerForm = () => {
     const [banners, setBanners] = useState([]);
     const [token, setToken] = useState([])
 
+    const clearAllFields = () => {
+        setBanner({
+            title: '',
+            link: '',
+            linkText: '',
+            banner_image: null,
+            logo: null
+        });
+    };
+
     useEffect(() => {
         setToken(localStorage.getItem('token'))
     }, [])
@@ -92,10 +102,11 @@ const BannerForm = () => {
             }
     
             if (response.ok) {
-                alert("Banner saved successfully!");
+                alert(isEditMode ? "Banner updated!" : "Banner added!");
                 fetchBanners();
                 setAddBannerOpen(false);
-    
+
+                clearAllFields();
                 await fetch("/api/revalidate", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

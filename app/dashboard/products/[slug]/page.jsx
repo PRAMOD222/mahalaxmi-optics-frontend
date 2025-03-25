@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@mui/material";
-import ImageCropper from "@/components/cropper/ImageCropper";
+import ProductImageCropper from "@/components/cropper/ProductImageCropper";
 import { MdCancel } from "react-icons/md";
 import { IoIosColorPalette } from "react-icons/io";
 import { CgColorPicker } from "react-icons/cg";
@@ -377,7 +377,7 @@ export default function ProductPage() {
                 ))}
               </select>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1">
               <Label>Brand</Label>
               <Select
                 value={product?.brand || ""} // Ensure value is the brand ID
@@ -399,6 +399,17 @@ export default function ProductPage() {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="col-span-1">
+              <Label>Stock</Label>
+              <Input
+                name="stock"
+                type="number"
+                value={product.stock}
+                onChange={handleChange}
+                className="w-full"
+              />
             </div>
 
             <div className="col-span-1">
@@ -593,7 +604,7 @@ export default function ProductPage() {
                         </span>
                       </div>
 
-                      <ImageCropper
+                      <ProductImageCropper
                         fileInputRef={fileInputRef}
                         handleImageChange={handleImageChange}
                         color={color}
@@ -645,7 +656,7 @@ export default function ProductPage() {
                   {/* <Label className="text-lg font-semibold">
                     Images for {selectedColor.color_name}
                   </Label>
-                  <ImageCropper
+                  <ProductImageCropper
                     fileInputRef={fileInputRef}
                     handleImageChange={handleImageChange}
                   /> */}
