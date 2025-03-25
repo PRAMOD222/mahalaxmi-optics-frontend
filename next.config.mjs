@@ -1,22 +1,19 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-
   images: {
+    domains: ["localhost", "backend.opticalhut.in"],
     remotePatterns: [
       {
         protocol: "http",
         hostname: "localhost",
-        port: "3001", 
-        pathname: "/api/**",
+        port: "3001",
       },
       {
         protocol: "https",
         hostname: "backend.opticalhut.in",
-        pathname: "/api/**",
       },
     ],
   },
- 
 };
 
 export default nextConfig;
+

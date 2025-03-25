@@ -114,7 +114,7 @@ const ProductsGrid = async ({ products }) => {
                         <p className="text-xl font-bold">Rs {product.price} /-</p>
                         <p className="text-sm text-[#763f98]">AVAILABLE IN <br /> {product.colors.length} COLORS</p>
                         <Link href={`/product/${formatSlug(product.name)}`} className="mt-3 bg-[#763f98] text-white px-4 py-2  text-sm md:text-base xl:text-xl font-semibold block">
-                            Add To Cart
+                        GRAB NOW!
                         </Link>
                     </div>
                 ))}
