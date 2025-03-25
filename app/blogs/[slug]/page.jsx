@@ -73,12 +73,12 @@ const Page = async ({ params }) => {
     return (
         <div className="relative">
             <TopBar />
-            <div className="sticky top-0 z-50">
+            <div className="sticky top-0 z-50 bg-white">
                 <Navbar />
                 {/* <Header /> */}
             </div>
             <BreadcrumbWithCustomSeparator
-                imageSrc="/inside-banner.jpg"
+                imageSrc="/1.jpg"
                 title="Blogs"
                 className=""
                 paths={breadcrumbPaths} />

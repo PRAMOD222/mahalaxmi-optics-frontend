@@ -8,6 +8,7 @@ import ReviewStars from '@/components/ReviewStars'
 import ProductColors from '@/components/products/ProductColors'
 import ProductButtons from '@/components/products/ProductButtons'
 import Link from 'next/link'
+import Footer from '@/components/Footer'
 const baseApi = process.env.NEXT_PUBLIC_BASE_API
 
 
@@ -43,7 +44,7 @@ const Page = async () => {
 
 
             <section className="products mx-6 md:mx-32">
-                <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-[6.67%]">
+                <div className="my-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-[6.67%]">
                 {ProductsData.products?.map((product) => (
                         <div
                             key={product._id}
@@ -146,7 +147,9 @@ const Page = async () => {
                         </div>
                     ))}
                 </div>
+                
             </section>
+            <Footer/>
         </div>
     )
 }
