@@ -2,12 +2,7 @@ import React from 'react'
 import TopBar from '@/components/TopBar'
 import Navbar from '@/components/Navbar'
 import Image from 'next/image'
-import Link from 'next/link'
-import {Dialog,DialogContent,DialogDescription,DialogHeader,DialogTitle,DialogTrigger,} from "@/components/ui/dialog"
-import ReviewStars from "@/components/ReviewStars";
-import ProductImages from "@/components/products/ProductImages";
-import ProductButtons from "@/components/products/ProductButtons";
-import ProductColors from "@/components/products/ProductColors";
+import ProductsGrid from '@/components/ProductsGrid'
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API
 
@@ -17,80 +12,6 @@ const Page = async ({ params }) => {
     const { slug } = await params
     const brandName = slug
 
-    const products = [
-        {
-            id: 1,
-            image: "/glass1.png",
-            name: "Ray Ban RB 90102R",
-            discount: "20% OFF",
-            originalPrice: "₹22,153",
-            price: "₹20,250",
-            colors: 9,
-        },
-        {
-            id: 2,
-            image: "/glass2.png",
-            name: "Oakley OO 9208",
-            discount: "15% OFF",
-            originalPrice: "₹18,000",
-            price: "₹15,300",
-            colors: 6,
-        },
-        {
-            id: 3,
-            image: "/glass3.png",
-            name: "Gucci GG 0741S",
-            discount: "25% OFF",
-            originalPrice: "₹30,000",
-            price: "₹22,500",
-            colors: 5,
-        },
-        {
-            id: 4,
-            image: "/glass4.png",
-            name: "Versace VE 4361",
-            discount: "10% OFF",
-            originalPrice: "₹25,000",
-            price: "₹22,500",
-            colors: 4,
-        },
-        {
-            id: 5,
-            image: "/glass1.png",
-            name: "Ray Ban RB 90102R",
-            discount: "20% OFF",
-            originalPrice: "₹22,153",
-            price: "₹20,250",
-            colors: 9,
-        },
-        {
-            id: 6,
-            image: "/glass2.png",
-            name: "Oakley OO 9208",
-            discount: "15% OFF",
-            originalPrice: "₹18,000",
-            price: "₹15,300",
-            colors: 6,
-        },
-        {
-            id: 7,
-            image: "/glass3.png",
-            name: "Gucci GG 0741S",
-            discount: "25% OFF",
-            originalPrice: "₹30,000",
-            price: "₹22,500",
-            colors: 5,
-        },
-        {
-            id: 8,
-            image: "/glass4.png",
-            name: "Versace VE 4361",
-            discount: "10% OFF",
-            originalPrice: "₹25,000",
-            price: "₹22,500",
-            colors: 4,
-        },
-    ]
 
     const brand = async (brandName) => {
         try {
@@ -130,7 +51,8 @@ const Page = async ({ params }) => {
             </div>
 
             <section className="products mx-6 md:mx-32">
-                <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-[6.67%] " >
+
+                {/* <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-[6.67%] " >
                     {brandData?.products.map((product) => (
                         <div
                             key={product._id}
@@ -197,7 +119,6 @@ const Page = async ({ params }) => {
                                                 </div>
 
 
-                                                {/*information*/}
                                                 <div className="flex flex-wrap gap-3">
                                                     <p className="text-[#763f98] whitespace-nowrap text-sm font-[800] bg-white border border-[#763f98]  rounded-full px-4 py-1 w-fit">
                                                         Material: {product.information.material}
@@ -232,7 +153,10 @@ const Page = async ({ params }) => {
                             </Link>
                         </div>
                     ))}
-                </div>
+                </div> */}
+
+
+                <ProductsGrid products={brandData?.products} />
             </section>
         </div>
     )

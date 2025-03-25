@@ -1,17 +1,19 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-
   images: {
-    domains: ['localhost','backend.opticalhut.in'],
-  },
-  async rewrites() {
-    return [
-      // {
-      //   source: '/api/:path*',
-      //   destination: 'http://localhost:3001/api/:path*', // Adjust to match your Express server URL
-      // },
-    ];
+    domains: ["localhost", "backend.opticalhut.in"],
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3001",
+      },
+      {
+        protocol: "https",
+        hostname: "backend.opticalhut.in",
+      },
+    ],
   },
 };
 
 export default nextConfig;
+

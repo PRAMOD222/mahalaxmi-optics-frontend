@@ -28,7 +28,7 @@ const BannerSection = () => {
     }, [])
 
     return (
-        <div className="flex flex-col lg:flex-row items-stretch w-full lg:aspect-[3/1]  ">
+        <div className="flex flex-col lg:flex-row items-stretch w-full lg:aspect-[3/1] md:gap-2 ">
 
             <div className="w-full lg:w-2/3 h-full">
                 <Carousel plugins={[Autoplay({ delay: 4000, }),]} className="relative h-full">
