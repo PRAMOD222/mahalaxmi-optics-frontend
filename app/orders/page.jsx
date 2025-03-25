@@ -44,16 +44,14 @@ const OrdersPage = () => {
       <Navbar />
       <div className="container mx-auto p-4 px-4 md:px-36">
         <h1 className="text-2xl font-bold mb-6 text-center">Your Orders</h1>
-        {orders.length > 0 ? (
+        {Array.isArray(orders) && orders.length > 0 ? (
           <div className="space-y-4">
             {orders.map((order) => (
               <div key={order._id} className="bg-white p-4 rounded-lg shadow-md">
-                {/* Order ID (Smaller on Mobile) */}
                 <p className="text-sm md:text-base font-medium text-gray-600">
                   Order ID: <span className="text-gray-800">{order.orderId}</span>
                 </p>
 
-                {/* Date and Total Amount */}
                 <div className="mt-2 flex flex-col md:flex-row md:items-center md:justify-between">
                   <p className="text-sm md:text-base">
                     Date: {new Date(order.createdAt).toLocaleDateString()}
@@ -63,7 +61,6 @@ const OrdersPage = () => {
                   </p>
                 </div>
 
-                {/* Status */}
                 <div className="mt-2">
                   <span
                     className={`px-2 py-1 rounded-full text-sm ${
@@ -83,20 +80,20 @@ const OrdersPage = () => {
                       <li key={product._id} className="flex items-center space-x-4">
                         <div className="flex-shrink-0">
                           <img
-                            src={`${baseApi}${product.product.images.Black[0]}`}
+                            src={`${baseApi}${product?.product?.thumbnail }`}
                             alt={product.product.name}
                             className="w-12 h-12 object-cover rounded"
                           />
                         </div>
                         <div>
                           <Link
-                            href={`/product/${product.product.name}`}
+                            href={`/product/${product?.product?.name}`}
                             className="font-medium hover:underline"
                           >
                             {product.product.name}
                           </Link>
                           <p className="text-sm text-gray-600">
-                            {product.quantity} x ₹{product.product.discounted_price || product.product.price}
+                            {product.quantity} x ₹{product?.product?.discounted_price || product.product.price}
                           </p>
                         </div>
                       </li>

@@ -254,7 +254,13 @@ export default function ProductPage() {
       const data = await response.json();
       if (response.ok) {
         alert(data.message);
+        await fetch("/api/revalidate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: "/" }),
+      });
         router.back();
+
       } else {
         console.error("Backend Error:", data); 
         alert("Error: " + (data.error || "Unknown error"));

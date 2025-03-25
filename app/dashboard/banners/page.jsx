@@ -67,53 +67,50 @@ const BannerForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const formData = new FormData();
-        formData.append('title', banner.title);   // ✅ Fix: Use banner.title
-        formData.append('linkText', banner.linkText);
-        formData.append('link', banner.link);
+        formData.append("title", banner.title);
+        formData.append("linkText", banner.linkText);
+        formData.append("link", banner.link);
         if (banner.logo) formData.append("logo", banner.logo);
         if (banner.banner_image) formData.append("banner_image", banner.banner_image);
-
-        console.log("FormData:", ...formData);  // Debugging
-
+    
         try {
-
+            let response;
             if (isEditMode) {
-                await fetch(`${baseApi}/banners/${banner._id}`, {
-                    method: 'PUT',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                response = await fetch(`${baseApi}/banners/${banner._id}`, {
+                    method: "PUT",
+                    headers: { Authorization: `Bearer ${token}` },
                     body: formData,
                 });
-                alert('Banner updated successfully!');
-                fetchBanners()
-                setAddBannerOpen(false)
             } else {
-                const response = await fetch(`${baseApi}/banners/`, {
-                    method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                response = await fetch(`${baseApi}/banners/`, {
+                    method: "POST",
+                    headers: { Authorization: `Bearer ${token}` },
                     body: formData,
                 });
-                if (response.ok) {
-                    const data = await response.json();
-                    alert(data.message || 'Banner added successfully!');
-                    fetchBanners()
-                    setAddBannerOpen(false)
-                } else {
-                    const error = await response.json();
-                    alert(error.message || 'Failed to add banner.');
-                }
             }
-
+    
+            if (response.ok) {
+                alert("Banner saved successfully!");
+                fetchBanners();
+                setAddBannerOpen(false);
+    
+                await fetch("/api/revalidate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ path: "/" }),
+                });
+            } else {
+                const error = await response.json();
+                alert(error.message || "Failed to save banner.");
+            }
         } catch (err) {
-            console.error('Error adding banner:', err);
-            alert('An error occurred. Please try again.');
+            console.error("Error saving banner:", err);
+            alert("An error occurred. Please try again.");
         }
     };
+    
 
 
     const fetchBanners = async () => {
@@ -140,6 +137,11 @@ const BannerForm = () => {
             
             alert("Benner deleted!");
             fetchBanners();
+            await fetch("/api/revalidate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ path: "/" }),
+            });
         } catch (error) {
             alert("Error deleting banner");
         }
@@ -248,7 +250,6 @@ const BannerForm = () => {
                             <h3 className="font-semibold ">{banner.title}</h3>
                             <p className="">{banner.linkText}</p>
                         </div>
-
                         <Image width={500} height={500} src={`${baseApi}${banner.banner_image}`} alt={banner.title} className="max-w-full h-auto" />
                         <div className="mt-2 flex space-x-2">
                             <Button onClick={() => handleEdit(banner)} className="bg-yellow-500 text-white">Edit</Button>

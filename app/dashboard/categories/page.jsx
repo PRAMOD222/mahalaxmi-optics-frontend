@@ -91,6 +91,11 @@ const Categories = () => {
       }
       fetchCategories();
       setAddCategoryOpen(false);
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/" }),
+    });
     } catch (error) {
       toast.error("Error saving category");
     }
@@ -108,6 +113,11 @@ const Categories = () => {
       });
       toast.success("Category deleted!");
       fetchCategories();
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/" }),
+    });
     } catch (error) {
       toast.error("Error deleting category");
     }

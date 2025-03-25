@@ -92,7 +92,12 @@ const NavbarPage = () => {
       getNavbarInfo();
       setIsEditOpen(false);
       setIsAddOpen(false);
-      setForm({ featuredBrands: [], category: "", tag: "" }); // Reset form after save
+      setForm({ featuredBrands: [], category: "", tag: "" }); 
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/" }),
+    });
     } catch (error) {
       console.error(`Error POST navbar info:`, error);
     }
