@@ -4,18 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Slider } from "@/components/ui/slider";
 
-const ProductImageCropper = ({ handleImageChange, ratio, fileInputRef, color, setSelectedColor }) => {
+const ProductImageCropper = ({ handleImageChange,  color }) => {
   const [imageSrc, setImageSrc] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 
-  useEffect(() => {
-    if (color) {
-      setSelectedColor(color);
-    }
-  }, []);
+  const fileInputRef = useRef(null);
+
+  // useEffect(() => {
+  //   if (color) {
+  //     setSelectedColor(color);
+  //   }
+  // }, []);
 
   const triggerFileSelect = () => {
     fileInputRef.current?.click();
@@ -84,7 +86,9 @@ const ProductImageCropper = ({ handleImageChange, ratio, fileInputRef, color, se
       const fileList = dataTransfer.files;
 
       const event = { target: { files: fileList } };
-      handleImageChange(event);
+
+      console.log("color for image change:",)
+      handleImageChange(event, color);
       setIsDialogOpen(false);
     }, "image/jpeg", 0.92); // Added quality parameter (0.92 = 92% quality)
   };

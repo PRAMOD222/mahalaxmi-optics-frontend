@@ -57,7 +57,6 @@ export default function ProductPage() {
     stock: "",
     isOptical: false,
   });
-  const [selectedColor, setSelectedColor] = useState(null);
   const [newColor, setNewColor] = useState({ color_name: "black", color_code: "#000000" });
   const [searchValue, setSearchValue] = useState("");
 
@@ -164,14 +163,14 @@ export default function ProductPage() {
     setProduct({ ...product, [name]: value });
   };
 
-  const handleImageChange = (e) => {
-    if (selectedColor) {
-      console.log("selectedColor", selectedColor);
+  const handleImageChange = (e, color) => {
+    if (color) {
+      console.log("selectedColor", color);
       const newImages = { ...product.images };
-      if (!newImages[selectedColor.color_name]) {
-        newImages[selectedColor.color_name] = [];
+      if (!newImages[color.color_name]) {
+        newImages[color.color_name] = [];
       }
-      newImages[selectedColor.color_name].push(...Array.from(e.target.files));
+      newImages[color.color_name].push(...Array.from(e.target.files));
       setProduct({ ...product, images: newImages });
 
       e.target.value = "";
@@ -272,9 +271,6 @@ export default function ProductPage() {
 
   const fileInputRef = useRef(null);
 
-  const handleButtonClick = () => {
-    fileInputRef.current.click();
-  };
 
   const handleShapeChange = (value) => {
     // console.log(value); // Correct way to get selected value
@@ -608,7 +604,6 @@ export default function ProductPage() {
                         fileInputRef={fileInputRef}
                         handleImageChange={handleImageChange}
                         color={color}
-                        setSelectedColor={setSelectedColor}
                       />
 
                       <div className="grid grid-cols-3 gap-2 mt-2 p-2">
@@ -650,49 +645,7 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {selectedColor && (
-              <div className="col-span-2 ">
-                <div className="flex items-center">
-                  {/* <Label className="text-lg font-semibold">
-                    Images for {selectedColor.color_name}
-                  </Label>
-                  <ProductImageCropper
-                    fileInputRef={fileInputRef}
-                    handleImageChange={handleImageChange}
-                  /> */}
-                </div>
-                {/* <div className="flex flex-wrap gap-2 mt-2 p-2">
-                  {product.images[selectedColor.color_name]?.map(
-                    (image, index) => {
-                      const imageUrl =
-                        typeof image === "string"
-                          ? `${baseApi}${image}`
-                          : URL.createObjectURL(image);
-                      return (
-                        <div key={imageUrl + Date.now()} className="relative">
-                          <Image
-                            key={index}
-                            src={imageUrl}
-                            width={400}
-                            height={400}
-                            alt={`Product Preview ${index}`}
-                            className="rounded-md shadow-md w-48 h-48 object-cover"
-                          />
-                          <button
-                            className="absolute top-0 right-0 text-2xl"
-                            onClick={() =>
-                              handleRemoveImage(selectedColor.color_name, index)
-                            }
-                          >
-                            <MdCancel />
-                          </button>
-                        </div>
-                      );
-                    }
-                  )}
-                </div> */}
-              </div>
-            )}
+
             <div className="col-span-2 bg-black h-[1px] w-full"></div>
             <div className="col-span-2 p-2">
               <h3 className="text-lg font-semibold mb-4">

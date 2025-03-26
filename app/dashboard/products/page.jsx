@@ -52,6 +52,7 @@ const Products = () => {
         }
       );
       if (response.ok) {
+        fetchProducts();
         setProducts((prevProducts) =>
           prevProducts.filter((product) => product._id !== deleteProductId)
         );
@@ -96,7 +97,7 @@ const Products = () => {
               <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
               <p className="text-gray-600">{product.description}</p>
               <p className="text-gray-700">Price: Rs{product.price}</p>
-              <p className="text-gray-700">Stock: {product.quantity}</p>
+              <p className="text-gray-700">Stock: {product.stock}</p>
               <div className="flex gap-2 mt-4">
                 <Button asChild className="bg-yellow-500 text-white"><Link href={`./products/${product._id}`}>Edit</Link></Button>
                 <AlertDialog >
