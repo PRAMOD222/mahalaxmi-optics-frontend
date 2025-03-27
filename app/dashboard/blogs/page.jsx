@@ -193,6 +193,9 @@ const Blogs = () => {
     try {
       const response = await fetch(`${baseApi}/blogs/${deleteId}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {
@@ -220,24 +223,7 @@ const Blogs = () => {
 
   return (
     <div className="container mx-auto p-4">
-      {/* <div className="w-fit mb-8 bg-gray-100 p-1 flex space-x-2 rounded-sm shadow-md mx-auto">
-        <Button
-          onClick={() => setCurrentTab("blogs")}
-          className={`w-full py-0 border-none shadow-none text-md text-black bg-white hover:bg-white  ${currentTab === "blogs" &&
-            "text-white hover:bg-[#00a651] bg-[#00a651]"
-            }  `}
-        >
-          Blogs
-        </Button>
-        <Button
-          onClick={() => setCurrentTab("blogsSequence")}
-          className={`w-full py-0 border-none shadow-none text-md text-black bg-white hover:bg-white  ${currentTab === "blogsSequence" &&
-            "text-white hover:bg-[#00a651] bg-[#00a651]"
-            }  `}
-        >
-          Blogs Sequence
-        </Button>
-      </div> */}
+     
 
       <h2 className="text-2xl font-semibold ">Blogs </h2>
 
@@ -287,14 +273,16 @@ const Blogs = () => {
 
                   <div className="">
                     <input
-                      placeholder=" Date"
+                      placeholder="Date"
                       type="date"
                       name="date"
-                      value={blog.date}
+                      value={blog.date ? blog.date.split("T")[0] : ""} // Extracts YYYY-MM-DD
                       onChange={handleChange}
                       className="border p-2 w-full rounded-md focus:outline-[#c19f5f]"
                       required
                     />
+
+                    {/* <p>{blog.date}</p> */}
                   </div>
 
                   <div className=" flex gap-4">
@@ -309,12 +297,13 @@ const Blogs = () => {
                     {isEditMode && (
                       <Image
                         className="aspect-square object-cover"
-                        src={`${baseApi}/${blog.image}`}
+                        src={`${baseApi}${blog.image}`}
                         alt={blog.title}
                         width={200}
                         height={200}
                       />
                     )}
+                    {/* <p>{`${baseApi}/${blog.image}`}</p> */}
                   </div>
 
                   <div className="flex flex-col space-y-2">
@@ -400,7 +389,7 @@ const Blogs = () => {
                 width={200}
                 height={200}
               />
-              {/* <p>{`${baseApi}/${blog.image}`}</p> */}
+              {/* <p>{`${baseApi}${blog.image}`}</p> */}
               <h2 className="text-lg font-semibold">{blog.title}</h2>
               <p className="text-gray-600">
                 {blog.description.slice(0, 100)}

@@ -1,14 +1,7 @@
 import React from 'react'
 import TopBar from '@/components/TopBar'
 import Navbar from '@/components/Navbar'
-import Image from 'next/image'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import ProductImages from '@/components/products/ProductImages'
-import ReviewStars from '@/components/ReviewStars'
-import ProductColors from '@/components/products/ProductColors'
-import ProductButtons from '@/components/products/ProductButtons'
-import Link from 'next/link'
-import Footer from '@/components/Footer'
+import ProductsGrid from '@/components/ProductsGrid'
 const baseApi = process.env.NEXT_PUBLIC_BASE_API
 
 
@@ -44,7 +37,9 @@ const Page = async () => {
 
 
             <section className="products mx-6 md:mx-32">
-                <div className="my-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-[6.67%]">
+
+
+                {/* <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-[6.67%]">
                 {ProductsData.products?.map((product) => (
                         <div
                             key={product._id}
@@ -111,7 +106,6 @@ const Page = async () => {
                                                 </div>
 
 
-                                                {/*information*/}
                                                 <div className="flex flex-wrap gap-3">
                                                     <p className="text-[#763f98] whitespace-nowrap text-sm font-[800] bg-white border border-[#763f98]  rounded-full px-4 py-1 w-fit">
                                                         Material: {product.information.material}
@@ -146,8 +140,9 @@ const Page = async () => {
                             </Link>
                         </div>
                     ))}
-                </div>
-                
+                </div> */}
+
+                <ProductsGrid products={ProductsData.products} />
             </section>
             <Footer/>
         </div>

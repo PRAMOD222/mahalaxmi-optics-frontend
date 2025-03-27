@@ -1,21 +1,9 @@
-import React from "react";
-import TopBar from "@/components/TopBar";
-import Navbar from "@/components/Navbar";
-import Image from "next/image";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import ProductImages from "@/components/products/ProductImages";
-import ReviewStars from "@/components/ReviewStars";
-import ProductColors from "@/components/products/ProductColors";
-import ProductButtons from "@/components/products/ProductButtons";
-import Link from "next/link";
-import Footer from "@/components/Footer";
-const baseApi = process.env.NEXT_PUBLIC_BASE_API;
+import React from 'react'
+import TopBar from '@/components/TopBar'
+import Navbar from '@/components/Navbar'
+import ProductsGrid from '@/components/ProductsGrid'
+const baseApi = process.env.NEXT_PUBLIC_BASE_API
+
 
 const Page = async () => {
   const fetchData = async () => {
@@ -48,25 +36,23 @@ const Page = async () => {
         <Navbar />
       </div>
 
-      <section className="products mx-6 md:mx-32">
-        <div className=" my-12 mb-24 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-[6.67%]">
-          {ProductsData.products?.map((product) => (
-            <div key={product._id} className=" text-center">
-              <div className=" border border-[#763f98] flex flex-col justify-between">
-                <Link
-                  href={`/product/${formatSlug(product.name)}`}
-                  className="flex-1 w-full aspect-[5/4] flex items-center justify-center overflow-hidden"
-                >
-                  {product.thumbnail && (
-                    <Image
-                      src={`${baseApi}${product.thumbnail}`}
-                      width={150}
-                      height={150}
-                      alt={product.name}
-                      className="w-full object-contain"
-                    />
-                  )}
-                </Link>
+            <section className="products mx-6 md:mx-32">
+                {/* <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-[6.67%]">
+                    {ProductsData.products?.map((product) => (
+                        <div
+                            key={product._id}
+                            className=" text-center "
+                        >
+                            <div className=" border border-[#763f98] flex flex-col justify-between">
+                                <Link href={`/product/${formatSlug(product.name)}`} className="flex-1 w-full aspect-[5/4] flex items-center justify-center overflow-hidden">
+                                    {product.thumbnail && <Image
+                                        src={`${baseApi}${product.thumbnail}`}
+                                        width={150}
+                                        height={150}
+                                        alt={product.name}
+                                        className="w-full object-contain"
+                                    />}
+                                </Link>
 
                 <Dialog>
                   <DialogTrigger>
@@ -138,6 +124,32 @@ const Page = async () => {
                           </p>
                         </div>
 
+                                                <div className="">
+                                                    <ProductButtons product={product} />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </DialogContent>
+                                </Dialog>
+
+                            </div>
+                            <p className="text-[#763f98] font-semibold mt-2">{product.name}</p>
+                            {product.discounted_price && <p className="text-gray-500 text-sm line-through">Rs {product.discounted_price} /-</p>}
+                            <p className="text-xl font-bold">Rs {product.price} /-</p>
+                            <p className="text-sm text-[#763f98]">AVAILABLE IN <br /> {product.colors.length} COLORS</p>
+                            <Link href={`/product/${formatSlug(product.name)}`} className="mt-3 bg-[#763f98] text-white px-4 py-2  text-sm md:text-base xl:text-xl font-semibold block">
+                                GRAB NOW!
+                            </Link>
+                        </div>
+                    ))}
+                </div> */}
+
+                <ProductsGrid products={ProductsData.products} />
+            </section>
+        </div>
+    )
+}
                         <div className="">
                           <ProductButtons product={product} />
                         </div>
