@@ -3,7 +3,6 @@ import TopBar from '@/components/TopBar'
 import Navbar from '@/components/Navbar'
 import Image from 'next/image'
 import ProductsGrid from '@/components/ProductsGrid'
-import Footer from '@/components/Footer'
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API
 
@@ -52,7 +51,8 @@ const Page = async ({ params }) => {
             </div>
 
             <section className="products mx-6 md:mx-32">
-                <div className="mt-8 mb-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-[6.67%] " >
+
+                {/* <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-[6.67%] " >
                     {brandData?.products.map((product) => (
                         <div
                             key={product._id}
@@ -158,7 +158,6 @@ const Page = async ({ params }) => {
 
                 <ProductsGrid products={brandData?.products} />
             </section>
-            <Footer/>
         </div>
     )
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import TopBar from '@/components/TopBar'
 import Navbar from '@/components/Navbar'
 import ProductsGrid from '@/components/ProductsGrid'
+import Footer from '@/components/Footer'
 const baseApi = process.env.NEXT_PUBLIC_BASE_API
 
 
