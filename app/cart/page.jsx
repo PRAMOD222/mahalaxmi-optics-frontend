@@ -62,14 +62,12 @@ const Page = () => {
               {cartItems.map((item) => (
                 <div key={item._id} className="border-b py-4">
                   <div className="flex items-center">
-                    {item.product.images[item.product.colors[0].color_name] && (
+                    {item.product.thumbnail && (
                       <Image
                         height={100}
                         width={100}
                         src={`${baseApi}${
-                          item.product.images[
-                            item.product.colors[0].color_name
-                          ][0]
+                          item.product.thumbnail
                         }`}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover mr-4"

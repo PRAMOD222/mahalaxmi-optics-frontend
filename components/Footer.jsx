@@ -55,14 +55,22 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-[#4A148C]">Contact Info</h3>
             <ul className="space-y-3">
               <li className="text-sm text-gray-600 flex items-center hover:text-[#6A1B9A] transition duration-300 cursor-pointer">
-                <FaPhone className="w-5 h-5 mr-2 text-[#6A1B9A]" /> +91 9822002973
+                <FaPhone className="w-5 h-5 mr-2 text-[#6A1B9A]" />
+                <a href="tel:+919822002973">+91 9822002973</a>
               </li>
               <li className="text-sm text-gray-600 flex items-center hover:text-[#6A1B9A] transition duration-300 cursor-pointer">
-                <FaEnvelope className="w-5 h-5 mr-2 text-[#6A1B9A]" /> info@opticalhut.in
+                <FaEnvelope className="w-5 h-5 mr-2 text-[#6A1B9A]" />
+                <a href="mailto:info@opticalhut.in">info@opticalhut.in</a>
               </li>
               <li className="text-sm text-gray-600 flex items-center hover:text-[#6A1B9A] transition duration-300 cursor-pointer">
                 <FaMapMarkerAlt className="w-10 h-5 mr-2 text-[#6A1B9A]" />
-                C-4, Haripriya Plaza, Main Besides Dominos Pizza, Rajaram Rd, Rajarampuri, Kolhapur, Maharashtra 416008
+                <a
+                  href="https://www.google.com/maps/place/C-4,+Haripriya+Plaza,+Main+Besides+Dominos+Pizza,+Rajaram+Rd,+Rajarampuri,+Kolhapur,+Maharashtra+416008/@16.7002216,74.2452334,17z/data=!3m1!4b1!4m5!3m4!1s0x3bc5c9eaae3f2f75:0x8e1f1f0e9de8c2bf!8m2!3d16.7002216!4d74.2474221"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  C-4, Haripriya Plaza, Main Besides Dominos Pizza, Rajaram Rd, Rajarampuri, Kolhapur, Maharashtra 416008
+                </a>
               </li>
             </ul>
           </div>
