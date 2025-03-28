@@ -645,7 +645,6 @@ export default function ProductPage() {
               </div>
             </div>
 
-
             <div className="col-span-2 bg-black h-[1px] w-full"></div>
             <div className="col-span-2 p-2">
               <h3 className="text-lg font-semibold mb-4">
@@ -747,11 +746,11 @@ export default function ProductPage() {
 
                   <Select onValueChange={handleShapeChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Shape" />
+                      <SelectValue className="capitalize" placeholder="Shape" />
                     </SelectTrigger>
                     <SelectContent>
                       {shapes.map((shape) => (
-                        <SelectItem key={shape} value={shape}>
+                        <SelectItem key={shape} className="capitalize" value={shape}>
                           {shape}
                         </SelectItem>
                       ))}
