@@ -93,18 +93,18 @@ const Products = () => {
               <p className="text-gray-700">Price: Rs{product.price}</p>
               <p className="text-gray-700">Stock: {product.quantity}</p>
               <div className="flex gap-2 mt-4">
-                <Button asChild className="bg-yellow-500 text-white"><Link href={`./products/${product._id}`}>Edit</Link></Button>
+                <h2 className="bg-yellow-500 text-white px-2 py-1 rounded-md cursor-pointer"><Link href={`./products/${product._id}`}>Edit</Link></h2>
                 <AlertDialog >
                   <AlertDialogTrigger>
-                    <Button 
-                      className="bg-red-500 text-white"
+                    <h2 
+                      className="bg-red-500 text-white px-2 py-1 rounded-md cursor-pointer"
                       onClick={() => {
                         setDeleteProductId(product._id);
                         setIsDialogOpen(true);
                       }}
                     >
                       Delete
-                    </Button>
+                    </h2>
                   </AlertDialogTrigger>
                   {isDialogOpen && (
                     <AlertDialogContent>
