@@ -1,26 +1,40 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import { logout } from "@/store/authSlice";
-import { PencilIcon, TrashIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 import { FaBox, FaHeart, FaUser } from "react-icons/fa6";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@/components/ui/button"; // Shadcn Button
-import { Input } from "@/components/ui/input"; // Shadcn Input
+import { FaLocationDot } from "react-icons/fa6";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
 const AccountPage = () => {
-  const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
-  const [addresses, setAddresses] = useState([]);
-  const [token, setToken] = useState(null);
 
 
-  const [address, setAddress] = useState({
+  const [orders, setOrders] = useState([
+    {
+      id: 1,
+      date: "2023-10-01",
+      total: 50000,
+      status: "Delivered",
+      productImage: "/glass3.png",
+    },
+    {
+      id: 2,
+      date: "2023-09-25",
+      total: 12000,
+      status: "Shipped",
+      productImage: "/glass4.png",
+    },
+  ]);
+
+  const [wishlist, setWishlist] = useState([
+    { id: 1, name: "Ray Ban RB 90102R", price: 25000, image: "/glass1.png" },
+    { id: 2, name: "Oakley OO 9208", price: 40000, image: "/glass2.png" },
+  ]);
+
+  const [addressForm, setAddressForm] = useState({
     fullName: "",
     address: "",
     city: "",
@@ -29,108 +43,151 @@ const AccountPage = () => {
     country: "",
     phone: "",
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [addressToDelete, setAddressToDelete] = useState(null);
-  const router = useRouter();
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken);
-  }, []);
+  const [visibleOrders, setVisibleOrders] = useState(2);
+  const [visibleWishlist, setVisibleWishlist] = useState(2);
+  const [isAddAddressOpen, setIsAddAddressOpen] = useState(false);
+  const [address, setAddress] = useState([]);
+  const [userDetails, setUserDetails] = useState(null);
 
-  const fetchAddresses = async () => {
-    try {
-      const response = await fetch(`${baseApi}/users/get-address`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      setAddresses(data.shippingAddress);
-    } catch (error) {
-      console.error("Error fetching addresses:", error);
-    }
+  const loadMoreOrders = () => {
+    setVisibleOrders((prev) => prev + 2);
   };
 
-  useEffect(() => {
-    fetchAddresses();
-  }, [token]);
+  const loadMoreWishlist = () => {
+    setVisibleWishlist((prev) => prev + 2);
+  };
 
-  const handleAddAddress = () => {
+  const handleLogout = () => {
+    alert("Logging out...");
+  };
+
+  const handleEditProfile = () => {
+    alert("Redirecting to edit profile...");
+  };
+
+  const handleAddToCart = (item) => {
+    alert(`${item.name} added to cart`);
+  };
+
+  const handleViewOrders = () => {
+    alert("Redirecting to orders page...");
+  };
+
+  const handleViewWishlist = () => {
+    alert("Redirecting to wishlist page...");
+  };
+
+  const handleAddressSubmit = async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem("token");
+
+    console.log("Address submitted:", addressForm);
+
     try {
-      fetch(`${baseApi}/users/add-address`, {
+      const response = await fetch(`${baseApi}/users/add-address`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(address),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Address added successfully:", data);
-          fetchAddresses();
-        })
-        .catch((error) => {
-          console.error("Error adding address:", error);
-        });
+        body: JSON.stringify(addressForm),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to add address");
+      }
+
+      alert("Address added successfully");
+      console.log("Response:", data);
+      setIsAddAddressOpen(false);
+      fetchAddress();
+      setAddressForm({
+        fullName: "",
+        address: "",
+        city: "",
+        state: "",
+        zipCode: "",
+        country: "",
+        phone: "",
+      });
+      // Optionally update UI here
     } catch (error) {
-      console.error("Error adding address:", error);
+      alert("Error adding address: " + error.message);
+      console.error("Address submission error:", error);
     }
   };
 
-  const handleDeleteAddress = (addressId) => {
+  const fetchAddress = async () => {
     try {
-      fetch(`${baseApi}/users/delete-address/${addressId}`, {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${baseApi}/users/get-address`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch address");
+      }
+      setAddress(data);
+      console.log("Address fetched:", data);
+
+    } catch (error) {
+      alert("Error fetching address: " + error.message);
+      console.error("Address fetching error:", error);
+    }
+  };
+
+  const handleDeleteAddress = (id) => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = fetch(`${baseApi}/users/delete-address/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Address deleted successfully:", data);
-          fetchAddresses();
-        })
-        .catch((error) => {
-          console.error("Error deleting address:", error);
-        });
+      if (res.ok) {
+        alert("Address deleted successfully");
+        fetchAddress();
+      } else {
+        alert("Failed to delete address");
+      }
     } catch (error) {
-      console.error("Error deleting address:", error);
+
     }
   };
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setAddress({ ...address, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    handleAddAddress();
-    closeModal();
-  };
-
-  const confirmDelete = (addressId) => {
-    setAddressToDelete(addressId);
-  };
-
-  const handleConfirmDelete = () => {
-    if (addressToDelete) {
-      handleDeleteAddress(addressToDelete);
-      setAddressToDelete(null);
+  const fetchUserDetails = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${baseApi}/users/get-user-details`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch user details");
+      }
+      // console.log("User details fetched:", data);
+      setUserDetails(data);
+    } catch (error) {
+      alert("Error fetching user details: " + error.message);
+      console.error("User details fetching error:", error);
     }
   };
 
-  const handleCancelDelete = () => {
-    setAddressToDelete(null);
-  };
+  useEffect(() => {
+    fetchAddress();
+    fetchUserDetails();
+  }, []);
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -139,7 +196,7 @@ const AccountPage = () => {
         <div className="mb-4 flex flex-col md:flex-row justify-between items-center">
           <div className="text-center md:text-left">
             <h1 className="text-2xl font-bold text-gray-800">
-              Welcome, {user?.name}!
+              {/* Welcome, {userDetails.name}! */}
             </h1>
             <p className="text-gray-600 mt-2">Your Account Overview</p>
           </div>
@@ -152,7 +209,7 @@ const AccountPage = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-6">
-            <div>
+            {userDetails && <div>
               <p className="text-gray-700">
                 <span className="font-medium">Name:</span> {user?.name}
               </p>
@@ -162,143 +219,186 @@ const AccountPage = () => {
               <p className="text-gray-700">
                 <span className="font-medium">Phone:</span> {user?.phone}
               </p>
-            </div>
-          </div>
-          <div className="absolute rounded-md shadow-md bg-white right-0 top-0 m-4 p-2">
-            <PencilIcon className="text-gray-700" />
+            </div>}
+
           </div>
         </div>
-      </div>
+        <div className="bg-white rounded-lg p-8 mb-12 border border-gray-200">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+              <FaLocationDot className="mr-2 text-[#763f98]" /> Address Details
+            </h2>
+          </div>
 
-      <div className="mx-6 md:mx-32 py-4">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Addresses</h2>
-        <Button
-          onClick={openModal}
-          className="bg-white text-gray-800 border border-gray-300 hover:bg-gray-50"
-        >
-          Add New Address
-        </Button>
-        <div className="space-y-4 mt-4">
-          {addresses?.map((addr) => (
-            <div
-              key={addr._id}
-              className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm"
-            >
-              <p className="text-gray-700 font-medium">{addr.fullName}</p>
-              <p className="text-gray-700">{addr.address}</p>
-              <p className="text-gray-700">
-                {addr.city}, {addr.state} {addr.zipCode}
-              </p>
-              <p className="text-gray-700">{addr.country}</p>
-              <p className="text-gray-700">{addr.phone}</p>
-              <Button
-                onClick={() => confirmDelete(addr._id)}
-                className="mt-4 bg-white text-gray-800 border border-gray-300 hover:bg-gray-50 flex items-center"
-              >
-                <TrashIcon className="w-4 h-4 mr-2" />
-                Delete Address
-              </Button>
-            </div>
-          ))}
-        </div>
-      </div>
+          <button onClick={() => setIsAddAddressOpen(true)} className="bg-[#763f98] text-white font-bold px-4 py-2 rounded ">Add Address</button>
 
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg w-96">
-            <h3 className="text-lg font-bold mb-4">Add New Address</h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                type="text"
-                name="fullName"
-                placeholder="Full Name"
-                value={address.fullName}
-                onChange={handleInputChange}
-                required
-              />
-              <Input
-                type="text"
-                name="address"
-                placeholder="Address"
-                value={address.address}
-                onChange={handleInputChange}
-                required
-              />
-              <Input
-                type="text"
-                name="city"
-                placeholder="City"
-                value={address.city}
-                onChange={handleInputChange}
-                required
-              />
-              <Input
-                type="text"
-                name="state"
-                placeholder="State"
-                value={address.state}
-                onChange={handleInputChange}
-                required
-              />
-              <Input
-                type="text"
-                name="zipCode"
-                placeholder="Zip Code"
-                value={address.zipCode}
-                onChange={handleInputChange}
-                required
-              />
-              <Input
-                type="text"
-                name="country"
-                placeholder="Country"
-                value={address.country}
-                onChange={handleInputChange}
-                required
-              />
-              <Input
-                type="text"
-                name="phone"
-                placeholder="Phone"
-                value={address.phone}
-                onChange={handleInputChange}
-                required
-              />
-              <div className="flex justify-end space-x-2">
-                <Button
-                  type="button"
-                  onClick={closeModal}
-                  variant="outline"
-                >
-                  Cancel
-                </Button>
-                <Button type="submit">Save Address</Button>
+          <Dialog open={isAddAddressOpen} onOpenChange={setIsAddAddressOpen}>
+            {/* <DialogTrigger>Open</DialogTrigger> */}
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add Address</DialogTitle>
+                <form onSubmit={handleAddressSubmit} className="space-y-4">
+                  <input type="text" name="fullName" placeholder="Full Name" className="w-full p-2 border rounded focus:outline-none focus:border-[#763f98]" required value={addressForm.fullName} onChange={(e) => setAddressForm({ ...addressForm, fullName: e.target.value })} />
+                  <input type="text" name="addres" placeholder="Adress" className="w-full p-2 border rounded focus:outline-none focus:border-[#763f98]" required value={addressForm.address} onChange={(e) => setAddressForm({ ...addressForm, address: e.target.value })} />
+                  <input type="text" name="city" placeholder="City" className="w-full p-2 border rounded focus:outline-none   focus:border-[#763f98]" required value={addressForm.city} onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })} />
+                  <input type="text" name="state" placeholder="State" className="w-full p-2 border rounded focus:outline-none focus:border-[#763f98]" required value={addressForm.state} onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })} />
+                  <input type="text" name="Postal Code" placeholder="zipCode" className="w-full p-2 border rounded focus:outline-none focus:border-[#763f98]" required value={addressForm.zipCode} onChange={(e) => setAddressForm({ ...addressForm, zipCode: e.target.value })} />
+                  <input type="text" name="country" placeholder="Country" className="w-full p-2 border rounded focus:outline-none focus:border-[#763f98]" required value={addressForm.country} onChange={(e) => setAddressForm({ ...addressForm, country: e.target.value })} />
+                  <input type="tel" name="phone" placeholder="Mobile Number" className="w-full p-2 border rounded focus:outline-none focus:border-[#763f98]" required value={addressForm.phone} onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })} />
+
+                  <button type="submit" className="bg-[#763f98] text-white font-bold px-4 py-2 rounded ">Submit</button>
+                </form>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-6 py-2">
+
+            {address && address.map((item) => (
+
+              <div key={item._id} className="border rounded-md p-4">
+                <p className="text-gray-700">
+                  <span className="font-medium">Full Name:</span> {item.fullName}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">Phone:</span> {item.phone}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">Address:</span> {item.address}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">Pin Code:</span> {item.zipCode}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">City:</span> {item.city}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">State:</span> {item.state}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">Country:</span> {item.country}
+                </p>
+
+                <div className="flex justify-end">
+                  <button onClick={() => handleDeleteAddress(item._id)} className="bg-[#763f98] text-white font-bold px-4 py-2 rounded ">Delete</button>
+                </div>
               </div>
-            </form>
-          </div>
-        </div>
-      )}
 
-      {addressToDelete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg">
-            <h3 className="text-lg font-bold mb-4">Confirm Delete</h3>
-            <p className="mb-4">Are you sure you want to delete this address?</p>
-            <div className="flex justify-end space-x-2">
-              <Button
-                onClick={handleCancelDelete}
-                variant="outline"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleConfirmDelete}
-                variant="destructive"
-              >
-                Delete
-              </Button>
-            </div>
+            ))}
+
           </div>
+
+        </div>
+
+        {/* Recent Orders */}
+        <div className="bg-white rounded-lg p-8 mb-12 border border-gray-200">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+            <FaBox className="mr-2 text-[#763f98]" /> Recent Orders
+          </h2>
+          {/* <div className="space-y-6">
+            {orders.slice(0, visibleOrders).map((order) => (
+              <div key={order.id}>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 border rounded-lg">
+
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    
+                    <img
+                      src={order.productImage}
+                      alt="Product"
+                      className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg"
+                    />
+
+                    <div>
+                      <p className="text-gray-700">
+                        <span className="font-medium">Order ID:</span> #
+                        {order.id}
+                      </p>
+                      <p className="text-gray-600">
+                        <span className="font-medium">Date:</span> {order.date}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:text-right sm:items-end gap-2 sm:gap-1">
+                    <p className="text-gray-700">
+                      <span className="font-medium">Total:</span> ${order.total}
+                    </p>
+                    <p
+                      className={`text-sm font-semibold ${order.status === "Delivered"
+                        ? "text-green-500"
+                        : "text-yellow-500"
+                        }`}
+                    >
+                      {order.status}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div> */}
+          {visibleOrders < orders.length && (
+            <button
+              onClick={loadMoreOrders}
+              className="mt-6 w-full bg-[#763f98] text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition duration-300"
+            >
+              Load More Orders
+            </button>
+          )}
+          <button
+            onClick={handleViewOrders}
+            className="mt-4 w-full bg-[#763f98] text-white font-bold px-4 py-2 rounded-lg hover:bg-purple-600 transition duration-300"
+          >
+            View All Orders
+          </button>
+        </div>
+
+        {/* Recent Wishlist */}
+        <div className="bg-white rounded-lg p-8 mb-12 border border-gray-200">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+            <FaHeart className="mr-2 text-[#763f98]" /> Recent Wishlist
+          </h2>
+          {/* <div className="space-y-6">
+            {wishlist.slice(0, visibleWishlist).map((item) => (
+              <div
+                key={item.id}
+                className="border p-6 rounded-lg border-gray-200"
+              >
+                <div className="flex items-center">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-20 h-20 object-cover rounded-lg mr-4"
+                  />
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800">
+                      {item.name}
+                    </h3>
+                    <p className="text-gray-600">₹{item.price}</p>
+                    <button
+                      onClick={() => handleAddToCart(item)}
+                      className="mt-4 bg-[#9547a7] text-white px-4 py-2  hover:bg-[#763f98] transition duration-300"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div> */}
+          {visibleWishlist < wishlist.length && (
+            <button
+              onClick={loadMoreWishlist}
+              className="mt-6 w-full bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition duration-300"
+            >
+              Load More Wishlist
+            </button>
+          )}
+          <button
+            onClick={handleViewWishlist}
+            className="mt-4 w-full text-center bg-[#763f98] text-white font-bold px-4 py-2 rounded-lg hover:bg-purple-600 transition duration-300"
+          >
+            View All Wishlist
+          </button>
         </div>
       )}
     </div>

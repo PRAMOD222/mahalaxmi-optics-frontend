@@ -17,7 +17,7 @@ const ProductImages = ({ product }) => {
   return (
     <div className="flex w-full flex-row-reverse md:flex-row items-start md:items-start gap-6">
 
-      <div className="flex w-fit flex-col gap-3 border">
+      <div className="flex w-fit flex-col gap-3">
         {images[selectedColor]?.map((img, index) => (
           <div
             key={index}

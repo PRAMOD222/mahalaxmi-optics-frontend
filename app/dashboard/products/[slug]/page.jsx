@@ -400,6 +400,13 @@ export default function ProductPage() {
       },
     }));
   };
+  
+  const handleRemoveColor = (color) => {
+    const newColors = product.colors.filter(
+      (c) => c.color_name !== color.color_name
+    );
+    setProduct({ ...product, colors: newColors });
+  };
 
   return (
     <div className="w-full mx-auto p-6">
@@ -443,15 +450,6 @@ export default function ProductPage() {
                 className="w-full"
               />
             </div>
-            {/* <div className="col-span-1">
-              <Label>Type</Label>
-              <Input
-                name="type"
-                value={product.type}
-                onChange={handleChange}
-                className="w-full"
-              />
-            </div> */}
             <div className="col-span-1">
               <Label>Ideal For</Label>
               {/* <Input
@@ -639,9 +637,9 @@ export default function ProductPage() {
                 </CardContent>
               </Card>
 
-              <div className="flex flex-col flex-wrap gap-2">
+              {/* <div className="flex flex-col flex-wrap gap-2">
                 <div className="flex h-fit gap-2">
-                  {/* <Input
+                   <Input
                     type="text"
                     placeholder="Color Name"
                     value={newColor.color_name}
@@ -649,9 +647,7 @@ export default function ProductPage() {
                       setNewColor({ ...newColor, color_name: e.target.value })
                     }
                     className="w-fit"
-                  /> */}
-
-                  {/* <div className="relative">
+                  /> <div className="relative">
                     <div className="w-16 h-full border-2 border-gray-200 rounded-md cursor-pointer relative p-1">
                       <div
                         className="flex items-center justify-center w-full h-full rounded"
@@ -671,9 +667,9 @@ export default function ProductPage() {
                       }
                       className="absolute top-0 left-0 opacity-0 cursor-pointer"
                     />
-                  </div> */}
+                  </div>
                 </div>
-                {/* <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2">
                   {product.colors.map((color) => (
                     <div
                       key={color.color_name + color.color_code}
@@ -697,8 +693,9 @@ export default function ProductPage() {
                   >
                     +
                   </div>
-                </div> */}
-              </div>
+                </div> 
+              </div> */}
+
             </div>
             <div className="col-span-2 w-full">
               <div className="grid grid-cols-3 py-2 gap-2">

@@ -134,6 +134,7 @@ const Products = () => {
           );
         })}
       </div>
+      
     </div>
   );
 };
