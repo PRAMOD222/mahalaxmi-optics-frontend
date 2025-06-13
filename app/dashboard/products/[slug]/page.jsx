@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@mui/material";
 import ImageCropper from "@/components/cropper/ImageCropper";
-import { MdCancel } from "react-icons/md";
+import { MdCancel, MdCancelPresentation } from "react-icons/md";
 import { IoIosColorPalette } from "react-icons/io";
 import { CgColorPicker } from "react-icons/cg";
 
@@ -58,7 +58,7 @@ export default function ProductPage() {
     isOptical: false,
   });
   const [selectedColor, setSelectedColor] = useState(null);
-  const [newColor, setNewColor] = useState({ color_name: "", color_code: "" });
+  const [newColor, setNewColor] = useState({ color_name: "", color_code: "", model_colour_code: "" });
   const [searchValue, setSearchValue] = useState("");
 
   const [categories, setCategories] = useState([]);
@@ -199,7 +199,7 @@ export default function ProductPage() {
     if (newColor.color_name && newColor.color_code) {
       const newColors = [...product.colors, newColor];
       setProduct({ ...product, colors: newColors });
-      setNewColor({ color_name: "", color_code: "" });
+      setNewColor({ color_name: "", color_code: "", model_colour_code: "" });
     }
   };
 
@@ -235,28 +235,28 @@ export default function ProductPage() {
     try {
       const response = isNew
         ? await fetch(`${baseApi}/products`, {
-            method: "POST",
-            headers: {
-              // "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          })
+          method: "POST",
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        })
         : await fetch(`${baseApi}/products/${slug}`, {
-            method: "PUT",
-            headers: {
-              // "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          });
+          method: "PUT",
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
 
       const data = await response.json();
       if (response.ok) {
         alert(data.message);
         router.back();
       } else {
-        console.error("Backend Error:", data); 
+        console.error("Backend Error:", data);
         alert("Error: " + (data.error || "Unknown error"));
       }
     } catch (error) {
@@ -280,6 +280,13 @@ export default function ProductPage() {
         shape: value, // Directly use the value
       },
     }));
+  };
+  
+  const handleRemoveColor = (color) => {
+    const newColors = product.colors.filter(
+      (c) => c.color_name !== color.color_name
+    );
+    setProduct({ ...product, colors: newColors });
   };
 
   return (
@@ -324,15 +331,6 @@ export default function ProductPage() {
                 className="w-full"
               />
             </div>
-            {/* <div className="col-span-1">
-              <Label>Type</Label>
-              <Input
-                name="type"
-                value={product.type}
-                onChange={handleChange}
-                className="w-full"
-              />
-            </div> */}
             <div className="col-span-1">
               <Label>Ideal For</Label>
               {/* <Input
@@ -394,7 +392,6 @@ export default function ProductPage() {
                 </SelectContent>
               </Select>
             </div>
-
             <div className="col-span-1">
               <Label>Price</Label>
               <Input
@@ -458,6 +455,7 @@ export default function ProductPage() {
                 </SelectContent>
               </Select>
             </div>
+
             {/* Colors and images */}
             <div className="col-span-1 w-1/2">
               <Label className="text-lg font-semibold pb-8">
@@ -504,13 +502,27 @@ export default function ProductPage() {
                       className="w-full"
                     />
                   </div>
+
+                  <div className="flex gap-2 items-center">
+                    <Label className="w-1/2">Brand Color Code</Label>
+                    <Input
+                      type="text"
+                      placeholder="Brand Color Code"
+                      value={newColor.model_colour_code}
+                      onChange={(e) =>
+                        setNewColor({ ...newColor, model_colour_code: e.target.value })
+                      }
+                      className="w-full"
+                    />
+                  </div>
+
                   <Button onClick={handleAddColor}>Add +</Button>
                 </CardContent>
               </Card>
 
-              <div className="flex flex-col flex-wrap gap-2">
+              {/* <div className="flex flex-col flex-wrap gap-2">
                 <div className="flex h-fit gap-2">
-                  {/* <Input
+                   <Input
                     type="text"
                     placeholder="Color Name"
                     value={newColor.color_name}
@@ -518,9 +530,7 @@ export default function ProductPage() {
                       setNewColor({ ...newColor, color_name: e.target.value })
                     }
                     className="w-fit"
-                  /> */}
-
-                  {/* <div className="relative">
+                  /> <div className="relative">
                     <div className="w-16 h-full border-2 border-gray-200 rounded-md cursor-pointer relative p-1">
                       <div
                         className="flex items-center justify-center w-full h-full rounded"
@@ -540,9 +550,9 @@ export default function ProductPage() {
                       }
                       className="absolute top-0 left-0 opacity-0 cursor-pointer"
                     />
-                  </div> */}
+                  </div>
                 </div>
-                {/* <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2">
                   {product.colors.map((color) => (
                     <div
                       key={color.color_name + color.color_code}
@@ -566,8 +576,9 @@ export default function ProductPage() {
                   >
                     +
                   </div>
-                </div> */}
-              </div>
+                </div> 
+              </div> */}
+
             </div>
             <div className="col-span-2 w-full">
               <div className="grid grid-cols-3 py-2 gap-2">
@@ -576,15 +587,24 @@ export default function ProductPage() {
                     <CardContent className="p-2">
                       <div
                         key={color.color_name + color.color_code}
-                        className="flex items-center space-x-2 cursor-pointer"
+                        className="flex items-center justify-between cursor-pointer"
                       >
-                        <div
-                          className={`w-8 h-8 rounded-full border-2 border-black `}
-                          style={{ backgroundColor: color.color_code }}
-                        />
-                        <span className="text-sm text-center capitalize font-[800]">
-                          {color.color_name}
-                        </span>
+                        <div className="flex gap-2 items-center">
+                          <div
+                            className={`w-8 h-8 rounded-full border-2 border-black `}
+                            style={{ backgroundColor: color.color_code }}
+                          />
+                          <span className="text-sm text-center capitalize font-[800]">
+                            {color.color_name}
+                          </span>
+                          <span className="text-sm text-center capitalize font-[800]">
+                            {color.model_colour_code}
+                          </span>
+                        </div>
+
+                        <div>
+                          <MdCancel onClick={() => handleRemoveColor(color)} className="text-2xl text-red-500" />
+                        </div>
                       </div>
 
                       <ImageCropper
