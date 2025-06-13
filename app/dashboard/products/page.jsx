@@ -20,11 +20,10 @@ const Products = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [token, setToken] = useState();
-  
 
-  useEffect(()=>{
-    setToken(localStorage.getItem("token"))
-  },[])
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
   const fetchProducts = async () => {
     try {
       const response = await fetch(`${baseApi}/products`);
@@ -41,16 +40,13 @@ const Products = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(
-        `${baseApi}/products/${deleteProductId}`,
-        {
-          method: "DELETE",
-          headers: {
-            // "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${baseApi}/products/${deleteProductId}`, {
+        method: "DELETE",
+        headers: {
+          // "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.ok) {
         fetchProducts();
         setProducts((prevProducts) =>
@@ -60,7 +56,7 @@ const Products = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ path: "/" }),
-      });
+        });
       } else {
         console.error("Failed to delete product");
       }
@@ -83,55 +79,56 @@ const Products = () => {
 
           return (
             <div key={product._id} className="border rounded-sm p-1 shadow-md">
-              {firstImage && (
+              {product.thumbnail && (
                 <Image
                   className="w-full h-40 object-cover rounded-xs"
-                  src={`${baseApi}${firstImage}`}
+                  src={`${baseApi}${product.thumbnail}`}
                   alt={product.name}
                   width={200}
                   height={200}
                 />
               )}
               <div className="p-2">
-
-              <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
-              <p className="text-gray-600">{product.description}</p>
-              <p className="text-gray-700">Price: Rs{product.price}</p>
-              <p className="text-gray-700">Stock: {product.stock}</p>
-              <div className="flex gap-2 mt-4">
-                <Button asChild className="bg-yellow-500 text-white"><Link href={`./products/${product._id}`}>Edit</Link></Button>
-                <AlertDialog >
-                  <AlertDialogTrigger>
-                    <Button 
-                      className="bg-red-500 text-white"
-                      onClick={() => {
-                        setDeleteProductId(product._id);
-                        setIsDialogOpen(true);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </AlertDialogTrigger>
-                  {isDialogOpen && (
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        Are you sure you want to delete this product?
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <Button onClick={() => setIsDialogOpen(false)}>
-                          Cancel
-                        </Button>
-                        <Button
-                          className="bg-red-500 text-white"
-                          onClick={handleDelete}
-                        >
-                          Confirm
-                        </Button>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  )}
-                </AlertDialog>
-              </div>
+                <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
+                <p className="text-gray-600">{product.description}</p>
+                <p className="text-gray-700">Price: Rs{product.price}</p>
+                <p className="text-gray-700">Stock: {product.stock}</p>
+                <div className="flex gap-2 mt-4">
+                  <Button asChild className="bg-yellow-500 text-white">
+                    <Link href={`./products/${product._id}`}>Edit</Link>
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Button
+                        className="bg-red-500 text-white"
+                        onClick={() => {
+                          setDeleteProductId(product._id);
+                          setIsDialogOpen(true);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </AlertDialogTrigger>
+                    {isDialogOpen && (
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          Are you sure you want to delete this product?
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <Button onClick={() => setIsDialogOpen(false)}>
+                            Cancel
+                          </Button>
+                          <Button
+                            className="bg-red-500 text-white"
+                            onClick={handleDelete}
+                          >
+                            Confirm
+                          </Button>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    )}
+                  </AlertDialog>
+                </div>
               </div>
             </div>
           );

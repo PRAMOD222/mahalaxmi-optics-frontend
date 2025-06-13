@@ -157,14 +157,23 @@ export default function ProductPage() {
   }, [slug]);
 
   const fetchProductById = async () => {
-    try {
-      const response = await fetch(`${baseApi}/products/${slug}`);
-      const data = await response.json();
-      setProduct(data);
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
-  };
+  try {
+    const res = await fetch(`${baseApi}/products/${slug}`);
+    const data = await res.json();
+
+    // Normalize category and brand to _id strings for form
+    const normalizedProduct = {
+      ...data,
+      category: data.category?._id || "",
+      brand: data.brand?._id || "",
+    };
+
+    setProduct(normalizedProduct);
+  } catch (err) {
+    console.error("Error fetching product:", err);
+  }
+};
+
 
   //variant handler
   const handleAddVariant = () => {
@@ -226,78 +235,161 @@ export default function ProductPage() {
     }));
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!product || typeof product !== "object") {
+  //     alert("Product data is missing.");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+
+  //   // Append scalar (non-object) fields
+  //   Object.keys(product).forEach((key) => {
+  //     if (
+  //       key !== "variants" &&
+  //       key !== "information" &&
+  //       typeof product[key] !== "object"
+  //     ) {
+  //       formData.append(key, product[key]);
+  //     }
+  //   });
+
+  //   // Append structured fields
+  //   formData.append("information", JSON.stringify(product.information));
+  //   formData.append("variants", JSON.stringify(product.variants));
+
+  //   // Append images per variant
+  //   product.variants.forEach((variant) => {
+  //     (variant.images || []).forEach((file) => {
+  //       formData.append(`images_${variant.color_name}`, file);
+  //     });
+  //   });
+
+  //   // Optional: log for debugging
+  //   for (let [key, value] of formData.entries()) {
+  //     console.log(key, value);
+  //   }
+
+  //   try {
+  //     const response = isNew
+  //       ? await fetch(`${baseApi}/products`, {
+  //           method: "POST",
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //           body: formData,
+  //         })
+  //       : await fetch(`${baseApi}/products/${slug}`, {
+  //           method: "PUT",
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //           body: formData,
+  //         });
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       alert(data.message);
+  //       await fetch("/api/revalidate", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ path: "/" }),
+  //       });
+  //       router.back();
+  //     } else {
+  //       console.error("Backend Error:", data);
+  //       alert("Error: " + (data.error || "Unknown error"));
+  //     }
+  //   } catch (error) {
+  //     alert("Error: " + error.message);
+  //   }
+  // };
+
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!product || typeof product !== "object") {
-      alert("Product data is missing.");
-      return;
+  if (!product || typeof product !== "object") {
+    alert("Product data is missing.");
+    return;
+  }
+
+  const formData = new FormData();
+
+  // Append scalar (non-object) fields
+  Object.keys(product).forEach((key) => {
+    if (
+      key !== "variants" &&
+      key !== "information" &&
+      typeof product[key] !== "object"
+    ) {
+      formData.append(key, product[key]);
+    }
+  });
+
+  // Append structured fields
+  formData.append("information", JSON.stringify(product.information));
+  formData.append("variants", JSON.stringify(product.variants));
+
+  // Append retained + new images per variant
+  product.variants.forEach((variant) => {
+    const key = `images_${variant.color_name}`;
+    const retained = (variant.images || []).filter((img) => typeof img === "string");
+    const uploaded = (variant.images || []).filter((img) => img instanceof File);
+
+    if (retained.length > 0) {
+      formData.append(key, JSON.stringify(retained));
     }
 
-    const formData = new FormData();
-
-    // Append scalar (non-object) fields
-    Object.keys(product).forEach((key) => {
-      if (
-        key !== "variants" &&
-        key !== "information" &&
-        typeof product[key] !== "object"
-      ) {
-        formData.append(key, product[key]);
-      }
+    uploaded.forEach((file) => {
+      formData.append(key, file);
     });
+  });
 
-    // Append structured fields
-    formData.append("information", JSON.stringify(product.information));
-    formData.append("variants", JSON.stringify(product.variants));
+  // Debugging
+  for (let [key, value] of formData.entries()) {
+    console.log("🧾 FormData:", key, value);
+  }
 
-    // Append images per variant
-    product.variants.forEach((variant) => {
-      (variant.images || []).forEach((file) => {
-        formData.append(`images_${variant.color_name}`, file);
-      });
-    });
-
-    // Optional: log for debugging
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
-    try {
-      const response = isNew
-        ? await fetch(`${baseApi}/products`, {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          })
-        : await fetch(`${baseApi}/products/${slug}`, {
-            method: "PUT",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        alert(data.message);
-        await fetch("/api/revalidate", {
+  try {
+    const response = isNew
+      ? await fetch(`${baseApi}/products`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ path: "/" }),
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        })
+      : await fetch(`${baseApi}/products/${slug}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
         });
-        router.back();
-      } else {
-        console.error("Backend Error:", data);
-        alert("Error: " + (data.error || "Unknown error"));
-      }
-    } catch (error) {
-      alert("Error: " + error.message);
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert(data.message);
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/" }),
+      });
+      router.back();
+    } else {
+      console.error("Backend Error:", data);
+      alert("Error: " + (data.error || "Unknown error"));
     }
-  };
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+};
+
 
   const handleShapeChange = (value) => {
     setProduct((prevProduct) => ({
@@ -401,16 +493,13 @@ export default function ProductPage() {
             <div className="col-span-1">
               <Label>Brand</Label>
               <Select
-                value={product?.brand || ""} // Ensure value is the brand ID
+                value={product?.brand || ""}
                 onValueChange={(value) =>
                   handleChange({ target: { name: "brand", value } })
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a brand">
-                    {brands.find((brand) => brand._id === product?.brand)
-                      ?.name || "Select a brand"}
-                  </SelectValue>
+                  <SelectValue placeholder="Select a brand" />
                 </SelectTrigger>
                 <SelectContent>
                   {brands.map((brand) => (
@@ -689,6 +778,7 @@ export default function ProductPage() {
                                 alt="Variant Img"
                                 className="rounded-md object-cover"
                               />
+
                               <Button
                                 onClick={() =>
                                   handleRemoveImage(variant.color_name, i)
