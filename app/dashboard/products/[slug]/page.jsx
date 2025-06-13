@@ -585,7 +585,7 @@ export default function ProductPage() {
                 </SelectContent>
               </Select>
             </div>
-            {/* Colors and images */}
+            {/* Colors and image*/}
             <div className="col-span-1 w-1/2">
               <Label className="text-lg font-semibold pb-8">
                 Add Colors and Images
