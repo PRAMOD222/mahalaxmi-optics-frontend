@@ -98,7 +98,7 @@ const Products = () => {
                     <Link href={`./products/${product._id}`}>Edit</Link>
                   </Button>
                   <AlertDialog>
-                    <AlertDialogTrigger>
+                    
                       <Button
                         className="bg-red-500 text-white"
                         onClick={() => {
@@ -108,7 +108,7 @@ const Products = () => {
                       >
                         Delete
                       </Button>
-                    </AlertDialogTrigger>
+                    
                     {isDialogOpen && (
                       <AlertDialogContent>
                         <AlertDialogHeader>

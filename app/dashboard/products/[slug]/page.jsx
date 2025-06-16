@@ -38,7 +38,7 @@ export default function ProductPage() {
     price: "",
     discounted_price: "",
     warranty: "",
-    stock: "",
+    //stock: "",
     isOptical: false,
     variants: [],
     information: {
@@ -49,9 +49,9 @@ export default function ProductPage() {
       lens_material: "",
       shape: "",
       country_of_origin: "",
-      front_color: "",
-      temple_color: "",
-      lens_color: "",
+      // front_color: "",
+      // temple_color: "",
+      // lens_color: "",
       style_tip: "",
     },
   });
@@ -157,23 +157,22 @@ export default function ProductPage() {
   }, [slug]);
 
   const fetchProductById = async () => {
-  try {
-    const res = await fetch(`${baseApi}/products/${slug}`);
-    const data = await res.json();
+    try {
+      const res = await fetch(`${baseApi}/products/${slug}`);
+      const data = await res.json();
 
-    // Normalize category and brand to _id strings for form
-    const normalizedProduct = {
-      ...data,
-      category: data.category?._id || "",
-      brand: data.brand?._id || "",
-    };
+      // Normalize category and brand to _id strings for form
+      const normalizedProduct = {
+        ...data,
+        category: data.category?._id || "",
+        brand: data.brand?._id || "",
+      };
 
-    setProduct(normalizedProduct);
-  } catch (err) {
-    console.error("Error fetching product:", err);
-  }
-};
-
+      setProduct(normalizedProduct);
+    } catch (err) {
+      console.error("Error fetching product:", err);
+    }
+  };
 
   //variant handler
   const handleAddVariant = () => {
@@ -308,88 +307,90 @@ export default function ProductPage() {
   //   }
   // };
 
-
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!product || typeof product !== "object") {
-    alert("Product data is missing.");
-    return;
-  }
-
-  const formData = new FormData();
-
-  // Append scalar (non-object) fields
-  Object.keys(product).forEach((key) => {
-    if (
-      key !== "variants" &&
-      key !== "information" &&
-      typeof product[key] !== "object"
-    ) {
-      formData.append(key, product[key]);
-    }
-  });
-
-  // Append structured fields
-  formData.append("information", JSON.stringify(product.information));
-  formData.append("variants", JSON.stringify(product.variants));
-
-  // Append retained + new images per variant
-  product.variants.forEach((variant) => {
-    const key = `images_${variant.color_name}`;
-    const retained = (variant.images || []).filter((img) => typeof img === "string");
-    const uploaded = (variant.images || []).filter((img) => img instanceof File);
-
-    if (retained.length > 0) {
-      formData.append(key, JSON.stringify(retained));
+    if (!product || typeof product !== "object") {
+      alert("Product data is missing.");
+      return;
     }
 
-    uploaded.forEach((file) => {
-      formData.append(key, file);
+    const formData = new FormData();
+
+    // Append scalar (non-object) fields
+    Object.keys(product).forEach((key) => {
+      if (
+        key !== "variants" &&
+        key !== "information" &&
+        typeof product[key] !== "object"
+      ) {
+        formData.append(key, product[key]);
+      }
     });
-  });
 
-  // Debugging
-  for (let [key, value] of formData.entries()) {
-    console.log("🧾 FormData:", key, value);
-  }
+    // Append structured fields
+    formData.append("information", JSON.stringify(product.information));
+    formData.append("variants", JSON.stringify(product.variants));
 
-  try {
-    const response = isNew
-      ? await fetch(`${baseApi}/products`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        })
-      : await fetch(`${baseApi}/products/${slug}`, {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        });
+    // Append retained + new images per variant
+    product.variants.forEach((variant) => {
+      const key = `images_${variant.color_name}`;
+      const retained = (variant.images || []).filter(
+        (img) => typeof img === "string"
+      );
+      const uploaded = (variant.images || []).filter(
+        (img) => img instanceof File
+      );
 
-    const data = await response.json();
+      if (retained.length > 0) {
+        formData.append(key, JSON.stringify(retained));
+      }
 
-    if (response.ok) {
-      alert(data.message);
-      await fetch("/api/revalidate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path: "/" }),
+      uploaded.forEach((file) => {
+        formData.append(key, file);
       });
-      router.back();
-    } else {
-      console.error("Backend Error:", data);
-      alert("Error: " + (data.error || "Unknown error"));
-    }
-  } catch (error) {
-    alert("Error: " + error.message);
-  }
-};
+    });
 
+    // Debugging
+    for (let [key, value] of formData.entries()) {
+      console.log("🧾 FormData:", key, value);
+    }
+
+    try {
+      const response = isNew
+        ? await fetch(`${baseApi}/products`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          })
+        : await fetch(`${baseApi}/products/${slug}`, {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message);
+        await fetch("/api/revalidate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: "/" }),
+        });
+        router.back();
+      } else {
+        console.error("Backend Error:", data);
+        alert("Error: " + (data.error || "Unknown error"));
+      }
+    } catch (error) {
+      alert("Error: " + error.message);
+    }
+  };
 
   const handleShapeChange = (value) => {
     setProduct((prevProduct) => ({
@@ -400,7 +401,7 @@ export default function ProductPage() {
       },
     }));
   };
-  
+
   const handleRemoveColor = (color) => {
     const newColors = product.colors.filter(
       (c) => c.color_name !== color.color_name
@@ -488,7 +489,7 @@ export default function ProductPage() {
                 ))}
               </select>
             </div>
-            <div className="col-span-1">
+            <div className="col-span-2">
               <Label>Brand</Label>
               <Select
                 value={product?.brand || ""}
@@ -509,7 +510,7 @@ export default function ProductPage() {
               </Select>
             </div>
 
-            <div className="col-span-1">
+            {/* <div className="col-span-1">
               <Label>Stock</Label>
               <Input
                 name="stock"
@@ -518,7 +519,7 @@ export default function ProductPage() {
                 onChange={handleChange}
                 className="w-full"
               />
-            </div>
+            </div> */}
 
             <div className="col-span-1">
               <Label>Price</Label>
@@ -695,7 +696,6 @@ export default function ProductPage() {
                   </div>
                 </div> 
               </div> */}
-
             </div>
             <div className="col-span-2 w-full">
               <div className="grid grid-cols-3 py-2 gap-2">
@@ -925,7 +925,7 @@ export default function ProductPage() {
                   />
                 </div>
 
-                <div>
+                {/* <div>
                   <Label>Front Color</Label>
                   <Input
                     name="front_color"
@@ -977,7 +977,7 @@ export default function ProductPage() {
                     }
                     className="w-full"
                   />
-                </div>
+                </div> */}
 
                 <div>
                   <Label>Style Tip</Label>
