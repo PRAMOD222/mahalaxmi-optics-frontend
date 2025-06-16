@@ -68,3 +68,110 @@ export default function LoginPage() {
     </div>
   );
 }
+
+
+
+//login page:
+// 'use client';
+
+// import { useState } from 'react';
+// import { useRouter } from 'next/navigation';
+// import { MdOutlineEmail } from "react-icons/md";
+// import { RiLockPasswordLine } from "react-icons/ri";
+
+// export default function Login() {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const router = useRouter();
+//   const [error, setError] = useState('');
+
+//   const handleLogin = async () => {
+//     try {
+//       const res = await fetch('http://localhost:3001/api/users/login', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ email, password }),
+//       });
+
+//       const data = await res.json();
+
+//       if (!res.ok) {
+//         setError(data.message || 'Login failed');
+//         return;
+//       }
+
+//       localStorage.setItem('token', data.token);
+//       localStorage.setItem('user', JSON.stringify(data.user));
+
+//       if (data.user.role === 'admin') {
+//         router.push('/admin/dashboard');
+//       } else if (data.user.role === 'vendor') {
+//         router.push('/vendor/dashboard');
+//       } else {
+//         router.push('/dashboard');
+//       }
+//     } catch (err) {
+//       setError('Something went wrong');
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+//       <div className="w-full max-w-md bg-white shadow-md rounded-xl p-8">
+//         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Log In</h2>
+
+//         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+//         <form
+//           className="space-y-4"
+//           onSubmit={(e) => {
+//             e.preventDefault();
+//             handleLogin();
+//           }}
+//         >
+//           <div className="flex items-center border rounded-md px-3 py-2">
+//             <MdOutlineEmail className="h-5 w-5 text-gray-500 mr-2" />
+//             <input
+//               type="email"
+//               name="email"
+//               placeholder="Email"
+//               className="w-full focus:outline-none"
+//               value={email}
+//               onChange={(e) => setEmail(e.target.value)}
+//               required
+//             />
+//           </div>
+
+//           <div className="flex items-center border rounded-md px-3 py-2">
+//             <RiLockPasswordLine className="h-5 w-5 text-gray-500 mr-2" />
+//             <input
+//               type="password"
+//               name="password"
+//               placeholder="Password"
+//               className="w-full focus:outline-none"
+//               value={password}
+//               onChange={(e) => setPassword(e.target.value)}
+//               required
+//             />
+//           </div>
+
+//           <button
+//             type="submit"
+//             className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-md transition duration-300"
+//           >
+//             Sign In
+//           </button>
+//         </form>
+
+//         <p className="mt-4 text-center text-sm text-gray-600">
+//           Don’t have an account?{' '}
+//           <a href="/signup" className="text-purple-600 hover:underline font-medium">
+//             Sign Up
+//           </a>
+//         </p>
+//       </div>
+//     </div>
+//   );
+// }

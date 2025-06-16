@@ -32,15 +32,15 @@ export default function ProductPage() {
     name: "",
     code: "",
     description: "",
-    // type: "",
     ideal_for: "",
     category: "",
     brand: "",
     price: "",
     discounted_price: "",
     warranty: "",
-    colors: [],
-    images: {},
+    //stock: "",
+    isOptical: false,
+    variants: [],
     information: {
       lens_size: "",
       nose_bridge_length: "",
@@ -49,15 +49,23 @@ export default function ProductPage() {
       lens_material: "",
       shape: "",
       country_of_origin: "",
-      front_color: "",
-      temple_color: "",
-      lens_color: "",
+      // front_color: "",
+      // temple_color: "",
+      // lens_color: "",
       style_tip: "",
     },
-    stock: "",
-    isOptical: false,
   });
-  const [newColor, setNewColor] = useState({ color_name: "black", color_code: "#000000" });
+
+  const [newVariant, setNewVariant] = useState({
+    color_name: "",
+    color_code: "#000000",
+    lens_color: "",
+    front_color: "",
+    temple_color: "",
+    stock: 0,
+    images: [],
+  });
+
   const [searchValue, setSearchValue] = useState("");
 
   const [categories, setCategories] = useState([]);
@@ -84,33 +92,33 @@ export default function ProductPage() {
     "square",
   ];
 
-  useEffect(() => {
-    if (!product?.colors || product.colors.length === 0) return;
+  // useEffect(() => {
+  //   if (!product?.colors || product.colors.length === 0) return;
 
-    const saveColors = async () => {
-      try {
-        const response = await fetch(`${baseApi}/products/colors`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+  //   const saveColors = async () => {
+  //     try {
+  //       const response = await fetch(`${baseApi}/products/colors`, {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
 
-          body: JSON.stringify({ colors: product.colors }),
-        });
+  //         body: JSON.stringify({ colors: product.colors }),
+  //       });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
 
-        console.log("✅ Colors saved:", product.colors);
-      } catch (error) {
-        console.error("❌ Error saving colors:", error);
-      }
-    };
+  //       console.log("✅ Colors saved:", product.colors);
+  //     } catch (error) {
+  //       console.error("❌ Error saving colors:", error);
+  //     }
+  //   };
 
-    saveColors();
-  }, [product.colors]);
+  //   saveColors();
+  // }, [product.colors]);
 
   // Fetch categories and brands
   useEffect(() => {
@@ -150,12 +158,61 @@ export default function ProductPage() {
 
   const fetchProductById = async () => {
     try {
-      const response = await fetch(`${baseApi}/products/${slug}`);
-      const data = await response.json();
-      setProduct(data);
-    } catch (error) {
-      console.error("Error fetching product:", error);
+      const res = await fetch(`${baseApi}/products/${slug}`);
+      const data = await res.json();
+
+      // Normalize category and brand to _id strings for form
+      const normalizedProduct = {
+        ...data,
+        category: data.category?._id || "",
+        brand: data.brand?._id || "",
+      };
+
+      setProduct(normalizedProduct);
+    } catch (err) {
+      console.error("Error fetching product:", err);
     }
+  };
+
+  //variant handler
+  const handleAddVariant = () => {
+    if (!newVariant.color_name) return;
+
+    setProduct((prev) => ({
+      ...prev,
+      variants: [...prev.variants, newVariant],
+    }));
+    setNewVariant({
+      color_name: "",
+      color_code: "#000000",
+      lens_color: "",
+      front_color: "",
+      temple_color: "",
+      stock: 0,
+      images: [],
+    });
+  };
+
+  const updateVariantField = (index, field, value) => {
+    setProduct((prev) => {
+      const updatedVariants = [...prev.variants];
+      updatedVariants[index][field] = value;
+      return { ...prev, variants: updatedVariants };
+    });
+  };
+
+  //image handler for variant
+  const handleVariantImageChange = (e, colorName) => {
+    const files = Array.from(e.target.files);
+    setProduct((prev) => ({
+      ...prev,
+      variants: prev.variants.map((variant) =>
+        variant.color_name === colorName
+          ? { ...variant, images: [...(variant.images || []), ...files] }
+          : variant
+      ),
+    }));
+    e.target.value = "";
   };
 
   const handleChange = (e) => {
@@ -163,72 +220,140 @@ export default function ProductPage() {
     setProduct({ ...product, [name]: value });
   };
 
-  const handleImageChange = (e, color) => {
-    if (color) {
-      console.log("selectedColor", color);
-      const newImages = { ...product.images };
-      if (!newImages[color.color_name]) {
-        newImages[color.color_name] = [];
-      }
-      newImages[color.color_name].push(...Array.from(e.target.files));
-      setProduct({ ...product, images: newImages });
-
-      e.target.value = "";
-    }
-  };
-
   const handleRemoveImage = (colorName, imageIndex) => {
-    const newImages = { ...product.images };
-    if (newImages[colorName]) {
-      newImages[colorName].splice(imageIndex, 1);
-      setProduct({ ...product, images: newImages });
-    }
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = null;
-    }
+    setProduct((prev) => ({
+      ...prev,
+      variants: prev.variants.map((variant) => {
+        if (variant.color_name === colorName) {
+          const updatedImages = [...variant.images];
+          updatedImages.splice(imageIndex, 1);
+          return { ...variant, images: updatedImages };
+        }
+        return variant;
+      }),
+    }));
   };
 
-  const handleAddColor = () => {
-    // check if color with same is already added
-    if (
-      product.colors.some((color) => color.color_name === newColor.color_name)
-    )
-      return;
-    if (newColor.color_name && newColor.color_code) {
-      const newColors = [...product.colors, newColor];
-      setProduct({ ...product, colors: newColors });
-      setNewColor({ color_name: "", color_code: "" });
-    }
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!product || typeof product !== "object") {
+  //     alert("Product data is missing.");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+
+  //   // Append scalar (non-object) fields
+  //   Object.keys(product).forEach((key) => {
+  //     if (
+  //       key !== "variants" &&
+  //       key !== "information" &&
+  //       typeof product[key] !== "object"
+  //     ) {
+  //       formData.append(key, product[key]);
+  //     }
+  //   });
+
+  //   // Append structured fields
+  //   formData.append("information", JSON.stringify(product.information));
+  //   formData.append("variants", JSON.stringify(product.variants));
+
+  //   // Append images per variant
+  //   product.variants.forEach((variant) => {
+  //     (variant.images || []).forEach((file) => {
+  //       formData.append(`images_${variant.color_name}`, file);
+  //     });
+  //   });
+
+  //   // Optional: log for debugging
+  //   for (let [key, value] of formData.entries()) {
+  //     console.log(key, value);
+  //   }
+
+  //   try {
+  //     const response = isNew
+  //       ? await fetch(`${baseApi}/products`, {
+  //           method: "POST",
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //           body: formData,
+  //         })
+  //       : await fetch(`${baseApi}/products/${slug}`, {
+  //           method: "PUT",
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //           body: formData,
+  //         });
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       alert(data.message);
+  //       await fetch("/api/revalidate", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ path: "/" }),
+  //       });
+  //       router.back();
+  //     } else {
+  //       console.error("Backend Error:", data);
+  //       alert("Error: " + (data.error || "Unknown error"));
+  //     }
+  //   } catch (error) {
+  //     alert("Error: " + error.message);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!product || typeof product !== "object") {
+      alert("Product data is missing.");
+      return;
+    }
+
     const formData = new FormData();
 
+    // Append scalar (non-object) fields
     Object.keys(product).forEach((key) => {
       if (
-        key !== "colors" &&
-        key !== "images" &&
+        key !== "variants" &&
+        key !== "information" &&
         typeof product[key] !== "object"
       ) {
         formData.append(key, product[key]);
-      } else if (key === "colors") {
-        formData.append(key, JSON.stringify(product[key]));
-      } else if (key === "information") {
-        formData.append(key, JSON.stringify(product[key]));
       }
     });
 
-    Object.keys(product.images).forEach((color) => {
-      product.images[color].forEach((image, index) => {
-        formData.append(`images_${color}`, image);
+    // Append structured fields
+    formData.append("information", JSON.stringify(product.information));
+    formData.append("variants", JSON.stringify(product.variants));
+
+    // Append retained + new images per variant
+    product.variants.forEach((variant) => {
+      const key = `images_${variant.color_name}`;
+      const retained = (variant.images || []).filter(
+        (img) => typeof img === "string"
+      );
+      const uploaded = (variant.images || []).filter(
+        (img) => img instanceof File
+      );
+
+      if (retained.length > 0) {
+        formData.append(key, JSON.stringify(retained));
+      }
+
+      uploaded.forEach((file) => {
+        formData.append(key, file);
       });
     });
 
+    // Debugging
     for (let [key, value] of formData.entries()) {
-      console.log(key, value);
+      console.log("🧾 FormData:", key, value);
     }
 
     try {
@@ -236,7 +361,6 @@ export default function ProductPage() {
         ? await fetch(`${baseApi}/products`, {
             method: "POST",
             headers: {
-              // "Content-Type": "multipart/form-data",
               Authorization: `Bearer ${token}`,
             },
             body: formData,
@@ -244,24 +368,23 @@ export default function ProductPage() {
         : await fetch(`${baseApi}/products/${slug}`, {
             method: "PUT",
             headers: {
-              // "Content-Type": "multipart/form-data",
               Authorization: `Bearer ${token}`,
             },
             body: formData,
           });
 
       const data = await response.json();
+
       if (response.ok) {
         alert(data.message);
         await fetch("/api/revalidate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ path: "/" }),
-      });
+        });
         router.back();
-
       } else {
-        console.error("Backend Error:", data); 
+        console.error("Backend Error:", data);
         alert("Error: " + (data.error || "Unknown error"));
       }
     } catch (error) {
@@ -269,12 +392,7 @@ export default function ProductPage() {
     }
   };
 
-  const fileInputRef = useRef(null);
-
-
   const handleShapeChange = (value) => {
-    // console.log(value); // Correct way to get selected value
-
     setProduct((prevProduct) => ({
       ...prevProduct,
       information: {
@@ -282,6 +400,13 @@ export default function ProductPage() {
         shape: value, // Directly use the value
       },
     }));
+  };
+
+  const handleRemoveColor = (color) => {
+    const newColors = product.colors.filter(
+      (c) => c.color_name !== color.color_name
+    );
+    setProduct({ ...product, colors: newColors });
   };
 
   return (
@@ -326,15 +451,6 @@ export default function ProductPage() {
                 className="w-full"
               />
             </div>
-            {/* <div className="col-span-1">
-              <Label>Type</Label>
-              <Input
-                name="type"
-                value={product.type}
-                onChange={handleChange}
-                className="w-full"
-              />
-            </div> */}
             <div className="col-span-1">
               <Label>Ideal For</Label>
               {/* <Input
@@ -373,19 +489,16 @@ export default function ProductPage() {
                 ))}
               </select>
             </div>
-            <div className="col-span-1">
+            <div className="col-span-2">
               <Label>Brand</Label>
               <Select
-                value={product?.brand || ""} // Ensure value is the brand ID
+                value={product?.brand || ""}
                 onValueChange={(value) =>
                   handleChange({ target: { name: "brand", value } })
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a brand">
-                    {brands.find((brand) => brand._id === product?.brand)
-                      ?.name || "Select a brand"}
-                  </SelectValue>
+                  <SelectValue placeholder="Select a brand" />
                 </SelectTrigger>
                 <SelectContent>
                   {brands.map((brand) => (
@@ -397,7 +510,7 @@ export default function ProductPage() {
               </Select>
             </div>
 
-            <div className="col-span-1">
+            {/* <div className="col-span-1">
               <Label>Stock</Label>
               <Input
                 name="stock"
@@ -406,7 +519,7 @@ export default function ProductPage() {
                 onChange={handleChange}
                 className="w-full"
               />
-            </div>
+            </div> */}
 
             <div className="col-span-1">
               <Label>Price</Label>
@@ -471,7 +584,7 @@ export default function ProductPage() {
                 </SelectContent>
               </Select>
             </div>
-            {/* Colors and images */}
+            {/* Colors and image*/}
             <div className="col-span-1 w-1/2">
               <Label className="text-lg font-semibold pb-8">
                 Add Colors and Images
@@ -484,7 +597,7 @@ export default function ProductPage() {
                       <div className="flex items-center gap-2 w-fit h-fit border-2 border-gray-200 rounded-md cursor-pointer relative p-1">
                         <div
                           className="flex items-center justify-center w-8 h-8 rounded"
-                          style={{ backgroundColor: newColor.color_code }}
+                          style={{ backgroundColor: newVariant.color_code }}
                           onClick={() => colorInputRef.current.click()}
                         ></div>
                         <CgColorPicker className="text-black text-xl" />
@@ -493,10 +606,10 @@ export default function ProductPage() {
                       <input
                         type="color"
                         ref={colorInputRef}
-                        value={newColor.color_code}
+                        value={newVariant.color_code}
                         onChange={(e) =>
-                          setNewColor({
-                            ...newColor,
+                          setNewVariant({
+                            ...newVariant,
                             color_code: e.target.value,
                           })
                         }
@@ -510,20 +623,24 @@ export default function ProductPage() {
                     <Input
                       type="text"
                       placeholder="Color Name"
-                      value={newColor.color_name}
+                      value={newVariant.color_name}
                       onChange={(e) =>
-                        setNewColor({ ...newColor, color_name: e.target.value })
+                        setNewVariant({
+                          ...newVariant,
+                          color_name: e.target.value,
+                        })
                       }
                       className="w-full"
                     />
                   </div>
-                  <Button onClick={handleAddColor}>Add +</Button>
+                  {/* <Button onClick={handleAddColor}>Add +</Button> */}
+                  <Button onClick={handleAddVariant}>Add +</Button>
                 </CardContent>
               </Card>
 
-              <div className="flex flex-col flex-wrap gap-2">
+              {/* <div className="flex flex-col flex-wrap gap-2">
                 <div className="flex h-fit gap-2">
-                  {/* <Input
+                   <Input
                     type="text"
                     placeholder="Color Name"
                     value={newColor.color_name}
@@ -531,9 +648,7 @@ export default function ProductPage() {
                       setNewColor({ ...newColor, color_name: e.target.value })
                     }
                     className="w-fit"
-                  /> */}
-
-                  {/* <div className="relative">
+                  /> <div className="relative">
                     <div className="w-16 h-full border-2 border-gray-200 rounded-md cursor-pointer relative p-1">
                       <div
                         className="flex items-center justify-center w-full h-full rounded"
@@ -553,9 +668,9 @@ export default function ProductPage() {
                       }
                       className="absolute top-0 left-0 opacity-0 cursor-pointer"
                     />
-                  </div> */}
+                  </div>
                 </div>
-                {/* <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2">
                   {product.colors.map((color) => (
                     <div
                       key={color.color_name + color.color_code}
@@ -579,72 +694,106 @@ export default function ProductPage() {
                   >
                     +
                   </div>
-                </div> */}
-              </div>
+                </div> 
+              </div> */}
             </div>
             <div className="col-span-2 w-full">
               <div className="grid grid-cols-3 py-2 gap-2">
-                {product.colors.map((color, index) => (
-                  <Card key={index} className="w-full">
-                    <CardContent className="p-2">
-                      <div
-                        key={color.color_name + color.color_code}
-                        className="flex items-center space-x-2 cursor-pointer"
-                      >
+                {product.variants.map((variant, idx) => (
+                  <Card key={idx}>
+                    <CardContent className="p-4 space-y-2">
+                      <div className="flex gap-4 items-center">
                         <div
-                          className={`w-8 h-8 rounded-full border-2 border-black `}
-                          style={{ backgroundColor: color.color_code }}
+                          className="w-6 h-6 rounded-full"
+                          style={{ backgroundColor: variant.color_code }}
                         />
-                        <span className="text-sm text-center capitalize font-[800]">
-                          {color.color_name}
+                        <span className="font-semibold capitalize">
+                          {variant.color_name}
                         </span>
                       </div>
-
-                      <ProductImageCropper
-                        fileInputRef={fileInputRef}
-                        handleImageChange={handleImageChange}
-                        color={color}
+                      <Input
+                        placeholder="Lens Color"
+                        value={variant.lens_color}
+                        onChange={(e) =>
+                          updateVariantField(idx, "lens_color", e.target.value)
+                        }
                       />
-
-                      <div className="grid grid-cols-3 gap-2 mt-2 p-2">
-                        {product.images[color.color_name]?.map(
-                          (image, index) => {
-                            const imageUrl =
-                              typeof image === "string"
-                                ? `${baseApi}${image}`
-                                : URL.createObjectURL(image);
-                            return (
-                              <div
-                                key={imageUrl + Date.now()}
-                                className="relative"
-                              >
-                                <Image
-                                  key={index}
-                                  src={imageUrl}
-                                  width={400}
-                                  height={400}
-                                  alt={`Product Preview ${index}`}
-                                  className="rounded-md shadow-md w-24 h-24 object-cover"
-                                />
-                                <button
-                                  className="absolute top-0 right-0 text-2xl"
-                                  onClick={() =>
-                                    handleRemoveImage(color.color_name, index)
-                                  }
-                                >
-                                  <MdCancel />
-                                </button>
-                              </div>
-                            );
+                      <Input
+                        placeholder="Front Color"
+                        value={variant.front_color}
+                        onChange={(e) =>
+                          updateVariantField(idx, "front_color", e.target.value)
+                        }
+                      />
+                      <Input
+                        placeholder="Temple Color"
+                        value={variant.temple_color}
+                        onChange={(e) =>
+                          updateVariantField(
+                            idx,
+                            "temple_color",
+                            e.target.value
+                          )
+                        }
+                      />
+                      <Input
+                        type="number"
+                        placeholder="Stock"
+                        value={variant.stock}
+                        onChange={(e) =>
+                          updateVariantField(
+                            idx,
+                            "stock",
+                            parseInt(e.target.value)
+                          )
+                        }
+                      />
+                      <Input
+                        type="file"
+                        multiple
+                        onChange={(e) =>
+                          handleVariantImageChange(e, variant.color_name)
+                        }
+                      />
+                      <div className="grid grid-cols-3 gap-2 mt-2">
+                        {variant.images?.map((img, i) => {
+                          let src = "";
+                          if (typeof img === "string") {
+                            src = img.startsWith("/uploads")
+                              ? `${baseApi}${img}`
+                              : img;
+                          } else if (img instanceof File) {
+                            src = URL.createObjectURL(img);
                           }
-                        )}
+
+                          return (
+                            <div key={i} className="relative w-fit">
+                              <Image
+                                src={src}
+                                width={100}
+                                height={100}
+                                alt="Variant Img"
+                                className="rounded-md object-cover"
+                              />
+
+                              <Button
+                                onClick={() =>
+                                  handleRemoveImage(variant.color_name, i)
+                                }
+                                className="absolute -top-1 -right-1 bg-white rounded-full p-1 text-red-600 shadow-md"
+                              >
+                                <MdCancel size={18} />
+                              </Button>
+                            </div>
+                          );
+                        })}
                       </div>
                     </CardContent>
                   </Card>
                 ))}
+                ;
               </div>
             </div>
-
 
             <div className="col-span-2 bg-black h-[1px] w-full"></div>
             <div className="col-span-2 p-2">
@@ -776,7 +925,7 @@ export default function ProductPage() {
                   />
                 </div>
 
-                <div>
+                {/* <div>
                   <Label>Front Color</Label>
                   <Input
                     name="front_color"
@@ -828,7 +977,7 @@ export default function ProductPage() {
                     }
                     className="w-full"
                   />
-                </div>
+                </div> */}
 
                 <div>
                   <Label>Style Tip</Label>
