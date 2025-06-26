@@ -21,8 +21,7 @@ async function Page() {
     const fetchBlogs = async () => {
         try {
             const response = await fetch(`${baseApi}/blogs/`, {
-                cache: "no-store",
-                next: { tags: ["cleardata"] },
+                next: { revalidate: 60 },
             });
             const data = await response.json();
             // console.log("data", data);

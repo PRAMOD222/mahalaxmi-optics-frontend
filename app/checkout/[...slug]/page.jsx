@@ -7,6 +7,8 @@ import { useParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { FaCircleMinus, FaCirclePlus } from "react-icons/fa6";
 import { FaCircle } from "react-icons/fa";
+import TopBar from "@/components/TopBar";
+import Footer from "@/components/Footer";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 

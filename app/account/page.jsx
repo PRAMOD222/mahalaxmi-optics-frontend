@@ -400,7 +400,7 @@ const AccountPage = () => {
             View All Wishlist
           </button>
         </div>
-      )}
+      </div>
     </div>
   );
 };
