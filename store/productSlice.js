@@ -10,13 +10,31 @@ const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
+    // setProduct(state, action) {
+    //   const product = action.payload;
+    //   const defaultColor = product.colors[0]?.color_name || "";
+    //   state.selectedColor = defaultColor;
+    //   state.images = product.images;
+    //   state.mainImage = product.images[defaultColor]?.[0] || "";
+    // },
+
     setProduct(state, action) {
       const product = action.payload;
-      const defaultColor = product.colors[0]?.color_name || "";
+      const defaultVariant = product.variants?.[0] || {};
+      const defaultColor = defaultVariant.color_name || "";
+
       state.selectedColor = defaultColor;
-      state.images = product.images;
-      state.mainImage = product.images[defaultColor]?.[0] || "";
+
+      // Build image mapping from variants
+      const imageMap = {};
+      product.variants.forEach((variant) => {
+        imageMap[variant.color_name] = variant.images;
+      });
+
+      state.images = imageMap;
+      state.mainImage = imageMap[defaultColor]?.[0] || "";
     },
+
     setSelectedColor(state, action) {
       const color = action.payload;
       state.selectedColor = color;

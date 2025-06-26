@@ -82,9 +82,15 @@ const BannerForm = () => {
         formData.append("title", banner.title);
         formData.append("linkText", banner.linkText);
         formData.append("link", banner.link);
-        if (banner.logo) formData.append("logo", banner.logo);
-        if (banner.banner_image) formData.append("banner_image", banner.banner_image);
-    
+        // if (banner.logo) formData.append("logo", banner.logo);
+        // if (banner.banner_image) formData.append("banner_image", banner.banner_image);
+    if (banner.logo instanceof File) {
+      formData.append("logo", banner.logo);
+    }
+    if (banner.banner_image instanceof File) {
+      formData.append("banner_image", banner.banner_image);
+    }
+
         try {
             let response;
             if (isEditMode) {
