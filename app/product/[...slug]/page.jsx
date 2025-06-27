@@ -13,17 +13,36 @@ import AddToWishlist from "@/components/products/AddToWishlist";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
+// const fetchProduct = async (productName) => {
+//   try {
+//     const response = await fetch(`${baseApi}/products/byName/${productName}`, {
+//       cache: "no-store",
+//     });
+//     return await response.json();
+//   } catch (error) {
+//     console.error("Error fetching product:", error);
+//     return null;
+//   }
+// };
+
 const fetchProduct = async (productName) => {
   try {
     const response = await fetch(`${baseApi}/products/byName/${productName}`, {
       cache: "no-store",
     });
-    return await response.json();
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    if (!data || Object.keys(data).length === 0) return null;
+
+    return data;
   } catch (error) {
     console.error("Error fetching product:", error);
     return null;
   }
 };
+
 
 const Page = async ({ params }) => {
   const { slug } = await params;
@@ -31,7 +50,7 @@ const Page = async ({ params }) => {
   const product = await fetchProduct(slug);
 
   if (!product) return <p>Product not found</p>;
-
+   
   return (
     <div>
       <div className="z-40">
