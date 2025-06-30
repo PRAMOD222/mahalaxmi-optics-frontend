@@ -4,6 +4,8 @@ import Image from "next/image";
 import Styles from "@/css/home.module.css";
 import Navbar from "@/components/Navbar";
 
+
+
 const About = () => {
   return (
     <div className="">
