@@ -94,39 +94,35 @@ const Products = () => {
                 <p className="text-gray-700">Price: Rs{product.price}</p>
                 <p className="text-gray-700">Stock: {product.stock}</p>
                 <div className="flex gap-2 mt-4">
-                  <Button asChild className="bg-yellow-500 text-white">
+                  <button asChild className="bg-yellow-500 text-white px-4 py-2 rounded-md">
                     <Link href={`./products/${product._id}`}>Edit</Link>
-                  </Button>
-                  <AlertDialog>
-                    
-                      <Button
-                        className="bg-red-500 text-white"
-                        onClick={() => {
-                          setDeleteProductId(product._id);
-                          setIsDialogOpen(true);
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    
-                    {isDialogOpen && (
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          Are you sure you want to delete this product?
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <Button onClick={() => setIsDialogOpen(false)}>
-                            Cancel
-                          </Button>
-                          <Button
-                            className="bg-red-500 text-white"
-                            onClick={handleDelete}
-                          >
-                            Confirm
-                          </Button>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    )}
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-4 py-2 rounded-md"
+                    onClick={() => {
+                      setDeleteProductId(product._id);
+                      setIsDialogOpen(true);
+                    }}
+                  >
+                    Delete
+                  </button>
+                  <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} >
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        Are you sure you want to delete this product?
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <Button onClick={() => setIsDialogOpen(false)}>
+                          Cancel
+                        </Button>
+                        <Button
+                          className="bg-red-500 text-white"
+                          onClick={handleDelete}
+                        >
+                          Confirm
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
                   </AlertDialog>
                 </div>
               </div>
@@ -134,7 +130,7 @@ const Products = () => {
           );
         })}
       </div>
-      
+
     </div>
   );
 };
