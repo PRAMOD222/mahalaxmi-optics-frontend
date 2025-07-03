@@ -215,6 +215,13 @@ export default function ProductPage() {
     e.target.value = "";
   };
 
+  const handleRemoveVariant = (index) => {
+  const updatedVariants = [...product.variants];
+  updatedVariants.splice(index, 1);
+  setProduct({ ...product, variants: updatedVariants });
+};
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
@@ -697,7 +704,7 @@ export default function ProductPage() {
                 </div> 
               </div> */}
             </div>
-            <div className="col-span-2 w-full">
+            {/* <div className="col-span-2 w-full">
               <div className="grid grid-cols-3 py-2 gap-2">
                 {product.variants.map((variant, idx) => (
                   <Card key={idx}>
@@ -707,6 +714,7 @@ export default function ProductPage() {
                           className="w-6 h-6 rounded-full"
                           style={{ backgroundColor: variant.color_code }}
                         />
+                        
                         <span className="font-semibold capitalize">
                           {variant.color_name}
                         </span>
@@ -792,6 +800,123 @@ export default function ProductPage() {
                   </Card>
                 ))}
                 ;
+              </div>
+            </div> */}
+
+            <div className="col-span-2 w-full">
+              <div className="grid grid-cols-3 py-2 gap-2">
+                {product.variants.map((variant, idx) => (
+                  <div key={idx} className="relative">
+                    {/* Remove Variant Button */}
+                    <Button
+                      onClick={() => handleRemoveVariant(idx)}
+                      className="absolute -top-1 -right-1 bg-white rounded-full p-1 text-red-600 shadow-md z-10"
+                    >
+                      <MdCancel size={18} />
+                    </Button>
+
+                    <Card>
+                      <CardContent className="p-4 space-y-2">
+                        <div className="flex gap-4 items-center">
+                          <div
+                            className="w-6 h-6 rounded-full"
+                            style={{ backgroundColor: variant.color_code }}
+                          />
+                          <span className="font-semibold capitalize">
+                            {variant.color_name}
+                          </span>
+                        </div>
+
+                        <Input
+                          placeholder="Lens Color"
+                          value={variant.lens_color}
+                          onChange={(e) =>
+                            updateVariantField(
+                              idx,
+                              "lens_color",
+                              e.target.value
+                            )
+                          }
+                        />
+                        <Input
+                          placeholder="Front Color"
+                          value={variant.front_color}
+                          onChange={(e) =>
+                            updateVariantField(
+                              idx,
+                              "front_color",
+                              e.target.value
+                            )
+                          }
+                        />
+                        <Input
+                          placeholder="Temple Color"
+                          value={variant.temple_color}
+                          onChange={(e) =>
+                            updateVariantField(
+                              idx,
+                              "temple_color",
+                              e.target.value
+                            )
+                          }
+                        />
+                        <Input
+                          type="number"
+                          placeholder="Stock"
+                          value={variant.stock}
+                          onChange={(e) =>
+                            updateVariantField(
+                              idx,
+                              "stock",
+                              parseInt(e.target.value)
+                            )
+                          }
+                        />
+                        <Input
+                          type="file"
+                          multiple
+                          onChange={(e) =>
+                            handleVariantImageChange(e, variant.color_name)
+                          }
+                        />
+
+                        {/* Images Preview */}
+                        <div className="grid grid-cols-3 gap-2 mt-2">
+                          {variant.images?.map((img, i) => {
+                            let src = "";
+                            if (typeof img === "string") {
+                              src = img.startsWith("/uploads")
+                                ? `${baseApi}${img}`
+                                : img;
+                            } else if (img instanceof File) {
+                              src = URL.createObjectURL(img);
+                            }
+
+                            return (
+                              <div key={i} className="relative w-fit">
+                                <Image
+                                  src={src}
+                                  width={100}
+                                  height={100}
+                                  alt="Variant Img"
+                                  className="rounded-md object-cover"
+                                />
+                                <Button
+                                  onClick={() =>
+                                    handleRemoveImage(variant.color_name, i)
+                                  }
+                                  className="absolute -top-1 -right-1 bg-white rounded-full p-1 text-red-600 shadow-md"
+                                >
+                                  <MdCancel size={18} />
+                                </Button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
               </div>
             </div>
 

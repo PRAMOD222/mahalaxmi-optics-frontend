@@ -10,6 +10,7 @@ import {
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogFooter,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
 const baseApi = process.env.NEXT_PUBLIC_BASE_API;
@@ -97,7 +98,7 @@ const Products = () => {
                   <Button asChild className="bg-yellow-500 text-white">
                     <Link href={`./products/${product._id}`}>Edit</Link>
                   </Button>
-                  <AlertDialog>
+                  {/* <AlertDialog>
                     
                       <Button
                         className="bg-red-500 text-white"
@@ -127,6 +128,33 @@ const Products = () => {
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     )}
+                  </AlertDialog> */}
+
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        className="bg-red-500 text-white"
+                        onClick={() => setDeleteProductId(product._id)}
+                      >
+                        Delete
+                      </Button>
+                    </AlertDialogTrigger>
+
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete Product</AlertDialogTitle>
+                        <p>Are you sure you want to delete this product?</p>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <Button variant="outline">Cancel</Button>
+                        <Button
+                          className="bg-red-500 text-white"
+                          onClick={handleDelete}
+                        >
+                          Confirm
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
                   </AlertDialog>
                 </div>
               </div>
