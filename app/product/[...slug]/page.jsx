@@ -1,214 +1,450 @@
-import ProductImages from "@/components/products/ProductImages";
-import ProductButtons from "@/components/products/ProductButtons";
-import { FaShippingFast, FaRegStar, FaRegHeart } from "react-icons/fa";
-import { IoIosReturnLeft } from "react-icons/io";
-import ProductColors from "@/components/products/ProductColors";
-import TopBar from "@/components/TopBar";
-import Navbar from "@/components/Navbar";
-import ReviewStars from "@/components/ReviewStars";
-import Image from "next/image";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FaHeart } from "react-icons/fa";
-import AddToWishlist from "@/components/products/AddToWishlist";
+// import ProductImages from "@/components/products/ProductImages";
+// import ProductButtons from "@/components/products/ProductButtons";
+// import { FaShippingFast, FaRegStar, FaRegHeart } from "react-icons/fa";
+// import { IoIosReturnLeft } from "react-icons/io";
+// import ProductColors from "@/components/products/ProductColors";
+// import TopBar from "@/components/TopBar";
+// import Navbar from "@/components/Navbar";
+// import ReviewStars from "@/components/ReviewStars";
+// import Image from "next/image";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { FaHeart } from "react-icons/fa";
+// import AddToWishlist from "@/components/products/AddToWishlist";
 
-const baseApi = process.env.NEXT_PUBLIC_BASE_API;
+// const baseApi = process.env.NEXT_PUBLIC_BASE_API;
 
 // const fetchProduct = async (productName) => {
 //   try {
 //     const response = await fetch(`${baseApi}/products/byName/${productName}`, {
 //       cache: "no-store",
 //     });
-//     return await response.json();
+
+//     if (!response.ok) return null;
+
+//     const data = await response.json();
+//     if (!data || Object.keys(data).length === 0) return null;
+
+//     return data;
 //   } catch (error) {
 //     console.error("Error fetching product:", error);
 //     return null;
 //   }
 // };
 
-const fetchProduct = async (productName) => {
-  try {
-    const response = await fetch(`${baseApi}/products/byName/${productName}`, {
-      cache: "no-store",
-    });
 
-    if (!response.ok) return null;
+// const Page = async ({ params }) => {
+//   const { slug } = await params;
 
-    const data = await response.json();
-    if (!data || Object.keys(data).length === 0) return null;
+//   const product = await fetchProduct(slug);
 
-    return data;
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    return null;
-  }
-};
-
-
-const Page = async ({ params }) => {
-  const { slug } = await params;
-
-  const product = await fetchProduct(slug);
-
-  if (!product) return <p>Product not found</p>;
+//   if (!product) return <p>Product not found</p>;
    
+//   return (
+//     <div>
+//       <div className="z-40">
+//         <TopBar />
+//       </div>
+//       <div className="sticky top-0 z-50 bg-white shadow-sm">
+//         <Navbar />
+//       </div>
+
+//       <div className="min-h-screen mx-4 md:mx-32 py-8 flex flex-col">
+//         <div className="flex flex-col md:flex-row gap-8">
+//           <div className="w-full md:w-1/2">
+//             <ProductImages product={product} />
+//           </div>
+
+//           <div className="flex flex-col w-full md:w-1/2 space-y-2">
+//             <div className="flex ">
+//               <div>
+//               <ReviewStars rating={4.5} /> 10 Reviews
+//               </div>
+//               <div className="flex items-center px-2 text-xl">
+//                 <AddToWishlist productId={product._id}/>
+//               </div>
+//             </div>
+
+//             <h1 className="text-xl md:text-4xl font-bold text-gray-900">{product.name}</h1>
+//             <p className="text-gray-500 text-sm">Code: {product.code}</p>
+
+//             <div className="flex items-center gap-4">
+//               {product.price && (<p className="text-4xl font-bold text-[#0071E3]">
+//                 ₹{product.discounted_price}
+//               </p>)}
+
+//               <p className="text-lg line-through text-gray-400">
+//                 ₹{product.price}
+//               </p>
+
+//             </div>
+
+//             <p className="text-gray-500 text-sm">
+//               Tax included. Shipping calculated at checkout.
+//             </p>
+
+//             {product.colors && product.colors.length > 0 && (
+//               <ProductColors product={product} />
+//             )}
+
+//             <div className="space-y-4">
+//               <p className="text-gray-600 font-semibold">
+//                 {" "}
+//                 <span className="font-[1000]">Ideal For: </span>
+//                 {product.ideal_for}
+//               </p>
+
+//               {/* <p className="text-gray-600 font-semibold">Warranty: <span className="font-normal">{product.warranty}</span></p>
+//               <p className="text-gray-600 font-semibold">Type: <span className="font-normal">{product.type}</span></p>
+//              */}
+//             </div>
+
+//             <div className="flex items-center gap-2">
+//               {product.brand && <Image
+//                 src={`${baseApi}${product.brand.logo}`}
+//                 width={100}
+//                 height={100}
+//                 alt={product.brand.name}
+//                 className="h-8 w-fit rounded-md"
+//               />}
+//               {/* <p className="text-gray-600">Brand: {product.brand.name}</p> */}
+//             </div>
+
+//             {/*information*/}
+//             <div className="flex flex-wrap gap-3">
+//               <p className="text-[#763f98] whitespace-nowrap text-sm font-[800] bg-white border border-[#763f98]  rounded-full px-4 py-1 w-fit">
+//                 Material: {product.information.material}
+//               </p>
+//               <p className="text-[#763f98] whitespace-nowrap text-sm font-[800] bg-white border border-[#763f98]  rounded-full px-4 py-1 w-fit">
+//                 Lens Size: {product.information.lens_size}
+//               </p>
+//               <p className="text-[#763f98] whitespace-nowrap text-sm font-[800] bg-white border border-[#763f98]  rounded-full px-4 py-1 w-fit">
+//                 Nose Bridge Length: {product.information.nose_bridge_length}
+//               </p>
+//               <p className="text-[#763f98] whitespace-nowrap text-sm font-[800] bg-white border border-[#763f98]  rounded-full px-4 py-1 w-fit">
+//                 Temple Length: {product.information.temple_length}
+//               </p>
+//             </div>
+
+//             <div className="">
+//               <ProductButtons product={product} />
+//             </div>
+//           </div>
+//         </div>
+
+//         <div className="mt-12">
+//           <Tabs className="p-0 m-0 w-full" defaultValue="moreDetails">
+//             <TabsList className="p-0  h-fit w-full justify-start space-x-8 bg-transparent rounded-none py-0 my-0 m-0">
+//               <TabsTrigger
+//                 className="rounded-none px-0 my-0 py-4 text-[16px] font-[800] border-b-2 border-transparent data-[state=active]:border-b-[#763f98]"
+//                 value="moreDetails"
+//               >
+//                 More Details
+//               </TabsTrigger>
+//               <TabsTrigger
+//                 className="rounded-none px-0 my-0 py-4 text-[16px] font-[800] border-b-2 border-transparent data-[state=active]:border-b-[#763f98]"
+//                 value="shippingandreturns"
+//               >
+//                 Shipping and Returns
+//               </TabsTrigger>
+//             </TabsList>
+//             <div className="h-[1px] bg-gray-200 w-full"></div>
+//             <TabsContent className="p-4 min-h-[200px]" value="moreDetails">
+//               <div className="">
+//                 <div className="space-y-3">
+//                   <p className="text-gray-600">
+//                     <span className="font-bold">Material:</span>{" "}
+//                     {product.information.material}
+//                   </p>
+//                   <p className="text-gray-600">
+//                     <span className="font-bold">Lens Size:</span>{" "}
+//                     {product.information.lens_size}
+//                   </p>
+//                   <p className="text-gray-600">
+//                     <span className="font-bold">Nose Bridge Length:</span>{" "}
+//                     {product.information.nose_bridge_length}
+//                   </p>
+//                   <p className="text-gray-600">
+//                     <span className="font-bold">Temple Length:</span>{" "}
+//                     {product.information.temple_length}
+//                   </p>
+//                 </div>
+//               </div>
+//             </TabsContent>
+
+//             <TabsContent
+//               className="p-4 min-h-[200px]"
+//               value="shippingandreturns"
+//             >
+//               <div className="space-y-6">
+//                 <h2 className="text-gray-600 flex items-center gap-2">
+//                   <FaShippingFast className="text-xl" />
+//                   <span className="font-semibold">
+//                     Free Shipping Across India
+//                   </span>
+//                 </h2>
+//                 <h2 className="text-gray-600 flex items-center gap-2">
+//                   <FaRegStar className="text-xl" />
+//                   <span className="font-semibold">100% Authentic</span>
+//                 </h2>
+//                 <h2 className="text-gray-600 flex items-center gap-2">
+//                   <FaRegHeart className="text-xl" />
+//                   <span className="font-semibold">
+//                     Free in-house repairs & adjustments
+//                   </span>
+//                 </h2>
+//                 <h2 className="text-gray-600 flex items-center gap-2">
+//                   <IoIosReturnLeft className="text-xl" />
+//                   <span className="font-semibold">7-days easy exchange</span>
+//                 </h2>
+//               </div>
+//             </TabsContent>
+//           </Tabs>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Page;
+
+
+"use client";
+import { useEffect, useState } from "react";
+import TopBar from "@/components/TopBar";
+import Navbar from "@/components/Navbar";
+import ReviewStars from "@/components/ReviewStars";
+import Image from "next/image";
+import ProductButtons from "@/components/products/ProductButtons";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FaShippingFast, FaRegStar, FaRegHeart } from "react-icons/fa";
+import { IoIosReturnLeft } from "react-icons/io";
+import { useParams } from "next/navigation";
+
+const baseApi = process.env.NEXT_PUBLIC_BASE_API;
+
+const Page = () => {
+  const { slug } = useParams();
+  const [product, setProduct] = useState(null);
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(`${baseApi}/products/slug/${slug}`, {
+          cache: "no-store",
+        });
+        const data = await res.json();
+        console.log("Product fetched:", data);
+        
+        if (data) {
+          setProduct(data);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchProduct();
+  }, [slug]);
+
+  if (!product) return <p className="text-center p-10">Loading...</p>;
+
+  const variant = product.variants?.[selectedVariantIndex];
+  const images = variant?.images?.length > 0 ? variant.images : [product.thumbnail];
+  const mainImage = images[selectedImageIndex];
+
   return (
     <div>
-      <div className="z-40">
-        <TopBar />
-      </div>
+      <TopBar />
       <div className="sticky top-0 z-50 bg-white shadow-sm">
         <Navbar />
       </div>
 
       <div className="min-h-screen mx-4 md:mx-32 py-8 flex flex-col">
         <div className="flex flex-col md:flex-row gap-8">
-          <div className="w-full md:w-1/2">
-            <ProductImages product={product} />
-          </div>
-
-          <div className="flex flex-col w-full md:w-1/2 space-y-2">
-            <div className="flex ">
-              <div>
-              <ReviewStars rating={4.5} /> 10 Reviews
-              </div>
-              <div className="flex items-center px-2 text-xl">
-                <AddToWishlist productId={product._id}/>
-              </div>
+          {/* LEFT SIDE: Thumbnails + Main Image */}
+          <div className="w-full md:w-1/2 flex gap-4">
+            {/* Thumbnail List */}
+            <div className="flex flex-col gap-3">
+              {images.map((img, idx) => (
+                <div
+                  key={idx}
+                  className={`relative w-20 h-20 border rounded cursor-pointer overflow-hidden ${
+                    selectedImageIndex === idx ? "ring-2 ring-[#763f98]" : ""
+                  }`}
+                  onClick={() => setSelectedImageIndex(idx)}
+                >
+                  <Image
+                    src={`${baseApi}${img}`}
+                    alt={`Thumbnail ${idx + 1}`}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ))}
             </div>
 
-            <h1 className="text-xl md:text-4xl font-bold text-gray-900">{product.name}</h1>
+            {/* Main Image */}
+            <div className="relative flex-1 border rounded overflow-hidden aspect-square">
+              <Image
+                src={`${baseApi}${mainImage}`}
+                alt="Main Product"
+                fill
+                className="object-contain"
+              />
+            </div>
+          </div>
+          {/* RIGHT SIDE: Product Info */}
+          <div className="flex flex-col w-full md:w-1/2 space-y-4">
+            <div className="flex items-center gap-2">
+              <ReviewStars rating={4.5} /> <span>10 Reviews</span>
+            </div>
+
+            <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
             <p className="text-gray-500 text-sm">Code: {product.code}</p>
 
             <div className="flex items-center gap-4">
-              {product.price && (<p className="text-4xl font-bold text-[#0071E3]">
-                ₹{product.discounted_price}
-              </p>)}
-
-              <p className="text-lg line-through text-gray-400">
-                ₹{product.price}
-              </p>
-
+              {product.discounted_price ? (
+                <>
+                  <p className="text-4xl font-bold text-[#0071E3]">
+                    ₹{product.discounted_price}
+                  </p>
+                  <p className="text-lg line-through text-gray-400">
+                    ₹{product.price}
+                  </p>
+                </>
+              ) : (
+                <p className="text-4xl font-bold text-[#0071E3]">
+                  ₹{product.price}
+                </p>
+              )}
             </div>
 
             <p className="text-gray-500 text-sm">
               Tax included. Shipping calculated at checkout.
             </p>
 
-            {product.colors && product.colors.length > 0 && (
-              <ProductColors product={product} />
+            <p className="text-gray-600 font-semibold">
+              <span className="font-[1000]">Ideal For: </span>
+              {product.ideal_for}
+            </p>
+
+            {/* Brand */}
+            {product.brand && (
+              <div className="flex items-center gap-2">
+                <Image
+                  src={`${baseApi}${product.brand.logo}`}
+                  width={100}
+                  height={30}
+                  alt={product.brand.name}
+                  className="h-8 w-auto rounded-md"
+                />
+              </div>
+            )}
+            {/* <p>{`${baseApi}${product.brand.logo}`}</p> */}
+
+            {/* Variant Color Circles (UNCHANGED) */}
+            {product.variants?.length > 0 && (
+              <div className="flex flex-wrap gap-4 mt-2">
+                {product.variants.map((variant, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setSelectedVariantIndex(index);
+                      setSelectedImageIndex(0); // Reset to main image
+                    }}
+                    className={`flex items-center gap-2 px-2 py-1 rounded-full border ${
+                      selectedVariantIndex === index
+                        ? "border-[#763f98]"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: variant.color_code }}
+                    />
+                    <span className="text-sm text-gray-700">
+                      {variant.color_name}
+                    </span>
+                  </button>
+                ))}
+              </div>
             )}
 
-            <div className="space-y-4">
-              <p className="text-gray-600 font-semibold">
-                {" "}
-                <span className="font-[1000]">Ideal For: </span>
-                {product.ideal_for}
-              </p>
-
-              {/* <p className="text-gray-600 font-semibold">Warranty: <span className="font-normal">{product.warranty}</span></p>
-              <p className="text-gray-600 font-semibold">Type: <span className="font-normal">{product.type}</span></p>
-             */}
-            </div>
-
-            <div className="flex items-center gap-2">
-              {product.brand && <Image
-                src={`${baseApi}${product.brand.logo}`}
-                width={100}
-                height={100}
-                alt={product.brand.name}
-                className="h-8 w-fit rounded-md"
-              />}
-              {/* <p className="text-gray-600">Brand: {product.brand.name}</p> */}
-            </div>
-
-            {/*information*/}
+            {/* Info Tags */}
             <div className="flex flex-wrap gap-3">
-              <p className="text-[#763f98] whitespace-nowrap text-sm font-[800] bg-white border border-[#763f98]  rounded-full px-4 py-1 w-fit">
+              <p className="text-[#763f98] text-sm font-[800] border border-[#763f98] rounded-full px-4 py-1">
                 Material: {product.information.material}
               </p>
-              <p className="text-[#763f98] whitespace-nowrap text-sm font-[800] bg-white border border-[#763f98]  rounded-full px-4 py-1 w-fit">
+              <p className="text-[#763f98] text-sm font-[800] border border-[#763f98] rounded-full px-4 py-1">
                 Lens Size: {product.information.lens_size}
               </p>
-              <p className="text-[#763f98] whitespace-nowrap text-sm font-[800] bg-white border border-[#763f98]  rounded-full px-4 py-1 w-fit">
-                Nose Bridge Length: {product.information.nose_bridge_length}
+              <p className="text-[#763f98] text-sm font-[800] border border-[#763f98] rounded-full px-4 py-1">
+                Nose Bridge: {product.information.nose_bridge_length}
               </p>
-              <p className="text-[#763f98] whitespace-nowrap text-sm font-[800] bg-white border border-[#763f98]  rounded-full px-4 py-1 w-fit">
+              <p className="text-[#763f98] text-sm font-[800] border border-[#763f98] rounded-full px-4 py-1">
                 Temple Length: {product.information.temple_length}
               </p>
             </div>
 
-            <div className="">
-              <ProductButtons product={product} />
-            </div>
+            <ProductButtons product={product} />
           </div>
         </div>
 
+        {/* Tabs Section */}
         <div className="mt-12">
-          <Tabs className="p-0 m-0 w-full" defaultValue="moreDetails">
-            <TabsList className="p-0  h-fit w-full justify-start space-x-8 bg-transparent rounded-none py-0 my-0 m-0">
+          <Tabs defaultValue="moreDetails" className="w-full">
+            <TabsList className="space-x-6 border-b border-gray-200">
               <TabsTrigger
-                className="rounded-none px-0 my-0 py-4 text-[16px] font-[800] border-b-2 border-transparent data-[state=active]:border-b-[#763f98]"
+                className="text-base font-semibold pb-3 data-[state=active]:border-b-2 data-[state=active]:border-[#763f98]"
                 value="moreDetails"
               >
                 More Details
               </TabsTrigger>
               <TabsTrigger
-                className="rounded-none px-0 my-0 py-4 text-[16px] font-[800] border-b-2 border-transparent data-[state=active]:border-b-[#763f98]"
+                className="text-base font-semibold pb-3 data-[state=active]:border-b-2 data-[state=active]:border-[#763f98]"
                 value="shippingandreturns"
               >
                 Shipping and Returns
               </TabsTrigger>
             </TabsList>
-            <div className="h-[1px] bg-gray-200 w-full"></div>
-            <TabsContent className="p-4 min-h-[200px]" value="moreDetails">
-              <div className="">
-                <div className="space-y-3">
-                  <p className="text-gray-600">
-                    <span className="font-bold">Material:</span>{" "}
-                    {product.information.material}
-                  </p>
-                  <p className="text-gray-600">
-                    <span className="font-bold">Lens Size:</span>{" "}
-                    {product.information.lens_size}
-                  </p>
-                  <p className="text-gray-600">
-                    <span className="font-bold">Nose Bridge Length:</span>{" "}
-                    {product.information.nose_bridge_length}
-                  </p>
-                  <p className="text-gray-600">
-                    <span className="font-bold">Temple Length:</span>{" "}
-                    {product.information.temple_length}
-                  </p>
-                </div>
-              </div>
+
+            <TabsContent value="moreDetails" className="pt-4">
+              <ul className="space-y-2 text-gray-600">
+                <li>
+                  <strong>Material:</strong> {product.information.material}
+                </li>
+                <li>
+                  <strong>Lens Size:</strong> {product.information.lens_size}
+                </li>
+                <li>
+                  <strong>Nose Bridge Length:</strong>{" "}
+                  {product.information.nose_bridge_length}
+                </li>
+                <li>
+                  <strong>Temple Length:</strong>{" "}
+                  {product.information.temple_length}
+                </li>
+              </ul>
             </TabsContent>
 
             <TabsContent
-              className="p-4 min-h-[200px]"
               value="shippingandreturns"
+              className="pt-4 space-y-4 text-gray-600"
             >
-              <div className="space-y-6">
-                <h2 className="text-gray-600 flex items-center gap-2">
-                  <FaShippingFast className="text-xl" />
-                  <span className="font-semibold">
-                    Free Shipping Across India
-                  </span>
-                </h2>
-                <h2 className="text-gray-600 flex items-center gap-2">
-                  <FaRegStar className="text-xl" />
-                  <span className="font-semibold">100% Authentic</span>
-                </h2>
-                <h2 className="text-gray-600 flex items-center gap-2">
-                  <FaRegHeart className="text-xl" />
-                  <span className="font-semibold">
-                    Free in-house repairs & adjustments
-                  </span>
-                </h2>
-                <h2 className="text-gray-600 flex items-center gap-2">
-                  <IoIosReturnLeft className="text-xl" />
-                  <span className="font-semibold">7-days easy exchange</span>
-                </h2>
-              </div>
+              <p className="flex items-center gap-2">
+                <FaShippingFast /> Free Shipping Across India
+              </p>
+              <p className="flex items-center gap-2">
+                <FaRegStar /> 100% Authentic
+              </p>
+              <p className="flex items-center gap-2">
+                <FaRegHeart /> Free in-house repairs & adjustments
+              </p>
+              <p className="flex items-center gap-2">
+                <IoIosReturnLeft /> 7-days easy exchange
+              </p>
             </TabsContent>
           </Tabs>
         </div>
